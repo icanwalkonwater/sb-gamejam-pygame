@@ -5,13 +5,13 @@ from pygame import Surface, Vector2
 
 from game_object import GameObject
 from keyboard_input import InputController
-from physics import RigidPhysicsAwareGameObject
+from player import Player
 from scene import Scene
 from effect import WizEffect, Effect
 
 from typing import List, Tuple
 
-FPS_LIMIT = 0
+FPS_LIMIT = 60
 frames = 0
 
 
@@ -25,17 +25,22 @@ def create_test_scene(screen) -> Scene:
     red_box: GameObject = GameObject(red_box_s)
     red_box.move(Vector2(50, 250))
 
+    orange_box_s: Surface = Surface((300, 50))
+    orange_box_s.fill((255, 100, 0))
+
+    orange_box: GameObject = GameObject(orange_box_s)
+    orange_box.move(Vector2(400, 350))
+
     green_box_s = Surface((50, 50))
     green_box_s.fill((0, 255, 0))
 
-    green_box = RigidPhysicsAwareGameObject(green_box_s, .1)
-    # green_box = PhysicsAwareGameObject(green_box_s, .1)
-    green_box.move(Vector2(100, 200))
-    green_box.apply_force(Vector2(500, -1400))
+    player = Player(green_box_s, .5)
+    player.move(Vector2(100, 200))
+    player.apply_force(Vector2(500, -1400))
 
-    green_box.add_to_collision_mask(red_box)
+    player.add_to_collision_mask(red_box, orange_box)
 
-    return Scene(background, [red_box], [green_box])
+    return Scene(background, [red_box, orange_box], [player])
 
 
 def main():
@@ -47,12 +52,13 @@ def main():
     pygame.mouse.set_visible(True)
 
     # Setup input controller
-    input_controller: InputController = InputController()
-    input_controller.acceleration *= 2
+    input_controller: InputController = InputController(vertical=(pygame.K_SPACE, -1))
+    input_controller.acceleration = Vector2(3, 10)
 
     # Setup scene
     scene = create_test_scene(screen)
     scene.draw_init(screen)  # Initial draw (background)
+    scene.dynamics.sprites()[0]._input_controller = input_controller  # Setup player
 
     # Setup clock
     clock: pygame.time.Clock = pygame.time.Clock()
@@ -70,16 +76,10 @@ def main():
     while True:
         delta_time = clock.get_time()
 
-        # Hacky move player around
-        # TODO: a player controller
-        motion: Vector2 = input_controller.get_motion() * delta_time
-        scene.dynamics.sprites()[0].apply_force(motion)
-
         # Dispatch update through every game objects of the scene
         scene.update(delta_time)
 
         # Draw pass
-        # TODO: Very crappy performances
         for invalidated in scene.draw_auto(screen):
             pygame.display.update(invalidated)
 

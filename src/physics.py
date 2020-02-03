@@ -10,7 +10,7 @@ from game_object import Moveable, GameObject
 
 PHYSICS_NULLIFY_THRESHOLD = 1
 PHYSICS_GRAVITY = Vector2(0, 9.31)
-PHYSICS_STANDARD_RESISTANCE = 0.02
+PHYSICS_STANDARD_RESISTANCE = 0.06
 
 
 class ImpactSide(Enum):
@@ -77,14 +77,24 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
         if collides_with is not None:
             self.collision_mask.add(*collides_with)
 
-    def add_to_collision_mask(self, collider: GameObject):
-        self.collision_mask.add(collider)
+    def add_to_collision_mask(self, *colliders: [GameObject]):
+        self.collision_mask.add(colliders)
 
     @staticmethod
     def __normalize_angle(angle: float) -> float:
         return angle % 360 - 180
 
-    def compute_collisions(self):
+    def update(self, delta_time: float):
+
+        # Quick fix: re-enable gravity if we are still moving (do allow use to fall from edges)
+        if self.velocity.x != 0:
+            self.is_on_ground = False
+
+        PhysicsAwareGameObject.update(self, delta_time)
+
+        self._compute_collisions()
+
+    def _compute_collisions(self):
         other: GameObject
         for other in self.collision_mask.sprites():
             self_rect = self.rect
@@ -144,12 +154,8 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
                 #
                 # self._on_collide(other, direction_of_impact, local_impact_point)
 
-    def update(self, delta_time: float):
-        PhysicsAwareGameObject.update(self, delta_time)
-        self.compute_collisions()
-
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
-        # print(f"Collided with {other} at {impact_side} (direction: {direction_of_impact}) !")
+        # print(f'Collided with {other} at {impact_side} (direction: {direction_of_impact}) !')
         if impact_side == ImpactSide.BOTTOM:
             self.is_on_ground = True
             self.velocity.y = 0
