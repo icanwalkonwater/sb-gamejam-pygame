@@ -32,6 +32,14 @@ class GameObject(Sprite, Moveable):
 
         return self._rect
 
+    @property
+    def height(self) -> int:
+        return self.image.get_height()
+
+    @property
+    def width(self) -> int:
+        return self.image.get_width()
+
     def move(self, of: Vector2, physics_scale=False):
         # Invalidate rect
         self._rect_dirty = True

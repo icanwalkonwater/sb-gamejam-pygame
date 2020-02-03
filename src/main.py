@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from pygame import Surface, Vector2
 
@@ -6,14 +8,15 @@ from keyboard_input import InputController
 from physics import RigidPhysicsAwareGameObject
 from scene import Scene
 
-FPS_LIMIT = 60
+FPS_LIMIT = 0
+frames = 0
 
 
 def create_test_scene(screen) -> Scene:
     background: Surface = Surface(screen.get_size())
     background.fill((250, 250, 250))
 
-    red_box_s: Surface = Surface((200, 200))
+    red_box_s: Surface = Surface((300, 50))
     red_box_s.fill((255, 0, 0))
 
     red_box: GameObject = GameObject(red_box_s)
@@ -52,6 +55,9 @@ def main():
     clock: pygame.time.Clock = pygame.time.Clock()
     clock.tick()
 
+    # Used to
+    last_fps_update = time.time()
+
     # Game loop
     while True:
         delta_time = clock.get_time()
@@ -73,9 +79,17 @@ def main():
         pygame.display.flip()
 
         # Reset the clock
-        print(f'\rFPS: {int(clock.get_fps())}', end='')
+        if time.time() - last_fps_update > 1:
+            last_fps_update = time.time()
+            print(f'\rFPS: {int(clock.get_fps())}    ', end='')
+        global frames
+        frames += 1
         clock.tick(FPS_LIMIT)
 
 
 if __name__ == '__main__':
-    main()
+    start_time = time.time()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print(f'\nFrames: {frames}, mean FPS: {frames / (time.time() - start_time)}')

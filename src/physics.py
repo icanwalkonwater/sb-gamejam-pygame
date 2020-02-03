@@ -2,7 +2,7 @@ import math
 from abc import ABC
 from enum import Enum
 
-from pygame import Vector2, Rect
+from pygame import Vector2
 from pygame.sprite import Group
 from pygame.surface import Surface
 
@@ -80,6 +80,10 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
     def add_to_collision_mask(self, collider: GameObject):
         self.collision_mask.add(collider)
 
+    @staticmethod
+    def __normalize_angle(angle: float) -> float:
+        return angle % 360 - 180
+
     def compute_collisions(self):
         other: GameObject
         for other in self.collision_mask.sprites():
@@ -102,16 +106,20 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
                 angle_delta_vertical = abs(direction_top_left_corner.angle_to(Vector2(0, -1)))
                 angle_delta_horizontal = abs(direction_top_right_corner.angle_to(Vector2(1, 0)))
 
-                if -angle_delta_vertical < direction_of_impact.angle_to(-Vector2(0, -1)) < angle_delta_vertical:
+                if -angle_delta_vertical < self.__normalize_angle(
+                        direction_of_impact.angle_to(-Vector2(0, -1))) < angle_delta_vertical:
                     self._on_collide(other, direction_of_impact, ImpactSide.TOP)
 
-                elif -angle_delta_vertical < direction_of_impact.angle_to(-Vector2(0, 1)) < angle_delta_vertical:
+                elif -angle_delta_vertical < self.__normalize_angle(
+                        direction_of_impact.angle_to(-Vector2(0, 1))) < angle_delta_vertical:
                     self._on_collide(other, direction_of_impact, ImpactSide.BOTTOM)
 
-                elif -angle_delta_horizontal < direction_of_impact.angle_to(-Vector2(-1, 0)) < angle_delta_horizontal:
+                elif -angle_delta_horizontal < self.__normalize_angle(
+                        direction_of_impact.angle_to(-Vector2(-1, 0))) < angle_delta_horizontal:
                     self._on_collide(other, direction_of_impact, ImpactSide.LEFT)
 
-                # elif -angle_delta_horizontal < direction_of_impact.angle_to(-Vector2(1, 0)) < angle_delta_horizontal:
+                # elif -angle_delta_horizontal < self.__normalize_angle(
+                #       direction_of_impact.angle_to(-Vector2(1, 0))) < angle_delta_horizontal:
                 else:
                     self._on_collide(other, direction_of_impact, ImpactSide.RIGHT)
 
@@ -141,4 +149,18 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
         self.compute_collisions()
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
-        print(f"Collided with {other} at {impact_side} (direction: {direction_of_impact}) !")
+        # print(f"Collided with {other} at {impact_side} (direction: {direction_of_impact}) !")
+        if impact_side == ImpactSide.BOTTOM:
+            self.is_on_ground = True
+            self.velocity.y = 0
+            self.transform.y = other.rect.top - self.height
+        elif impact_side == ImpactSide.TOP:
+            self.velocity.y = 0
+            self.transform.y = other.rect.bottom
+        elif impact_side == ImpactSide.LEFT:
+            self.velocity.x = 0
+            self.transform.x = other.rect.right
+        # elif impact_side == ImpactSide.RIGHT:
+        else:
+            self.velocity.x = 0
+            self.transform.x = other.rect.left - self.width

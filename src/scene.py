@@ -10,17 +10,23 @@ class Scene:
 
     def __init__(self, background: Surface, statics: List[GameObject], dynamics: List[GameObject]):
         self.background: Surface = background
+        self._background: Surface = None
         self.statics: Group = Group(statics)
         self.dynamics: RenderUpdates = RenderUpdates(dynamics)
 
     def draw_init(self, surface: Surface):
-        surface.blit(self.background, (0, 0))
+        # Reset background
+        self._background: Surface = self.background.copy()
+        # Blit statics onto background
+        self._background.blits(
+            ((go.image, go.rect) for go in self.statics.sprites())
+        )
+
+        surface.blit(self._background, (0, 0))
 
     def draw_auto(self, surface: Surface):
         # Clear the dynamic objects
-        self.dynamics.clear(surface, self.background)
-        # Redraw the statics (in case there was a dynamics on top of them)
-        self.statics.draw(surface)
+        self.dynamics.clear(surface, self._background)
 
         # Redraw the dynamics and return the invalidated areas
         return self.dynamics.draw(surface)
