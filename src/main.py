@@ -59,7 +59,7 @@ def main():
     clock.tick()
 
     effects: List[WizEffect] = [
-        WizEffect(5, 2.0, 2.0)
+        WizEffect(5, 0.5, 8.0)
     ]
     effects[0].start()
 
@@ -98,7 +98,7 @@ def main():
         # Reset the clock
         if time.time() - last_fps_update > 1:
             last_fps_update = time.time()
-            print(f'\rFPS: {int(clock.get_fps())}    motion : ({int(motion.x)},{int(motion.y)})', end='')
+            print(f'\rFPS: {int(clock.get_fps())}    ', end='')
         global frames
         frames += 1
         clock.tick(FPS_LIMIT)
