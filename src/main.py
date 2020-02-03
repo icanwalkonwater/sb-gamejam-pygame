@@ -3,6 +3,8 @@ import time
 import pygame
 from pygame import Surface, Vector2
 
+from constants import RESOLUTION
+from enemy import Enemy
 from game_object import GameObject
 from keyboard_input import InputController
 from player import Player
@@ -12,7 +14,7 @@ FPS_LIMIT = 60
 frames = 0
 
 
-def create_test_scene(screen) -> Scene:
+def create_test_scene(screen: Surface) -> Scene:
     background: Surface = Surface(screen.get_size())
     background.fill((250, 250, 250))
 
@@ -31,26 +33,43 @@ def create_test_scene(screen) -> Scene:
     green_box_s = Surface((50, 50))
     green_box_s.fill((0, 255, 0))
 
-    player = Player(green_box_s, .5)
+    floor_s: Surface = Surface((1080, 50))
+    floor_s.fill((0, 0, 0))
+    floor: GameObject = GameObject(floor_s)
+    floor.move(Vector2(0, 600))
+
+    wall_left_s: Surface = Surface((50, 100))
+    wall_left_s.fill((0, 0, 0))
+    wall_left: GameObject = GameObject(wall_left_s)
+    wall_left.move(Vector2(0, 500))
+
+    wall_right_s: Surface = Surface((50, 100))
+    wall_right_s.fill((0, 0, 0))
+    wall_right: GameObject = GameObject(wall_left_s)
+    wall_right.move(Vector2(1000, 500))
+
+    player = Player(green_box_s, .5, [red_box, orange_box, floor, wall_left, wall_right])
     player.move(Vector2(100, 200))
-    player.apply_force(Vector2(500, -1400))
 
-    player.add_to_collision_mask(red_box, orange_box)
+    enemy_s: Surface = Surface((50, 50))
+    enemy_s.fill((0, 0, 255))
+    enemy = Enemy(enemy_s, .5, [floor, wall_left, wall_right], player)
+    enemy.move(Vector2(900, 500))
 
-    return Scene(background, [red_box, orange_box], [player])
+    return Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy])
 
 
 def main():
     pygame.init()
 
     # Setup screen
-    screen: pygame.Surface = pygame.display.set_mode((1024, 768))
+    screen: pygame.Surface = pygame.display.set_mode(RESOLUTION)
     pygame.display.set_caption("Hey")
     pygame.mouse.set_visible(True)
 
     # Setup input controller
     input_controller: InputController = InputController(vertical=(pygame.K_SPACE, -1))
-    input_controller.acceleration = Vector2(3, 10)
+    input_controller.acceleration = Vector2(5, 1)
 
     # Setup scene
     scene = create_test_scene(screen)

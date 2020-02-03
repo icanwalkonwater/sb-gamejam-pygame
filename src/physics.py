@@ -1,30 +1,19 @@
 import math
 from abc import ABC
-from enum import Enum
 
 from pygame import Vector2
 from pygame.sprite import Group
 from pygame.surface import Surface
 
+from constants import PHYSICS_NULLIFY_THRESHOLD, PHYSICS_GRAVITY, PHYSICS_STANDARD_RESISTANCE, ImpactSide
 from game_object import Moveable, GameObject
-
-PHYSICS_NULLIFY_THRESHOLD = 1
-PHYSICS_GRAVITY = Vector2(0, 9.31)
-PHYSICS_STANDARD_RESISTANCE = 0.06
-
-
-class ImpactSide(Enum):
-    TOP = 1
-    BOTTOM = 2
-    LEFT = 3
-    RIGHT = 4
 
 
 class PhysicsReceiver(Moveable, ABC):
 
     def __init__(self, weight: float, resistance_amount: float = PHYSICS_STANDARD_RESISTANCE,
                  initial_velocity: Vector2 = Vector2()):
-        self.velocity: Vector2 = initial_velocity
+        self.velocity: Vector2 = Vector2(initial_velocity)
         self.resistance_amount: float = resistance_amount
         self.weight = weight
         self.is_on_ground = False

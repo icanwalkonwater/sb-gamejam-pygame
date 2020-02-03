@@ -1,10 +1,9 @@
 from pygame import Vector2, Surface
 
+from constants import PLAYER_JUMP_FORCE
 from game_object import GameObject
 from keyboard_input import InputController
 from physics import RigidPhysicsAwareGameObject
-
-JUMP_FORCE = Vector2(0, -4500)
 
 
 class Player(RigidPhysicsAwareGameObject):
@@ -27,4 +26,4 @@ class Player(RigidPhysicsAwareGameObject):
 
     def jump(self):
         self.is_on_ground = False
-        self.apply_force(JUMP_FORCE)
+        self.apply_force(PLAYER_JUMP_FORCE)

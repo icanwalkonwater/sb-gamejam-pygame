@@ -3,7 +3,7 @@ from abc import abstractmethod, ABC
 from pygame import Surface, Rect, Vector2
 from pygame.sprite import Sprite
 
-PHYSICS_SCALE = 10000
+from constants import PHYSICS_SCALE
 
 
 class Moveable(ABC):
