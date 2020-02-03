@@ -7,6 +7,9 @@ from game_object import GameObject
 from keyboard_input import InputController
 from physics import RigidPhysicsAwareGameObject
 from scene import Scene
+from effect import WizEffect, Effect
+
+from typing import List, Tuple
 
 FPS_LIMIT = 0
 frames = 0
@@ -55,6 +58,11 @@ def main():
     clock: pygame.time.Clock = pygame.time.Clock()
     clock.tick()
 
+    effects: List[WizEffect] = [
+        WizEffect(5, 2.0, 2.0)
+    ]
+    effects[0].start()
+
     # Used to
     last_fps_update = time.time()
 
@@ -75,13 +83,22 @@ def main():
         for invalidated in scene.draw_auto(screen):
             pygame.display.update(invalidated)
 
+        if any(map(lambda e: e.applicable(), effects)):
+            screen_dup = screen.copy()
+
+            for effect in effects:
+                screen = effect.apply(screen)
+
         # Update the screen
         pygame.display.flip()
+
+        if any(map(lambda e: e.applicable(), effects)):
+            screen.blit(screen_dup, (0, 0))
 
         # Reset the clock
         if time.time() - last_fps_update > 1:
             last_fps_update = time.time()
-            print(f'\rFPS: {int(clock.get_fps())}    ', end='')
+            print(f'\rFPS: {int(clock.get_fps())}    motion : ({int(motion.x)},{int(motion.y)})', end='')
         global frames
         frames += 1
         clock.tick(FPS_LIMIT)
