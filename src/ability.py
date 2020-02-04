@@ -4,7 +4,8 @@ from abc import ABC
 from pygame import Vector2
 
 from constants import PLAYER_ABILITY_BASE_LEVEL, PLAYER_ABILITY_BASE_COOLDOWN, PLAYER_ABILITY_GUST_BASE_STRENGTH, \
-    PLAYER_ABILITY_GUST_BASE_KNOCKBACK_STRENGTH, PLAYER_ABILITY_SLAM_BASE_STRENGTH, PLAYER_ABILITY_TORNADO_JUMP_COOLDOWN, \
+    PLAYER_ABILITY_GUST_BASE_KNOCKBACK_STRENGTH, PLAYER_ABILITY_SLAM_BASE_STRENGTH, \
+    PLAYER_ABILITY_TORNADO_JUMP_COOLDOWN, \
     PLAYER_ABILITY_TORNADO_JUMP_STRENGTH, PLAYER_ABILITY_SLAM_BASE_AREA, PLAYER_ABILITY_SLAM_HEIGHT
 from game_object import GameObject
 from projectile import GustProjectile, SlamProjectile
@@ -33,7 +34,7 @@ class TornadoJumpAbility(Ability):
 
 class GustAbility(Ability):
 
-    def __init__(self, level: int, cooldown: float = None):
+    def __init__(self, level: int = PLAYER_ABILITY_BASE_LEVEL, cooldown: float = PLAYER_ABILITY_BASE_COOLDOWN):
         Ability.__init__(self, level, cooldown)
 
     def _gust_strength_calc(self) -> Vector2:

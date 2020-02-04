@@ -1,12 +1,11 @@
 from pygame import Vector2, Surface
 
-from constants import PLAYER_JUMP_FORCE, ImpactSide, PLAYER_DAMAGE_REPULSION_FACTOR
+from ability import TornadoJumpAbility, GustAbility, SlamAbility
+from constants import ImpactSide, PLAYER_DAMAGE_REPULSION_FACTOR, PLAYER_ABILITY_BASE_LEVEL
 from game_object import GameObject
 from hostiles.enemy import Enemy
 from keyboard_input import InputController
 from physics import RigidPhysicsAwareGameObject
-
-from ability import TornadoJumpAbility, GustAbility, SlamAbility
 
 
 class Player(RigidPhysicsAwareGameObject):
@@ -14,22 +13,21 @@ class Player(RigidPhysicsAwareGameObject):
     def __init__(self, surface: Surface, weight: float, collides_with: [GameObject] = None):
         RigidPhysicsAwareGameObject.__init__(self, surface, weight, collides_with)
         self._ability_tornado_jump = TornadoJumpAbility(1)
-        self._ability_gust = GustAbility(1, 1)
+        self._ability_gust = GustAbility()
         self._ability_slam = SlamAbility(1, 1)
 
     def update(self, delta_time: float):
         RigidPhysicsAwareGameObject.update(self, delta_time)
 
         motion = InputController.get_motion() * delta_time
+        powers = InputController.get_powers()
 
-        power = InputController.get_powers()
-
-        if power[0]:
+        if powers[0]:
             self._ability_gust.use(self)
-
-        if power[1]:
+        if powers[1]:
             self._ability_slam.use(self)
 
+        # Apply left/right controls
         if motion.x != 0:
             self.apply_force(Vector2(motion.x, 0))
 
@@ -41,7 +39,7 @@ class Player(RigidPhysicsAwareGameObject):
         # Common collision with something normal
         if not isinstance(other, Enemy):
             RigidPhysicsAwareGameObject._on_collide(self, other, direction_of_impact, impact_side)
-        elif direction_of_impact.len:
+        elif direction_of_impact != Vector2(0, 0):
             # Collided with an enemy
             other: Enemy
             direction_of_impact.normalize_ip()

@@ -16,18 +16,18 @@ class HthEnemy(Enemy):
 
     def attack(self, delta_time: float, distance_sqr: float) -> bool:
         if self.is_on_ground and abs(self.velocity.x) < ENEMY_HTH_ATTACK_VELOCITY_X_MAX:
-            direction: Vector2 = self._target.transform - self.transform
+            direction: Vector2 = self._target.center - self.center
 
-            if distance_sqr == 0:
-                # Ignore if the enemy is right of top of us
-                pass
-            elif self.transform.distance_squared_to(self._target.transform) > ENEMY_HTH_RETREAT_DISTANCE_SQR:
+            if self.center.distance_squared_to(self._target.center) > ENEMY_HTH_RETREAT_DISTANCE_SQR:
                 direction.normalize_ip()
                 direction.y -= max(ENEMY_HTH_ATTACK_MIN_JUMP, direction.y)
                 direction *= 3000
                 self.apply_force(direction)
             else:
-                direction.normalize_ip()
+                if direction == Vector2(0, 0):
+                    direction = Vector2(1, 0)
+                else:
+                    direction.normalize_ip()
                 direction *= ENEMY_HTH_RETREAT_FORCE
                 self.apply_force(direction)
 
