@@ -16,6 +16,13 @@ ENEMY_CHILL_WALK_VELOCITY = Vector2(1000, 0)
 ENEMY_DETECTION_RANGE = Rect((0, 0), (300, 300))
 
 
+class Layers(Enum):
+    ENVIRONMENT = 1
+    PLAYER = 2
+    ENEMY = 3
+    PROJECTILE = 4
+
+
 class ImpactSide(Enum):
     TOP = 1
     BOTTOM = 2

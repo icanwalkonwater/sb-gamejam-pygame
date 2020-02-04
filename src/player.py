@@ -8,15 +8,13 @@ from physics import RigidPhysicsAwareGameObject
 
 class Player(RigidPhysicsAwareGameObject):
 
-    def __init__(self, surface: Surface, weight: float, collides_with: [GameObject] = [],
-                 input_controller: InputController = None):
+    def __init__(self, surface: Surface, weight: float, collides_with: [GameObject] = None):
         RigidPhysicsAwareGameObject.__init__(self, surface, weight, collides_with)
-        self._input_controller: InputController = input_controller
 
     def update(self, delta_time: float):
         RigidPhysicsAwareGameObject.update(self, delta_time)
 
-        motion = self._input_controller.get_motion() * delta_time
+        motion = InputController.get_motion() * delta_time
 
         if motion.x != 0:
             self.apply_force(Vector2(motion.x, 0))

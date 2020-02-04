@@ -9,8 +9,9 @@ from game_object import GameObject
 from keyboard_input import InputController
 from player import Player
 from scene import Scene
+from scene_management import SceneManagement
 
-FPS_LIMIT = 60
+FPS_LIMIT = 30
 frames = 0
 
 
@@ -48,15 +49,24 @@ def create_test_scene(screen: Surface) -> Scene:
     wall_right: GameObject = GameObject(wall_left_s)
     wall_right.move(Vector2(1000, 500))
 
-    player = Player(green_box_s, .5, [red_box, orange_box, floor, wall_left, wall_right])
+    player = Player(green_box_s, .5)
     player.move(Vector2(100, 200))
 
     enemy_s: Surface = Surface((50, 50))
     enemy_s.fill((0, 0, 255))
-    enemy = Enemy(enemy_s, .5, [floor, wall_left, wall_right], player)
+    enemy = Enemy(enemy_s, .5, target=player)
     enemy.move(Vector2(900, 500))
 
-    return Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy])
+    scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy])
+
+    scene.environment.add(red_box, orange_box, floor, wall_left, wall_right)
+    scene.player.add(player)
+    scene.enemies.add(enemy)
+
+    player.add_to_collision_mask(scene.environment, scene.enemies)
+    enemy.add_to_collision_mask(scene.environment)
+
+    return scene
 
 
 def main():
@@ -68,13 +78,13 @@ def main():
     pygame.mouse.set_visible(True)
 
     # Setup input controller
-    input_controller: InputController = InputController(vertical=(pygame.K_SPACE, -1))
-    input_controller.acceleration = Vector2(5, 1)
+    InputController.init(vertical=(pygame.K_SPACE, -1), acceleration=Vector2(5, 1))
 
-    # Setup scene
-    scene = create_test_scene(screen)
-    scene.draw_init(screen)  # Initial draw (background)
-    scene.dynamics.sprites()[0]._input_controller = input_controller  # Setup player
+    # Setup scene management
+    SceneManagement.init({
+        'main': create_test_scene(screen)
+    })
+    SceneManagement.load_scene('main', screen)
 
     # Setup clock
     clock: pygame.time.Clock = pygame.time.Clock()
@@ -87,11 +97,13 @@ def main():
     while True:
         delta_time = clock.get_time()
 
+        # Update inputs
+        InputController.update()
         # Dispatch update through every game objects of the scene
-        scene.update(delta_time)
+        SceneManagement.active_scene.update(delta_time)
 
         # Draw pass
-        for invalidated in scene.draw_auto(screen):
+        for invalidated in SceneManagement.active_scene.draw_auto(screen):
             pygame.display.update(invalidated)
 
         # Update the screen

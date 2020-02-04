@@ -9,7 +9,7 @@ from physics import RigidPhysicsAwareGameObject
 
 class Enemy(RigidPhysicsAwareGameObject):
 
-    def __init__(self, surface: Surface, weight: float, ground: [GameObject], target: GameObject):
+    def __init__(self, surface: Surface, weight: float, target: GameObject, ground: [GameObject] = None):
         RigidPhysicsAwareGameObject.__init__(self, surface, weight, ground)
         self._target: GameObject = target
         self._direction = 1
