@@ -40,6 +40,10 @@ class GameObject(Sprite, Moveable):
     def width(self) -> int:
         return self.image.get_width()
 
+    @property
+    def center(self) -> Vector2:
+        return self.transform + Vector2(self.width, self.height)
+
     def move(self, of: Vector2, physics_scale=False):
         # Invalidate rect
         self._rect_dirty = True

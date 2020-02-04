@@ -5,6 +5,7 @@ from pygame import Surface, Vector2
 
 from constants import RESOLUTION
 from game_object import GameObject
+from hostiles.hth_enemy import HthEnemy
 from keyboard_input import InputController
 from player import Player
 from scene import Scene

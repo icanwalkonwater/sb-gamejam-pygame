@@ -20,7 +20,7 @@ class Enemy(RigidPhysicsAwareGameObject, ABC):
         self._direction = 1
 
     def update(self, delta_time: float):
-        distance_to_target_sqr = self.transform.distance_squared_to(self._target.transform)
+        distance_to_target_sqr = self.center.distance_squared_to(self._target.center)
 
         # If too far away, just walk
         if distance_to_target_sqr > ENEMY_DETECTION_RANGE_SQR:

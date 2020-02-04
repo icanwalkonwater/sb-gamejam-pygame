@@ -31,7 +31,7 @@ class Player(RigidPhysicsAwareGameObject):
         # Common collision with something normal
         if not isinstance(other, Enemy):
             RigidPhysicsAwareGameObject._on_collide(self, other, direction_of_impact, impact_side)
-        else:
+        elif direction_of_impact.len:
             # Collided with an enemy
             other: Enemy
             direction_of_impact.normalize_ip()
