@@ -2,6 +2,7 @@ import math
 from abc import ABC
 
 from pygame import Vector2
+from pygame.rect import Rect
 from pygame.sprite import Group
 from pygame.surface import Surface
 
@@ -86,6 +87,26 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
 
         self._compute_collisions()
 
+    @classmethod
+    def collide_game_object(cls, lhs: GameObject, rhs: GameObject) -> bool:
+        lhs_rect: Rect = lhs.rect
+        lhs_left: float = lhs.transform.x
+        lhs_top: float = lhs.transform.y
+
+        rhs_rect: Rect = rhs.rect
+        rhs_left: float = rhs.transform.x
+        rhs_top: float = rhs.transform.y
+
+        # lhs_left >= rhs_right or lhs_right <= rhs_left
+        if lhs_left >= rhs_left + rhs_rect.width or lhs_left + lhs_rect.width <= rhs_left:
+            return False
+
+        # lhs_top >= rhs_bottom or lhs_bottom <= rhs_top
+        if lhs_top >= rhs_top + rhs_rect.height or lhs_top + lhs_rect.height <= rhs_top:
+            return False
+
+        return True
+
     def _compute_collisions(self):
         layer: Group
         for layer in self.collision_masks:
@@ -94,7 +115,7 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
                 self_rect = self.rect
                 other_rect = other.rect
 
-                if self_rect.colliderect(other_rect):
+                if self.collide_game_object(self, other):
                     direction_of_impact: Vector2 = Vector2(other_rect.center) - Vector2(self_rect.center)
 
                     direction_top_left_corner: Vector2 = Vector2(
@@ -151,15 +172,22 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
         # print(f'Collided with {other} at {impact_side} (direction: {direction_of_impact}) !')
         if impact_side == ImpactSide.BOTTOM:
+            # Assuming the floor is at the bottom, we are on the ground
             self.is_on_ground = True
+            # Nullify any vertical velocity (assuming we were falling)
             self.velocity.y = 0
+            # Displace object to the top of the other
             self.transform.y = other.rect.top - self.height
+            # Mark the rect dirty because we have modified the transform
+            self._rect_dirty = True
         elif impact_side == ImpactSide.TOP:
             self.velocity.y = 0
             self.transform.y = other.rect.bottom
+            self._rect_dirty = True
         elif impact_side == ImpactSide.LEFT:
             self.velocity.x = 0
             self.transform.x = other.rect.right
+            self._rect_dirty = True
         # elif impact_side == ImpactSide.RIGHT:
         else:
             self.velocity.x = 0

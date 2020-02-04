@@ -4,15 +4,13 @@ import pygame
 from pygame import Surface, Vector2
 
 from constants import RESOLUTION
-from hostiles.enemy import Enemy
 from game_object import GameObject
-from hostiles.hth_enemy import HthEnemy
 from keyboard_input import InputController
 from player import Player
 from scene import Scene
 from scene_management import SceneManagement
 
-FPS_LIMIT = 60
+FPS_LIMIT = 30
 frames = 0
 
 
