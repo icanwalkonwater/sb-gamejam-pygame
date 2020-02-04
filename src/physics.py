@@ -65,7 +65,7 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
 
         self.collision_masks: [Group] = []
         if collides_with is not None:
-            self.collision_masks.append(*collides_with)
+            self.collision_masks.extend(collides_with)
 
     def add_to_collision_mask(self, *groups: [Group]):
         self.collision_masks.extend(groups)

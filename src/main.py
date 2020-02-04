@@ -11,7 +11,8 @@ from player import Player
 from scene import Scene
 from scene_management import SceneManagement
 
-FPS_LIMIT = 30
+FPS_LIMIT = 60
+
 frames = 0
 
 
@@ -31,7 +32,7 @@ def create_test_scene(screen: Surface) -> Scene:
     orange_box: GameObject = GameObject(orange_box_s)
     orange_box.move(Vector2(400, 350))
 
-    green_box_s = Surface((50, 50))
+    green_box_s = Surface((30, 50))
     green_box_s.fill((0, 255, 0))
 
     floor_s: Surface = Surface((1080, 50))
