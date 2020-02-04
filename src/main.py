@@ -4,14 +4,15 @@ import pygame
 from pygame import Surface, Vector2
 
 from constants import RESOLUTION
-from enemy import Enemy
+from hostiles.enemy import Enemy
 from game_object import GameObject
+from hostiles.hth_enemy import HthEnemy
 from keyboard_input import InputController
 from player import Player
 from scene import Scene
 from scene_management import SceneManagement
 
-FPS_LIMIT = 30
+FPS_LIMIT = 60
 frames = 0
 
 
@@ -52,9 +53,7 @@ def create_test_scene(screen: Surface) -> Scene:
     player = Player(green_box_s, .5)
     player.move(Vector2(100, 200))
 
-    enemy_s: Surface = Surface((50, 50))
-    enemy_s.fill((0, 0, 255))
-    enemy = Enemy(enemy_s, .5, target=player)
+    enemy = HthEnemy(player)
     enemy.move(Vector2(900, 500))
 
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy])

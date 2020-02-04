@@ -69,6 +69,9 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
     def add_to_collision_mask(self, *groups: [Group]):
         self.collision_masks.extend(groups)
 
+    def clear_collision_masks(self):
+        self.collision_masks.clear()
+
     @staticmethod
     def __normalize_angle(angle: float) -> float:
         return angle % 360 - 180
