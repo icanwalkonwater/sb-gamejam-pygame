@@ -6,7 +6,8 @@ from pygame import Vector2
 from constants import PLAYER_ABILITY_BASE_LEVEL, PLAYER_ABILITY_BASE_COOLDOWN, PLAYER_ABILITY_GUST_BASE_STRENGTH, \
     PLAYER_ABILITY_GUST_BASE_KNOCKBACK_STRENGTH, PLAYER_ABILITY_SLAM_BASE_STRENGTH, \
     PLAYER_ABILITY_TORNADO_JUMP_COOLDOWN, \
-    PLAYER_ABILITY_TORNADO_JUMP_STRENGTH, PLAYER_ABILITY_SLAM_BASE_AREA, PLAYER_ABILITY_SLAM_HEIGHT
+    PLAYER_ABILITY_TORNADO_JUMP_STRENGTH, PLAYER_ABILITY_SLAM_BASE_AREA, PLAYER_ABILITY_SLAM_HEIGHT, \
+    PLAYER_ABILITY_TORNADO_JUMP_BASE_MANA_COST, PLAYER_ABILITY_GUST_BASE_MANA_COST, PLAYER_ABILITY_SLAM_BASE_MANA_COST
 from game_object import GameObject
 from projectile import GustProjectile, SlamProjectile
 from scene import Scene
@@ -23,19 +24,23 @@ class Ability(ABC):
 
 class TornadoJumpAbility(Ability):
 
-    def __init__(self, level: int):
+    def __init__(self, level: int, mana_cost: float = PLAYER_ABILITY_TORNADO_JUMP_BASE_MANA_COST):
         Ability.__init__(self, level, PLAYER_ABILITY_TORNADO_JUMP_COOLDOWN)
+        self.mana_cost = mana_cost
 
     def use(self, player: GameObject):
-        if self._next_usage <= time.time():
+        if self._next_usage <= time.time() and player._mana_level > self.mana_cost:
+            player._mana_level -= self.mana_cost
             player.apply_force(Vector2(0, PLAYER_ABILITY_TORNADO_JUMP_STRENGTH))
             self._next_usage = time.time() + self.cooldown
 
 
 class GustAbility(Ability):
 
-    def __init__(self, level: int = PLAYER_ABILITY_BASE_LEVEL, cooldown: float = PLAYER_ABILITY_BASE_COOLDOWN):
+    def __init__(self, level: int = PLAYER_ABILITY_BASE_LEVEL, cooldown: float = PLAYER_ABILITY_BASE_COOLDOWN,
+                 mana_cost: float = PLAYER_ABILITY_GUST_BASE_MANA_COST):
         Ability.__init__(self, level, cooldown)
+        self.mana_cost = mana_cost
 
     def _gust_strength_calc(self) -> Vector2:
         return Vector2(PLAYER_ABILITY_GUST_BASE_STRENGTH * self.level ** 2, 0)
@@ -44,7 +49,8 @@ class GustAbility(Ability):
         return Vector2(PLAYER_ABILITY_GUST_BASE_KNOCKBACK_STRENGTH / self.level, 0)
 
     def use(self, player: GameObject):
-        if self._next_usage <= time.time():
+        if self._next_usage <= time.time() and player._mana_level > self.mana_cost:
+            player._mana_level -= self.mana_cost
             scene: Scene = SceneManagement.active_scene
 
             gust_projectile: GustProjectile = GustProjectile()
@@ -62,8 +68,10 @@ class GustAbility(Ability):
 
 class SlamAbility(Ability):
 
-    def __init__(self, level: int, cooldown: float = None):
+    def __init__(self, level: int, cooldown: float = PLAYER_ABILITY_BASE_COOLDOWN,
+                 mana_cost: float = PLAYER_ABILITY_SLAM_BASE_MANA_COST):
         Ability.__init__(self, level, cooldown)
+        self.mana_cost = mana_cost
 
     def _slam_strength_calc(self) -> Vector2:
         return Vector2(0, PLAYER_ABILITY_SLAM_BASE_STRENGTH * self.level ** 2)
@@ -74,7 +82,8 @@ class SlamAbility(Ability):
                        player.transform.y + player.height - PLAYER_ABILITY_SLAM_HEIGHT)
 
     def use(self, player: GameObject):
-        if self._next_usage <= time.time():
+        if self._next_usage <= time.time() and player._mana_level > self.mana_cost:
+            player._mana_level -= self.mana_cost
             scene: Scene = SceneManagement.active_scene
             projectile_slam: SlamProjectile = SlamProjectile(self._slam_strength_calc())
 
