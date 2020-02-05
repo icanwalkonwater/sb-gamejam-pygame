@@ -19,6 +19,19 @@ FPS_LIMIT = 60
 frames = 0
 
 
+def get_ui() -> [GameObject]:
+    top = RESOLUTION[1] - 30
+    mid_screen = int(RESOLUTION[0] / 2)
+
+    health_bar = UIProgressBar(Rect((0, top), (mid_screen, 30)), Color(255, 0, 0),
+                               background_color=Color(255, 0, 0, 100),
+                               value=1, reverse=True)
+    mana_bar = UIProgressBar(Rect((mid_screen, top), (mid_screen, 30)), Color(0, 0, 255),
+                             background_color=Color(0, 0, 255, 100), value=1)
+
+    return [health_bar, mana_bar]
+
+
 def create_test_scene(screen: Surface) -> Scene:
     background: Surface = Surface(screen.get_size())
     background.fill((250, 250, 250))
@@ -59,15 +72,14 @@ def create_test_scene(screen: Surface) -> Scene:
     enemy = HthEnemy(player)
     enemy.move(Vector2(900, 500))
 
-    # ui
-    bar = UIProgressBar(Rect((0, RESOLUTION[1] - 30), (RESOLUTION[0], 30)), Color(0, 0, 255), value=1)
+    ui_comps = get_ui()
 
-    scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy, bar])
+    scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy, *ui_comps])
 
     scene.environment.add(red_box, orange_box, floor, wall_left, wall_right)
     scene.player.add(player)
     scene.enemies.add(enemy)
-    scene.ui.add(bar)
+    scene.ui.add(*ui_comps)
 
     player.add_to_collision_mask(scene.environment, scene.enemies)
     enemy.add_to_collision_mask(scene.environment)

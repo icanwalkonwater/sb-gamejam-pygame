@@ -17,7 +17,7 @@ class GameObject(Sprite, Moveable):
 
     def __init__(self, surface: Surface):
         Sprite.__init__(self)
-        self.image: Surface = surface.convert()
+        self.image: Surface = surface
 
         self._rect: Rect = self.image.get_rect()
         self._rect_dirty = False
