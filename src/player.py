@@ -1,6 +1,9 @@
+from enum import Enum
+
 from pygame import Vector2, Surface
 
 from abilities import TornadoJumpAbility, GustAbility, SlamAbility
+from animation import AnimatedSprite
 from constants import ImpactSide, PLAYER_DAMAGE_REPULSION_FACTOR, PLAYER_MANA_MAX, PLAYER_MANA_WALK_REGENERATION_FACTOR, \
     PLAYER_HEALTH_MAX
 from game_object import GameObject
@@ -9,15 +12,38 @@ from keyboard_input import InputController
 from physics import RigidPhysicsAwareGameObject
 
 
-class Player(RigidPhysicsAwareGameObject):
+class PlayerState(Enum):
+    IDLE = 1
+    RUNNING_LEFT = 2
+    RUNNING_RIGHT = 3
+    FLYING = 4
 
+
+class Player(RigidPhysicsAwareGameObject, AnimatedSprite):
     def __init__(self, surface: Surface, weight: float, collides_with: [GameObject] = None):
         RigidPhysicsAwareGameObject.__init__(self, surface, weight, collides_with)
+        AnimatedSprite.__init__(self, {
+            PlayerState.IDLE: ["wizard_idle_1.png", "wizard_idle_2.png"],
+            PlayerState.RUNNING_RIGHT: ["wizard_running_1R.png", "wizard_running_2R.png"],
+            PlayerState.RUNNING_LEFT: ["wizard_running_1L.png", "wizard_running_2L.png"],
+            PlayerState.FLYING: ["wizard_flying.png"]
+        }, 3, PlayerState.IDLE)
         self._ability_tornado_jump = TornadoJumpAbility(1)
         self._ability_gust = GustAbility()
         self._ability_slam = SlamAbility(1, 1)
         self.mana: float = PLAYER_MANA_MAX
         self.health: float = PLAYER_HEALTH_MAX
+
+    def __update_state(self):
+        print(self._state)
+        if not self.is_on_ground:
+            self._state = PlayerState.FLYING
+        elif self.velocity.x > 0:
+            self._state = PlayerState.RUNNING_RIGHT
+        elif self.velocity.x < -0:
+            self._state = PlayerState.RUNNING_LEFT
+        else:
+            self._state = PlayerState.IDLE
 
     def update(self, delta_time: float):
         # Update controls
@@ -28,6 +54,10 @@ class Player(RigidPhysicsAwareGameObject):
 
         # Finally, apply physics
         RigidPhysicsAwareGameObject.update(self, delta_time)
+
+        # Update the state
+        self.__update_state()
+        AnimatedSprite.update(self, delta_time)
 
     def __update_controls(self, delta_time: float):
         motion = InputController.get_motion() * delta_time

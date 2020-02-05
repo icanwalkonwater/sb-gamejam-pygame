@@ -1,6 +1,8 @@
 import math
 from abc import ABC
 
+from typing import Generator, Callable
+
 from pygame import Vector2
 from pygame.rect import Rect
 from pygame.sprite import Group
