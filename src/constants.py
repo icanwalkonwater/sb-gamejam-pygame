@@ -86,6 +86,8 @@ class Layers(Enum):
     ENEMY = 3
     """Layer containing the projectiles of any origin"""
     PROJECTILE = 4
+    """Layer containing the UI elements"""
+    UI = 5
 
 
 class ImpactSide(Enum):

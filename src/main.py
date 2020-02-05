@@ -2,6 +2,8 @@ import time
 
 import pygame
 from pygame import Surface, Vector2
+from pygame.color import Color
+from pygame.rect import Rect
 
 from constants import RESOLUTION
 from game_object import GameObject
@@ -10,6 +12,7 @@ from keyboard_input import InputController
 from player import Player
 from scene import Scene
 from scene_management import SceneManagement
+from ui.progress_bar import UIProgressBar
 
 FPS_LIMIT = 60
 
@@ -56,11 +59,15 @@ def create_test_scene(screen: Surface) -> Scene:
     enemy = HthEnemy(player)
     enemy.move(Vector2(900, 500))
 
-    scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy])
+    # ui
+    bar = UIProgressBar(Rect((0, RESOLUTION[1] - 30), (RESOLUTION[0], 30)), Color(0, 0, 255), value=1)
+
+    scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy, bar])
 
     scene.environment.add(red_box, orange_box, floor, wall_left, wall_right)
     scene.player.add(player)
     scene.enemies.add(enemy)
+    scene.ui.add(bar)
 
     player.add_to_collision_mask(scene.environment, scene.enemies)
     enemy.add_to_collision_mask(scene.environment)

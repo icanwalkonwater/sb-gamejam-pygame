@@ -19,7 +19,8 @@ class Scene:
             Layers.ENVIRONMENT: Group(),
             Layers.PLAYER: GroupSingle(),
             Layers.ENEMY: Group(),
-            Layers.PROJECTILE: Group()
+            Layers.PROJECTILE: Group(),
+            Layers.UI: Group()
         }
 
     @property
@@ -37,6 +38,10 @@ class Scene:
     @property
     def projectiles(self) -> Group:
         return self.layers[Layers.PROJECTILE]
+
+    @property
+    def ui(self) -> Group:
+        return self.layers[Layers.UI]
 
     def draw_init(self, surface: Surface):
         # Reset background
