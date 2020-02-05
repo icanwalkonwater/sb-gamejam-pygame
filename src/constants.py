@@ -13,7 +13,7 @@ class PhysicsSettings:
     """Physics operate on a higher scale than the transform.
     This is the factor to translate the physics values to the coordinate system.
     """
-    SCALE = 10000
+    SCALE = 10_000
 
     """If a component of a velocity drop below this threshold, it is set to zero.
     This is to prevent objects from sliding endlessly.
@@ -36,7 +36,7 @@ class PlayerSettings:
     PLAYER_JUMP_FORCE = Vector2(0, -4_500)
 
     """Factor to apply to the impact direction on collision with an enemy."""
-    DAMAGE_REPULSION_FACTOR = -1000
+    DAMAGE_REPULSION_FACTOR = -1_000
 
     """Maximum amount of mana"""
     MANA_MAX = 900
@@ -53,17 +53,17 @@ class PlayerSettings:
 
         class TornadoJump:
             COOLDOWN = .2
-            STRENGTH = -6000
+            STRENGTH = -6_000
             MANA_COST = 50
 
         class Gust:
-            STRENGTH = 20000
-            KNOCKBACK_STRENGTH = -2000
-            PROJECTILE_HIT_STRENGTH_Y = -2000
+            STRENGTH = 20_000
+            KNOCKBACK_STRENGTH = -2_000
+            PROJECTILE_HIT_STRENGTH_Y = -2_000
             MANA_COST = 30
 
         class Slam:
-            STRENGTH = -8000
+            STRENGTH = -8_000
             AREA_SIZE = (200, 5)
             AREA_TIME_TO_LIVE = 1
             MANA_COST = 70

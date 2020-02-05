@@ -49,7 +49,7 @@ def create_test_scene(screen: Surface) -> Scene:
     floor: GameObject = GameObject(floor_s)
     floor.move(Vector2(0, 600))
 
-    button: ButtonGameObject = ButtonGameObject(ResourceManagement.get_image("button_off.png"), [], [], [])
+    button: ButtonGameObject = ButtonGameObject(ResourceManagement._get_image("button_off.png"), [], [], [])
     button.move(Vector2(500, 580))
 
     wall_left_s: Surface = Surface((50, 100))
@@ -62,7 +62,7 @@ def create_test_scene(screen: Surface) -> Scene:
     wall_right: GameObject = GameObject(wall_left_s)
     wall_right.move(Vector2(1000, 500))
 
-    player = Player(ResourceManagement.get_image('mage_idle.png'), .5)
+    player = Player(ResourceManagement._get_image('mage_idle.png'), .5)
     player.move(Vector2(100, 200))
 
     enemy = HthEnemy(player)
