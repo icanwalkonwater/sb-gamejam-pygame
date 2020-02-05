@@ -2,8 +2,6 @@ import time
 
 import pygame
 from pygame import Surface, Vector2
-from pygame.color import Color
-from pygame.rect import Rect
 
 from constants import RESOLUTION
 from game_object import GameObject
@@ -12,22 +10,16 @@ from keyboard_input import InputController
 from player import Player
 from scene import Scene
 from scene_management import SceneManagement
-from ui.progress_bar import UIProgressBar
+from ui.player_bar import UIHealthBar, UIManaBar
 
 FPS_LIMIT = 60
 
 frames = 0
 
 
-def get_ui() -> [GameObject]:
-    top = RESOLUTION[1] - 30
-    mid_screen = int(RESOLUTION[0] / 2)
-
-    health_bar = UIProgressBar(Rect((0, top), (mid_screen, 30)), Color(255, 0, 0),
-                               background_color=Color(255, 0, 0, 100),
-                               value=1, reverse=True)
-    mana_bar = UIProgressBar(Rect((mid_screen, top), (mid_screen, 30)), Color(0, 0, 255),
-                             background_color=Color(0, 0, 255, 100), value=1)
+def get_ui(player: Player) -> [GameObject]:
+    health_bar = UIHealthBar(player)
+    mana_bar = UIManaBar(player)
 
     return [health_bar, mana_bar]
 
@@ -72,7 +64,7 @@ def create_test_scene(screen: Surface) -> Scene:
     enemy = HthEnemy(player)
     enemy.move(Vector2(900, 500))
 
-    ui_comps = get_ui()
+    ui_comps = get_ui(player)
 
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy, *ui_comps])
 
