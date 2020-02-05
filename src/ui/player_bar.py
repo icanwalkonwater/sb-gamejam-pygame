@@ -4,7 +4,7 @@ from pygame.color import Color
 from pygame.rect import Rect
 
 from constants import RESOLUTION, PLAYER_HEALTH_MAX, PLAYER_MANA_MAX
-from player import Player
+from entities.player import Player
 from ui.progress_bar import UIProgressBar
 
 

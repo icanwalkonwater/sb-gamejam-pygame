@@ -5,6 +5,9 @@ from pygame import Vector2
 """Screen resolution"""
 RESOLUTION = (1024, 768)
 
+"""The null Vector2"""
+VECTOR2_NULL = Vector2(0, 0)
+
 """Physics operate on a higher scale than the transform.
 This is the factor to translate the physics values to the coordinate system.
 """
@@ -30,13 +33,15 @@ PLAYER_DAMAGE_REPULSION_FACTOR = -1000
 """Enemy walking velocity.
 When not attacking a player, they will walk according to this velocity.
 """
-ENEMY_CHILL_WALK_VELOCITY = Vector2(1_000, 0)
+ENEMY_CHILL_WALK_VELOCITY = Vector2(.1, 0)
 """A rect centered on the enemy. If the player enter this rect, the enemy
 will start attacking him.
 """
 ENEMY_DETECTION_RANGE_SQR = 150 ** 2
 
 # Hand to hand enemy
+"""Health of the enemy"""
+ENEMY_HTH_HEALTH_MAX = 200
 """Cooldown between attacks"""
 ENEMY_HTH_ATTACK_COOLDOWN = .5
 """Minimum y of the normalized direction of attack.
@@ -50,9 +55,9 @@ To avoid accelerating indefinitely when attacking.
 """
 ENEMY_HTH_ATTACK_VELOCITY_X_MAX = 10_000
 """Distance to the player at which the enemy will start to retreat to avoid glitching in a wall."""
-ENEMY_HTH_RETREAT_DISTANCE_SQR = 50 ** 2
+ENEMY_HTH_RETREAT_DISTANCE_SQR = 40 ** 2
 """Force to apply when the enemy need to retreat."""
-ENEMY_HTH_RETREAT_FORCE = -2000
+ENEMY_HTH_RETREAT_FORCE = -500
 
 PLAYER_MANA_MAX = 900
 PLAYER_MANA_WALK_REGENERATION_FACTOR = .00001
@@ -76,6 +81,9 @@ PLAYER_ABILITY_SLAM_HEIGHT = 5
 PLAYER_ABILITY_SLAM_WIDTH = 200
 PLAYER_ABILITY_SLAM_TIME_TO_LIVE = 1
 PLAYER_ABILITY_SLAM_BASE_MANA_COST = 70
+
+LIVING_ENTITY_VELOCITY_DAMAGE_THRESHOLD_SQR = 5_000 ** 2
+LIVING_ENTITY_VELOCITY_DAMAGE_MULTIPLIER_SQR = .001
 
 
 class Layers(Enum):

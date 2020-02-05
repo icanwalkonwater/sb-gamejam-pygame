@@ -10,7 +10,7 @@ from constants import PLAYER_ABILITY_BASE_LEVEL, PLAYER_ABILITY_BASE_COOLDOWN, P
     PLAYER_ABILITY_TORNADO_JUMP_BASE_MANA_COST, PLAYER_ABILITY_GUST_BASE_MANA_COST, PLAYER_ABILITY_SLAM_BASE_MANA_COST
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject
-from projectile import GustProjectile, SlamProjectile
+from entities.projectile import GustProjectile, SlamProjectile
 from scene import Scene
 from scene_management import SceneManagement
 

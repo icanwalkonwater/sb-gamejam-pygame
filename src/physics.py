@@ -6,7 +6,7 @@ from pygame.rect import Rect
 from pygame.sprite import Group
 from pygame.surface import Surface
 
-from constants import PHYSICS_NULLIFY_THRESHOLD, PHYSICS_GRAVITY, PHYSICS_STANDARD_RESISTANCE, ImpactSide
+from constants import PHYSICS_NULLIFY_THRESHOLD, PHYSICS_GRAVITY, PHYSICS_STANDARD_RESISTANCE, ImpactSide, VECTOR2_NULL
 from game_object import Moveable, GameObject
 
 
@@ -44,7 +44,8 @@ class PhysicsReceiver(Moveable, ABC):
 
         self.apply_gravity(delta_time)
         self.update_velocity(delta_time)
-        self.move(self.velocity * delta_time, True)
+        if self.velocity != VECTOR2_NULL:
+            self.move(self.velocity * delta_time, True)
 
 
 class PhysicsAwareGameObject(GameObject, PhysicsReceiver):
@@ -56,6 +57,10 @@ class PhysicsAwareGameObject(GameObject, PhysicsReceiver):
     def update(self, delta_time: float):
         GameObject.update(self, delta_time)
         PhysicsReceiver.update(self, delta_time)
+
+    def move(self, of: Vector2, physics_scale=False):
+        self.is_on_ground = False
+        GameObject.move(self, of, physics_scale)
 
 
 class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
@@ -88,7 +93,7 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
         self._compute_collisions()
 
     @classmethod
-    def collide_game_object(cls, lhs: GameObject, rhs: GameObject) -> bool:
+    def __collide_game_object(cls, lhs: GameObject, rhs: GameObject) -> bool:
         lhs_rect: Rect = lhs.rect
         lhs_left: float = lhs.transform.x
         lhs_top: float = lhs.transform.y
@@ -115,7 +120,7 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
                 self_rect = self.rect
                 other_rect = other.rect
 
-                if self.collide_game_object(self, other):
+                if self.__collide_game_object(self, other):
                     direction_of_impact: Vector2 = Vector2(other_rect.center) - Vector2(self_rect.center)
 
                     direction_top_left_corner: Vector2 = Vector2(
@@ -148,27 +153,6 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
                     else:
                         self._on_collide(other, direction_of_impact, ImpactSide.RIGHT)
 
-                    # print(f'Not normalized: {direction_of_impact} ', end='')
-                    # direction_of_impact.normalize_ip()
-                    #
-                    # print(f", normalized: {direction_of_impact}", end='')
-                    # ratio_to_edge = max(
-                    #     abs(direction_of_impact.x) / (self_rect.width / 2),
-                    #     abs(direction_of_impact.y) / (self_rect.height / 2)
-                    # )
-                    # direction_of_impact *= 1 / ratio_to_edge
-                    #
-                    # print(f", scaled: {direction_of_impact}")
-                    #
-                    # print(self_rect.width)
-                    #
-                    # local_impact_point = (
-                    #     direction_of_impact.x * (self_rect.width / 2),
-                    #     direction_of_impact.y * (self_rect.height / 2)
-                    # )
-                    #
-                    # self._on_collide(other, direction_of_impact, local_impact_point)
-
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
         # print(f'Collided with {other} at {impact_side} (direction: {direction_of_impact}) !')
         if impact_side == ImpactSide.BOTTOM:
@@ -192,3 +176,4 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
         else:
             self.velocity.x = 0
             self.transform.x = other.rect.left - self.width
+            self._rect_dirty = True

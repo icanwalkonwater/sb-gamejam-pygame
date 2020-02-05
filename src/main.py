@@ -5,9 +5,9 @@ from pygame import Surface, Vector2
 
 from constants import RESOLUTION
 from game_object import GameObject
-from hostiles.hth_enemy import HthEnemy
+from entities.hostiles.hth_enemy import HthEnemy
 from keyboard_input import InputController
-from player import Player
+from entities.player import Player
 from scene import Scene
 from scene_management import SceneManagement
 from ui.player_bar import UIHealthBar, UIManaBar
@@ -74,7 +74,7 @@ def create_test_scene(screen: Surface) -> Scene:
     scene.ui.add(*ui_comps)
 
     player.add_to_collision_mask(scene.environment, scene.enemies)
-    enemy.add_to_collision_mask(scene.environment)
+    enemy.add_to_collision_mask(scene.environment, scene.player)
 
     return scene
 
