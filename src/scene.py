@@ -158,7 +158,7 @@ class Scene:
 
         # Redraw the UI on top of everything
         # No need to clear it since its not supposed to move in any way
-        self.ui.clear(surface, self.__background)
+        # self.ui.clear(surface, self.__background)
         invalidated.extend(self.ui.draw(surface))
 
         return invalidated
@@ -182,3 +182,4 @@ class Scene:
         # Dispatch updates to every game object
         self.statics.update(delta_time)
         self.dynamics.update(delta_time)
+        self.ui.update(delta_time)
