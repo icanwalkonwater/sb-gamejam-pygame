@@ -28,6 +28,9 @@ class InputController:
         cls.__keys_pressed = pygame.key.get_pressed()
         cls.__keys_down = list(map(lambda evt: evt.key, pygame.event.get(pygame.KEYDOWN)))
 
+        # Fix: clear the queue because we don't handle every event and the queue might get full real quick
+        pygame.event.clear()
+
     @classmethod
     def get_motion(cls) -> Vector2:
         motion = Vector2()
