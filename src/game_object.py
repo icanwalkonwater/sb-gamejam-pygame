@@ -42,7 +42,12 @@ class GameObject(Sprite, Moveable):
 
     @property
     def center(self) -> Vector2:
-        return self.transform + Vector2(self.width, self.height)
+        return self.transform + Vector2(self.width / 2, self.height / 2)
+
+    @center.setter
+    def center(self, center: Vector2):
+        self._rect_dirty = True
+        self.transform = Vector2(center.x - self.width / 2, center.y - self.height / 2)
 
     def move(self, of: Vector2, physics_scale=False):
         # Invalidate rect
