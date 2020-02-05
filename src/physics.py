@@ -1,6 +1,8 @@
 import math
 from abc import ABC
 
+from typing import Generator, Callable
+
 from pygame import Vector2
 from pygame.rect import Rect
 from pygame.sprite import Group
@@ -90,7 +92,7 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
 
         PhysicsAwareGameObject.update(self, delta_time)
 
-        self._compute_collisions()
+        self._compute_collisions(delta_time)
 
     @classmethod
     def __collide_game_object(cls, lhs: GameObject, rhs: GameObject) -> bool:
@@ -112,7 +114,7 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
 
         return True
 
-    def _compute_collisions(self):
+    def _compute_collisions(self, delta_time: float):
         layer: Group
         for layer in self.collision_masks:
             other: GameObject
@@ -151,9 +153,9 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
                     # elif -angle_delta_horizontal < self.__normalize_angle(
                     #       direction_of_impact.angle_to(-Vector2(1, 0))) < angle_delta_horizontal:
                     else:
-                        self._on_collide(other, direction_of_impact, ImpactSide.RIGHT)
+                        self._on_collide(other, direction_of_impact, ImpactSide.RIGHT, delta_time)
 
-    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
+    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         # print(f'Collided with {other} at {impact_side} (direction: {direction_of_impact}) !')
         if impact_side == ImpactSide.BOTTOM:
             # Assuming the floor is at the bottom, we are on the ground

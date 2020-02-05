@@ -36,7 +36,7 @@ class Enemy(RigidPhysicsAwareGameObject, LivingEntity, ABC):
 
         RigidPhysicsAwareGameObject.update(self, delta_time)
 
-    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
+    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         RigidPhysicsAwareGameObject._on_collide(self, other, direction_of_impact, impact_side)
 
         if impact_side == ImpactSide.LEFT:

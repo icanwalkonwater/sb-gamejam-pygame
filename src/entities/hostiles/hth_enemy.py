@@ -43,7 +43,7 @@ class HthEnemy(Enemy):
 
         self.apply_force(direction)
 
-    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
+    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if other != self._target:
             Enemy._on_collide(self, other, direction_of_impact, impact_side)
         else:

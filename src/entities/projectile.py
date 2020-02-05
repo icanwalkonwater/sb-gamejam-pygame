@@ -24,7 +24,7 @@ class Projectile(RigidPhysicsAwareGameObject):
         RigidPhysicsAwareGameObject.__init__(self, surface, 0, collides_with)
         self.resistance_amount = 0
 
-    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
+    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, Hitable):
             other.on_hit(self, impact_side)
         self.kill()
@@ -36,7 +36,7 @@ class GustProjectile(Projectile):
         surface.fill((0, 255, 255))
         Projectile.__init__(self, surface, collides_with)
 
-    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
+    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, RigidPhysicsAwareGameObject):
             other.apply_force(Vector2(self.velocity.x, PLAYER_ABILITY_GUST_UPWARD_STRENGTH))
         self.kill()
@@ -50,7 +50,7 @@ class SlamProjectile(Projectile):
         self.strength = strength
         self.__death_time = time.time() + PLAYER_ABILITY_SLAM_TIME_TO_LIVE
 
-    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide):
+    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, RigidPhysicsAwareGameObject):
             other.apply_force(self.strength)
         self.kill()
