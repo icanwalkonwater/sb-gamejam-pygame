@@ -3,18 +3,18 @@ import time
 import pygame
 from pygame import Surface, Vector2
 
-from constants import RESOLUTION
+from constants import GlobalSettings
+from entities.hostiles.hth_enemy import HthEnemy
+from entities.player import Player
 from environement_props import ButtonGameObject
 from game_object import GameObject
-from entities.hostiles.hth_enemy import HthEnemy
 from keyboard_input import InputController
-from ressource_management import RessourceManagement
-from entities.player import Player
+from ressource_management import ResourceManagement
 from scene import Scene
 from scene_management import SceneManagement
 from ui.player_bar import UIHealthBar, UIManaBar
 
-FPS_LIMIT = 60
+FPS_LIMIT = 0
 frames = 0
 
 
@@ -49,7 +49,7 @@ def create_test_scene(screen: Surface) -> Scene:
     floor: GameObject = GameObject(floor_s)
     floor.move(Vector2(0, 600))
 
-    button: ButtonGameObject = ButtonGameObject(RessourceManagement.get_image("button_off.png"), [], [], [])
+    button: ButtonGameObject = ButtonGameObject(ResourceManagement.get_image("button_off.png"), [], [], [])
     button.move(Vector2(500, 580))
 
     wall_left_s: Surface = Surface((50, 100))
@@ -62,7 +62,7 @@ def create_test_scene(screen: Surface) -> Scene:
     wall_right: GameObject = GameObject(wall_left_s)
     wall_right.move(Vector2(1000, 500))
 
-    player = Player(RessourceManagement.get_image('mage_idle.png'), .5)
+    player = Player(ResourceManagement.get_image('mage_idle.png'), .5)
     player.move(Vector2(100, 200))
 
     enemy = HthEnemy(player)
@@ -70,7 +70,8 @@ def create_test_scene(screen: Surface) -> Scene:
 
     ui_comps = get_ui(player)
 
-    scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right], [player, enemy, *ui_comps, button])
+    scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
+                         [player, enemy, *ui_comps, button])
 
     scene.environment.add(red_box, orange_box, floor, wall_left, wall_right)
     scene.player.add(player)
@@ -88,7 +89,7 @@ def main():
     pygame.init()
 
     # Setup screen
-    screen: pygame.Surface = pygame.display.set_mode(RESOLUTION)
+    screen: pygame.Surface = pygame.display.set_mode(GlobalSettings.RESOLUTION)
     pygame.display.set_caption("Hey")
     pygame.mouse.set_visible(True)
 

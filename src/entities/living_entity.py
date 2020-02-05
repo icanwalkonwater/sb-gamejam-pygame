@@ -3,7 +3,8 @@ from abc import ABC, abstractmethod
 
 from pygame.math import Vector2
 
-from constants import LIVING_ENTITY_VELOCITY_DAMAGE_MULTIPLIER_SQR, LIVING_ENTITY_VELOCITY_DAMAGE_THRESHOLD_SQR
+from constants import LIVING_ENTITY_VELOCITY_DAMAGE_MULTIPLIER_SQR, LIVING_ENTITY_VELOCITY_DAMAGE_THRESHOLD_SQR, \
+    EntitySettings
 
 
 class LivingEntity(ABC):
@@ -33,6 +34,6 @@ class LivingEntity(ABC):
     @staticmethod
     def _velocity_to_damage(velocity: Vector2) -> float:
         magnitude = velocity.magnitude_squared()
-        if magnitude < LIVING_ENTITY_VELOCITY_DAMAGE_THRESHOLD_SQR:
+        if magnitude < EntitySettings.DAMAGE_VELOCITY_THRESHOLD_SQR:
             return 0
-        return magnitude * LIVING_ENTITY_VELOCITY_DAMAGE_MULTIPLIER_SQR
+        return magnitude * EntitySettings.DAMAGE_VELOCITY_FACTOR_SQR

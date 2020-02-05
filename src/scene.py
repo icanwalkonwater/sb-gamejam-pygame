@@ -3,7 +3,7 @@ from typing import List
 from pygame import Surface, Rect
 from pygame.sprite import Group, RenderUpdates, GroupSingle
 
-from constants import Layers
+from enums import Layers
 from game_object import GameObject
 
 
