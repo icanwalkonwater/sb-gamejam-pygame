@@ -4,11 +4,10 @@ from abc import ABC, abstractmethod
 from pygame import Vector2
 from pygame.surface import Surface
 
-from game_object import GameObject, Moveable
-
-from physics import RigidPhysicsAwareGameObject, ImpactSide
-
-from constants import PLAYER_ABILITY_SLAM_TIME_TO_LIVE, PLAYER_ABILITY_SLAM_WIDTH, PLAYER_ABILITY_SLAM_HEIGHT, PLAYER_ABILITY_GUST_UPWARD_STRENGTH
+from constants import PlayerSettings
+from enums import ImpactSide
+from game_object import GameObject
+from physics import RigidPhysicsAwareGameObject
 
 
 class Hitable(ABC):
@@ -38,17 +37,17 @@ class GustProjectile(Projectile):
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, RigidPhysicsAwareGameObject):
-            other.apply_force(Vector2(self.velocity.x, PLAYER_ABILITY_GUST_UPWARD_STRENGTH))
+            other.apply_force(Vector2(self.velocity.x, PlayerSettings.Ability.Gust.PROJECTILE_HIT_STRENGTH_Y))
         self.kill()
 
 
 class SlamProjectile(Projectile):
     def __init__(self, strength: Vector2, collides_with: [GameObject] = None):
-        image: Surface = Surface((PLAYER_ABILITY_SLAM_WIDTH, PLAYER_ABILITY_SLAM_HEIGHT))
+        image: Surface = Surface((PlayerSettings.Ability.Slam.AREA_SIZE[0], PlayerSettings.Ability.Slam.AREA_SIZE[1]))
         image.fill((0, 255, 0))
         Projectile.__init__(self, image, collides_with)
         self.strength = strength
-        self.__death_time = time.time() + PLAYER_ABILITY_SLAM_TIME_TO_LIVE
+        self.__death_time = time.time() + PlayerSettings.Ability.Slam.AREA_TIME_TO_LIVE
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, RigidPhysicsAwareGameObject):

@@ -3,7 +3,7 @@ from abc import abstractmethod, ABC
 from pygame import Surface, Rect, Vector2
 from pygame.sprite import Sprite
 
-from constants import PHYSICS_SCALE
+from constants import PhysicsSettings
 
 
 class Moveable(ABC):
@@ -49,7 +49,7 @@ class GameObject(Sprite, Moveable):
         self._rect_dirty = True
 
         if physics_scale:
-            self.transform += of / PHYSICS_SCALE
+            self.transform += of / PhysicsSettings.SCALE
         else:
             self.transform += of
 

@@ -1,20 +1,20 @@
 import math
 from abc import ABC
 
-from typing import Generator, Callable
-
 from pygame import Vector2
 from pygame.rect import Rect
 from pygame.sprite import Group
 from pygame.surface import Surface
 
-from constants import PHYSICS_NULLIFY_THRESHOLD, PHYSICS_GRAVITY, PHYSICS_STANDARD_RESISTANCE, ImpactSide, VECTOR2_NULL
+from constants import VECTOR2_NULL, \
+    PhysicsSettings
+from enums import ImpactSide
 from game_object import Moveable, GameObject
 
 
 class PhysicsReceiver(Moveable, ABC):
 
-    def __init__(self, weight: float, resistance_amount: float = PHYSICS_STANDARD_RESISTANCE,
+    def __init__(self, weight: float, resistance_amount: float = PhysicsSettings.STANDARD_RESISTANCE,
                  initial_velocity: Vector2 = Vector2()):
         self.velocity: Vector2 = Vector2(initial_velocity)
         self.resistance_amount: float = resistance_amount
@@ -31,15 +31,15 @@ class PhysicsReceiver(Moveable, ABC):
             self.velocity.y -= (1 if self.velocity.y > 0 else -1) \
                                * math.sqrt(abs(self.velocity.y)) * self.resistance_amount * delta_time
 
-            if 0 < self.velocity.x < PHYSICS_NULLIFY_THRESHOLD:
+            if 0 < self.velocity.x < PhysicsSettings.NULLIFY_THRESHOLD:
                 self.velocity.x = 0
 
-            if 0 < self.velocity.y < PHYSICS_NULLIFY_THRESHOLD:
+            if 0 < self.velocity.y < PhysicsSettings.NULLIFY_THRESHOLD:
                 self.velocity.y = 0
 
     def apply_gravity(self, delta_time: float):
         if not self.is_on_ground:
-            self.apply_force(PHYSICS_GRAVITY * self.weight * delta_time)
+            self.apply_force(PhysicsSettings.GRAVITY * self.weight * delta_time)
 
     def update(self, delta_time: float):
         # print(f'\rVelocity: {self.velocity}', end='')
@@ -140,15 +140,15 @@ class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
 
                     if -angle_delta_vertical < self.__normalize_angle(
                             direction_of_impact.angle_to(-Vector2(0, -1))) < angle_delta_vertical:
-                        self._on_collide(other, direction_of_impact, ImpactSide.TOP)
+                        self._on_collide(other, direction_of_impact, ImpactSide.TOP, delta_time)
 
                     elif -angle_delta_vertical < self.__normalize_angle(
                             direction_of_impact.angle_to(-Vector2(0, 1))) < angle_delta_vertical:
-                        self._on_collide(other, direction_of_impact, ImpactSide.BOTTOM)
+                        self._on_collide(other, direction_of_impact, ImpactSide.BOTTOM, delta_time)
 
                     elif -angle_delta_horizontal < self.__normalize_angle(
                             direction_of_impact.angle_to(-Vector2(-1, 0))) < angle_delta_horizontal:
-                        self._on_collide(other, direction_of_impact, ImpactSide.LEFT)
+                        self._on_collide(other, direction_of_impact, ImpactSide.LEFT, delta_time)
 
                     # elif -angle_delta_horizontal < self.__normalize_angle(
                     #       direction_of_impact.angle_to(-Vector2(1, 0))) < angle_delta_horizontal:

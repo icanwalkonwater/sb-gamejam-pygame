@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import Callable, Generator
 
 from pygame import Vector2, Surface
@@ -6,7 +5,9 @@ from pygame import Vector2, Surface
 from animation import AnimatedSprite
 from entities.player import Player
 from game_object import GameObject
-from physics import RigidPhysicsAwareGameObject, ImpactSide, PhysicsReceiver
+from physics import RigidPhysicsAwareGameObject, PhysicsReceiver
+from enums import ImpactSide, ButtonState
+from ressource_management import ResourceManagement
 
 
 class WindGameObject(RigidPhysicsAwareGameObject):
@@ -21,20 +22,12 @@ class WindGameObject(RigidPhysicsAwareGameObject):
             other.apply_force(self.__direction * self.__force * delta_time)
 
 
-class ButtonState(Enum):
-    ON = 1
-    OFF = 2
-
-
 class ButtonGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
 
     def __init__(self, surface: Surface, on_enter: [Callable[[], None]], on_stay_inside: [Callable[[], None]],
                  on_exit: [Callable[[], None]]):
         RigidPhysicsAwareGameObject.__init__(self, surface, 0)
-        AnimatedSprite.__init__(self, {
-            ButtonState.ON: ["button_on.png"],
-            ButtonState.OFF: ["button_off.png"]
-        }, 1, ButtonState.OFF)
+        AnimatedSprite.__init__(self, ResourceManagement.get_environment_button_sprites(), 1, ButtonState.OFF)
         self.on_enter = on_enter
         self.on_enter.append(self.__hide)
 

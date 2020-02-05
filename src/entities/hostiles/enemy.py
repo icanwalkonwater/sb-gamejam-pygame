@@ -4,8 +4,9 @@ from abc import ABC, abstractmethod
 from pygame.math import Vector2
 from pygame.surface import Surface
 
-from constants import ENEMY_CHILL_WALK_VELOCITY, ENEMY_DETECTION_RANGE_SQR, ImpactSide
+from constants import EnemySettings
 from entities.living_entity import LivingEntity
+from enums import ImpactSide
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject
 
@@ -22,12 +23,12 @@ class Enemy(RigidPhysicsAwareGameObject, LivingEntity, ABC):
         self._direction = 1
 
     def update(self, delta_time: float):
-        distance_to_target_sqr = ENEMY_DETECTION_RANGE_SQR + 1 if self._target is None else \
+        distance_to_target_sqr = EnemySettings.DETECTION_RANGE_SQR + 1 if self._target is None else \
             self.center.distance_squared_to(self._target.center)
 
         # If too far away, just walk
-        if distance_to_target_sqr > ENEMY_DETECTION_RANGE_SQR and self.is_on_ground:
-            self.move(ENEMY_CHILL_WALK_VELOCITY * self._direction * delta_time)
+        if distance_to_target_sqr > EnemySettings.DETECTION_RANGE_SQR and self.is_on_ground:
+            self.move(EnemySettings.CHILL_WALK_VELOCITY * self._direction * delta_time)
 
         # If in range
         elif time.time() > self.__cooldown_expire:
@@ -37,7 +38,7 @@ class Enemy(RigidPhysicsAwareGameObject, LivingEntity, ABC):
         RigidPhysicsAwareGameObject.update(self, delta_time)
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
-        RigidPhysicsAwareGameObject._on_collide(self, other, direction_of_impact, impact_side)
+        RigidPhysicsAwareGameObject._on_collide(self, other, direction_of_impact, impact_side, delta_time)
 
         if impact_side == ImpactSide.LEFT:
             self._direction = 1
