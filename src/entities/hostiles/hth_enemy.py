@@ -1,5 +1,4 @@
 from pygame.math import Vector2
-from pygame.surface import Surface
 
 from animation import AnimatedSprite
 from constants import VECTOR2_NULL, EnemySettings
@@ -14,9 +13,9 @@ from scene import Scene
 class HthEnemy(Enemy, AnimatedSprite):
 
     def __init__(self):
-        surface = Surface((50, 50))
-        surface.fill((0, 0, 255))
-        Enemy.__init__(self, surface, .5, EnemySettings.HandToHand.HEALTH_MAX,
+        sprites = ResourceManagement.get_enemy_ice_sprites()
+        first_sprite = next(iter(sprites.values()))[0]
+        Enemy.__init__(self, first_sprite, .5, EnemySettings.HandToHand.HEALTH_MAX,
                        EnemySettings.HandToHand.ATTACK_COOLDOWN_S)
         AnimatedSprite.__init__(self, ResourceManagement.get_enemy_ice_sprites(), 4, EnemyState.RUNNING_RIGHT)
         self.__retreat_distance_sqr: float = 0
@@ -37,9 +36,9 @@ class HthEnemy(Enemy, AnimatedSprite):
             return False
 
     def update(self, delta_time: float):
+        self._update_state()
         Enemy.update(self, delta_time)
         AnimatedSprite.update(self, delta_time)
-        self._update_state()
 
     def __attack_normal(self, direction: Vector2):
         direction.normalize_ip()

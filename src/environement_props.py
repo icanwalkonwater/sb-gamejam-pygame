@@ -1,4 +1,3 @@
-import math
 from typing import Callable, Generator
 
 from pygame import Vector2, Surface
@@ -14,15 +13,17 @@ from scene import Scene
 
 class WindGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
 
-    def __init__(self, size: (), direction: Vector2, force: float):
+    def __init__(self, size: (int, int), direction: Vector2, force: float):
         surface = Surface(size)
 
         RigidPhysicsAwareGameObject.__init__(self, surface, 0)
-        AnimatedSprite.__init__(self, ResourceManagement.get_environment_wind_stream_sprites(
-            Vector2(size[0], size[1])), 2, WindDirection.UP)
+        AnimatedSprite.__init__(
+            self,
+            ResourceManagement.get_environment_wind_stream_sprites(size),
+            2, WindDirection.UP)
         self._direction = direction.normalize()
         self._force = force
-        if math.fabs(direction.x) > math.fabs(direction.y):
+        if abs(direction.x) > abs(direction.y):
             if direction.x > 0:
                 self._state = WindDirection.RIGHT
             else:
@@ -32,6 +33,9 @@ class WindGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
                 self._state = WindDirection.DOWN
             else:
                 self._state = WindDirection.UP
+
+    def start(self, scene):
+        self.add_to_collision_mask(scene.player)
 
     def update(self, delta_time: float):
         RigidPhysicsAwareGameObject.update(self, delta_time)

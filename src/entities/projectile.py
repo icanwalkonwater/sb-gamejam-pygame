@@ -38,10 +38,8 @@ class TornadoProjectile(Projectile, AnimatedSprite):
         first_sprite = sprites[default_state][0]
 
         Projectile.__init__(self, first_sprite)
-        AnimatedSprite.__init__(self,
-                                ResourceManagement.get_projectile_tornado_sprites(),
-                                3,
-                                default_state)
+        AnimatedSprite.__init__(
+            self, ResourceManagement.get_projectile_tornado_sprites(), 3, default_state)
         self.___death_time = time.time() + PlayerSettings.Ability.TornadoJump.TIME_TO_LIVE
         self._player = player
         self.level = level
@@ -85,18 +83,21 @@ class GustProjectile(Projectile, AnimatedSprite):
 class SlamProjectile(Projectile, AnimatedSprite):
     def __init__(self, level, strength: Vector2):
         sprites = ResourceManagement.get_projectile_slam_sprites(
-            Vector2(PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[
-                level], PlayerSettings.Ability.Slam.AREA_SIZE[1])
+            Vector2(
+                PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[level],
+                PlayerSettings.Ability.Slam.AREA_SIZE[1])
         )
         first_sprite = next(iter(sprites.values()))[0]
 
         Projectile.__init__(self, first_sprite)
-        AnimatedSprite.__init__(self,
-                                ResourceManagement.get_projectile_slam_sprites(
-                                    Vector2(PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[
-                                        level], PlayerSettings.Ability.Slam.AREA_SIZE[1])
-                                ),
-                                12, ProjectileState.DEFAULT)
+        AnimatedSprite.__init__(
+            self,
+            ResourceManagement.get_projectile_slam_sprites(
+                Vector2(
+                    PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[level],
+                    PlayerSettings.Ability.Slam.AREA_SIZE[1])
+            ),
+            12, ProjectileState.DEFAULT)
         self.strength = strength
         self._level = level
         self.__death_time = self._death_time()
@@ -109,8 +110,8 @@ class SlamProjectile(Projectile, AnimatedSprite):
             other.apply_force(self.strength)
 
     def update(self, delta_time: float):
-        AnimatedSprite.update(self, delta_time)
         if self.__death_time <= time.time():
             self.kill()
         else:
+            AnimatedSprite.update(self, delta_time)
             Projectile.update(self, delta_time)

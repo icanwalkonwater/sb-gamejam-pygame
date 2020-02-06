@@ -2,7 +2,7 @@ from enum import Enum
 from os import path
 from typing import Dict, List
 
-from pygame import Surface, image, Vector2, transform
+from pygame import Surface, image, transform
 
 from enums import PlayerState, ButtonState, EnemyState, WindDirection, ProjectileState, TornadoProjectileState
 
@@ -29,7 +29,7 @@ class ResourceManagement:
         }
 
     @classmethod
-    def get_environment_wind_stream_sprites(cls, size: Vector2) -> {Enum, List[Surface]}:
+    def get_environment_wind_stream_sprites(cls, size: (int, int)) -> {Enum, List[Surface]}:
         sprites = {
             WindDirection.UP: [cls.get_image(path.join("props", "wind_stream_1.png")),
                                cls.get_image(path.join("props", "wind_stream_2.png"))],
@@ -48,7 +48,7 @@ class ResourceManagement:
 
         }
         for key in sprites.keys():
-            sprites[key] = [transform.scale(sprite, (int(size.x), int(size.y))) for sprite in sprites.get(key)]
+            sprites[key] = [transform.scale(sprite, size) for sprite in sprites.get(key)]
         return sprites
 
     @classmethod
@@ -72,14 +72,14 @@ class ResourceManagement:
         }
 
     @classmethod
-    def get_projectile_slam_sprites(cls, size: Vector2) -> {Enum, List[Surface]}:
+    def get_projectile_slam_sprites(cls, size: (int, int)) -> {Enum, List[Surface]}:
         sprites = {
             ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "slam_1.png")),
                                       cls.get_image(path.join("projectiles", "slam_2.png")),
                                       cls.get_image(path.join("projectiles", "slam_3.png"))]
         }
         for key in sprites.keys():
-            sprites[key] = [transform.scale(sprite, (int(size.x), int(size.y))) for sprite in sprites.get(key)]
+            sprites[key] = [transform.scale(sprite, size) for sprite in sprites.get(key)]
         return sprites
 
     @classmethod
