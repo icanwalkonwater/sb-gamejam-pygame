@@ -47,15 +47,13 @@ class RanEnemy(Enemy):
         # If too far away, just walk
         if distance_to_target_sqr > EnemySettings.Ranged.DETECTION_RANGE_SQR and self.is_on_ground:
             self.move(EnemySettings.CHILL_WALK_VELOCITY * self._direction * delta_time)
-            print("Marche")
 
         # If the player is on fear range run in the opposite direction
         elif distance_to_target_sqr < EnemySettings.Ranged.FEAR_RANGE_SQR and self.is_on_ground:
             self.move(EnemySettings.Ranged.FEAR_WALK_VELOCITY * self._target_direction() * -1 * delta_time)
-            print("fuite")
+
         # If in range
         elif time.time() > self.__cooldown_expire:
-            print("Attaque !!!!!")
             self.attack()
 
         RigidPhysicsAwareGameObject.update(self, delta_time)

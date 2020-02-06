@@ -143,7 +143,7 @@ class EnemySettings:
         """Enemy walking velocity.
             When afraid by a player, they will walk according to this velocity.
             """
-        FEAR_WALK_VELOCITY = Vector2(.1, 0)
+        FEAR_WALK_VELOCITY = Vector2(.4, 0)
 
         class Projectile:
             """Duration of projectile life"""
