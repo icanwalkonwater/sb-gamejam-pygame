@@ -95,7 +95,7 @@ class SlamAbility(Ability):
     def _slam_strength_calc(self) -> Vector2:
         return Vector2(0, PlayerSettings.Ability.Slam.STRENGTH * (1 + self.level * .5))
 
-    def _create_slame_surface(self) -> Surface:  # TODO remplacer les calcules par des sprite de la taille en question
+    def _create_slam_surface(self) -> Surface:  # TODO remplacer les calcules par des sprite de la taille en question
         if self.level == 1:
             sprite: Surface = Surface(PlayerSettings.Ability.Slam.AREA_SIZE)
         elif self.level == 2:
@@ -120,7 +120,7 @@ class SlamAbility(Ability):
         if self._next_usage <= time.time() and player.mana > self.mana_cost:
             player.mana -= self.mana_cost
             scene: Scene = SceneManagement.active_scene
-            projectile_slam_surface = self._create_slame_surface()
+            projectile_slam_surface = self._create_slam_surface()
             projectile_slam: SlamProjectile = SlamProjectile(projectile_slam_surface, self.level,
                                                              self._slam_strength_calc())
 

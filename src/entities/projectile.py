@@ -39,7 +39,6 @@ class TornadoProjectile(Projectile):
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, direction: ImpactSide, delta_time: float):
         if isinstance(other, RigidPhysicsAwareGameObject):
-            print(direction_of_impact.normalize())
             other.apply_force(
                 direction_of_impact.normalize() * PlayerSettings.Ability.TornadoJump.KNOCKBACK_STRENGTH * self.level)
 
@@ -72,8 +71,8 @@ class GustProjectile(Projectile):
 
 
 class SlamProjectile(Projectile):
-    def __init__(self, image: Surface, level: int, strength: Vector2):
-        Projectile.__init__(self, image)
+    def __init__(self, surface: Surface, level: int, strength: Vector2):
+        Projectile.__init__(self, surface)
         self.strength = strength
         self._level = level
         self.__death_time = self._death_time()

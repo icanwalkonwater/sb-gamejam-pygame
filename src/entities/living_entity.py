@@ -9,10 +9,15 @@ from constants import EntitySettings
 class LivingEntity(ABC):
 
     def __init__(self, max_health: float, damage_resistance: float = 1, invincibility_duration: float = 0):
+        self.max_health = max_health
         self.health: float = max_health
         self.damage_resistance: float = damage_resistance
         self._invincibility_duration: float = invincibility_duration
         self.__next_hit: float = 0
+
+    def start(self):
+        self.health = self.max_health
+        self.__next_hit = 0
 
     @property
     def is_dead(self) -> bool:

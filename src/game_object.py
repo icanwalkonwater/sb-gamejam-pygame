@@ -19,9 +19,9 @@ class GameObject(Sprite, Moveable):
         Sprite.__init__(self)
         self.image: Surface = surface
 
-        self._rect: Rect = self.image.get_rect()
-        self._rect_dirty = False
-        self.transform = Vector2(self._rect.x, self._rect.y)
+        self._rect: Rect = None
+        self._rect_dirty = True
+        self.transform = Vector2(0, 0)
 
     @property
     def rect(self) -> Rect:
@@ -57,6 +57,9 @@ class GameObject(Sprite, Moveable):
             self.transform += of / PhysicsSettings.SCALE
         else:
             self.transform += of
+
+    def start(self, scene):
+        pass
 
     # Provide the generic signature
     # To be overridden

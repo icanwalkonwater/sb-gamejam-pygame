@@ -1,8 +1,8 @@
-from pygame import Vector2, Surface
+from pygame import Vector2
 
 from abilities import TornadoJumpAbility, GustAbility, SlamAbility
 from animation import AnimatedSprite
-from constants import PlayerSettings
+from constants import PlayerSettings, VECTOR2_NULL
 from entities.hostiles.enemy import Enemy
 from entities.living_entity import LivingEntity
 from enums import ImpactSide, PlayerState
@@ -10,19 +10,28 @@ from game_object import GameObject
 from keyboard_input import InputController
 from physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
+from scene import Scene
 
 
 class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
 
-    def __init__(self, surface: Surface, weight: float, collides_with: [GameObject] = None):
-        RigidPhysicsAwareGameObject.__init__(self, surface, weight, collides_with)
+    def __init__(self, weight: float = .5):
+        sprites = ResourceManagement.get_player_sprites()
+        first_sprite = next(iter(sprites.values()))[0]
+
+        RigidPhysicsAwareGameObject.__init__(self, first_sprite, weight)
         LivingEntity.__init__(self, PlayerSettings.HEALTH_MAX, invincibility_duration=1)
-        AnimatedSprite.__init__(self, ResourceManagement.get_player_sprites(), 3, PlayerState.IDLE)
-        self._ability_tornado_jump = TornadoJumpAbility(2)
-        self._ability_gust = GustAbility(1)
+        AnimatedSprite.__init__(self, sprites, 3, PlayerState.IDLE)
+        self._ability_tornado_jump = TornadoJumpAbility(1)
+        self._ability_gust = GustAbility()
         self._ability_slam = SlamAbility(1, 1)
         self.mana: float = PlayerSettings.MANA_MAX
         self._last_direction = 1
+
+    def start(self, scene: Scene):
+        LivingEntity.start(self)
+        scene.player.add(self)
+        self.add_to_collision_mask(scene.environment, scene.enemies)
 
     def update(self, delta_time: float):
         # Update controls
@@ -41,7 +50,7 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
     def __update_state(self):
         if not self.is_on_ground:
             self._state = PlayerState.FLYING
-        elif self.velocity == Vector2(0, 0):  # TODO Remplacer par VECTEUR2_NULL
+        elif self.velocity == VECTOR2_NULL:
             self._state = PlayerState.IDLE
         elif self._last_direction > 0:
             self._state = PlayerState.RUNNING_RIGHT

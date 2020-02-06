@@ -14,12 +14,15 @@ from scene_management import SceneManagement
 
 
 class RanEnemy(Enemy):
-    def __init__(self, target: GameObject):
+    def __init__(self):
         surface = Surface((50, 50))
         surface.fill((255, 0, 0))
         Enemy.__init__(self, surface, EnemySettings.Ranged.WIEGHT, EnemySettings.Ranged.HEALTH_MAX,
-                       EnemySettings.Ranged.ATTACK_COOLDOWN_S, target)
+                       EnemySettings.Ranged.ATTACK_COOLDOWN_S)
         self.__cooldown_expire = time.time()
+
+    def start(self, scene: Scene):
+        Enemy.start(self, scene)
 
     def _target_direction(self) -> int:
         diff = self.center.x - self._target.center.x
