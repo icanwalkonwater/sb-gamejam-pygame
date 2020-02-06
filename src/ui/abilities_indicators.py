@@ -40,7 +40,7 @@ class UITornadoJumpIndicator(UIIndicator):
         UIIndicator.__init__(self, ResourceManagement.get_ability_jump_sprite(), (10, 163))
 
     def _is_enabled(self):
-        return self._player._ability_tornado_jump._next_usage <= time.time()
+        return self._player.ability_tornado_jump._next_usage <= time.time()
 
 
 class UIGustIndicator(UIIndicator):
@@ -49,7 +49,7 @@ class UIGustIndicator(UIIndicator):
         UIIndicator.__init__(self, ResourceManagement.get_ability_gust_sprite(), (10, 230))
 
     def _is_enabled(self):
-        return self._player._ability_gust._next_usage <= time.time()
+        return self._player.ability_gust._next_usage <= time.time()
 
 
 class UISlamIndicator(UIIndicator):
@@ -58,4 +58,4 @@ class UISlamIndicator(UIIndicator):
         UIIndicator.__init__(self, ResourceManagement.get_ability_slam_sprite(), (10, 296))
 
     def _is_enabled(self):
-        return self._player._ability_slam._next_usage <= time.time()
+        return self._player.ability_slam._next_usage <= time.time()

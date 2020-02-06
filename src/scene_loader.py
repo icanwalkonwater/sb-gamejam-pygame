@@ -8,6 +8,7 @@ from entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
 from constants import VECTOR2_NULL
 from entities.hostiles.hth_enemy import HthEnemy
 from entities.hostiles.ranged_enemy import RangedEnemy
+from entities.orb import Orb
 from entities.player import Player
 from enums import Layers
 from environement_props import ButtonGameObject
@@ -77,6 +78,8 @@ class SceneLoader:
                 go = self.__parse_enemy_heavy_rock(scene, element)
             elif element.tag == 'prop-button':
                 go = self.__parse_prop_button(element)
+            elif element.tag == 'prop-orb':
+                go = self.__
             elif element.tag == 'ui-player-health':
                 go = UIHealthBar()
             elif element.tag == 'ui-player-mana':
