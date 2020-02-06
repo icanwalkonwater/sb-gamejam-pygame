@@ -65,6 +65,21 @@ class ResourceManagement:
         }
 
     @classmethod
+    def get_enemy_fire_sprites(cls) -> {Enum, List[Surface]}:
+        return {
+            EnemyState.RUNNING_RIGHT: [transform.flip(i, True, False) for i in
+                                       [cls.get_image(path.join("hostiles", "fire_walking_calm_1.png")),
+                                        cls.get_image(path.join("hostiles", "fire_walking_calm_2.png"))]],
+            EnemyState.RUNNING_LEFT: [cls.get_image(path.join("hostiles", "fire_walking_calm_1.png")),
+                                      cls.get_image(path.join("hostiles", "fire_walking_calm_2.png"))],
+            EnemyState.ATTACKING_RIGHT: [transform.flip(i, True, False) for i in
+                                         [cls.get_image(path.join("hostiles", "fire_walking_angry_1.png")),
+                                          cls.get_image(path.join("hostiles", "fire_walking_angry_2.png"))]],
+            EnemyState.ATTACKING_LEFT: [cls.get_image(path.join("hostiles", "fire_walking_angry_1.png")),
+                                        cls.get_image(path.join("hostiles", "fire_walking_angry_2.png"))],
+        }
+
+    @classmethod
     def get_projectile_gust_sprites(cls) -> {Enum, List[Surface]}:
         return {
             ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "gust_" + str(i) + ".png")) for i in
@@ -81,6 +96,13 @@ class ResourceManagement:
         for key in sprites.keys():
             sprites[key] = [transform.scale(sprite, size) for sprite in sprites.get(key)]
         return sprites
+
+    @classmethod
+    def get_projectile_fire_ball_sprites(cls) -> {Enum, List[Surface]}:
+        return {
+            ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "FB00" + str(i) + ".png")) for i in
+                                      range(1, 5)]
+        }
 
     @classmethod
     def get_projectile_tornado_sprites(cls) -> {Enum, List[Surface]}:
