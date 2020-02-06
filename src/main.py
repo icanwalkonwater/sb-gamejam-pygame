@@ -59,9 +59,7 @@ def create_test_scene(screen: Surface) -> Scene:
     wall_right: GameObject = GameObject(wall_left_s)
     wall_right.move(Vector2(1000, 500))
 
-    wind_stream_s: Surface = Surface((200, 50))
-    wind_stream_s.fill((0, 0, 0, 0))
-    wind_stream: WindGameObject = WindGameObject(wind_stream_s, Vector2(-1, 0), 20)
+    wind_stream: WindGameObject = WindGameObject((200, 200), Vector2(1, 0), 20)
     wind_stream.move(Vector2(950, 200))
 
     player = Player()
