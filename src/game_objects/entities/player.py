@@ -1,16 +1,16 @@
 from pygame import Vector2
 
-from abilities import TornadoJumpAbility, GustAbility, SlamAbility
-from animation import AnimatedSprite
+from game_objects.abilities import TornadoJumpAbility, GustAbility, SlamAbility
+from game_objects.animation import AnimatedSprite
 from constants import PlayerSettings, VECTOR2_NULL
-from entities.hostiles.enemy import Enemy
-from entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
-from entities.hostiles.hth_enemy import HthEnemy
-from entities.living_entity import LivingEntity
+from game_objects.entities.hostiles.enemy import Enemy
+from game_objects.entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
+from game_objects.entities.hostiles.hth_enemy import HthEnemy
+from game_objects.entities.living_entity import LivingEntity
 from enums import ImpactSide, PlayerState
-from game_object import GameObject
+from game_objects.game_object import GameObject
 from keyboard_input import InputController
-from physics import RigidPhysicsAwareGameObject
+from game_objects.physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
 from scene import Scene
 

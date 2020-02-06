@@ -6,7 +6,7 @@ from pygame.sprite import Group, RenderUpdates, GroupSingle, Sprite
 
 from constants import GlobalSettings
 from enums import Layers
-from game_object import GameObject
+from game_objects.game_object import GameObject
 
 
 class ScrollGroup(RenderUpdates):

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<level>
+    <background src="level_1_tutorial_jump.jpg"/>
+    <statics>
+        <box width="50" height="1000" invisible="" additional-layers="environment">
+            <transform x="450"/>
+        </box>
+        <box width="750" height="1000" invisible="" additional-layers="environment">
+            <transform x="500" y="1000"/>
+        </box>
+        <box width="250" height="50" invisible="" additional-layers="environment">
+            <transform x="1400" y="850"/>
+        </box>
+        <box width="700" height="1000" invisible="" additional-layers="environment">
+            <transform x="1800" y="1000"/>
+        </box>
+        <box width="200" height="50" invisible="" additional-layers="environment">
+            <transform x="2700" y="500"/>
+        </box>
+        <box width="200" height="50" invisible="" additional-layers="environment">
+            <transform x="3400" y="1000"/>
+        </box>
+        <box width="200" height="50" invisible="" additional-layers="environment">
+            <transform x="3700" y="900"/>
+        </box>
+        <box width="1900" height="1000" invisible="" additional-layers="environment">
+            <transform x="4100" y="1000"/>
+        </box>
+        <box width="500" height="900" invisible="" additional-layers="environment">
+            <transform x="4800" y="0"/>
+        </box>
+        <death-zone width="5350" height="400">
+            <transform y="1600"/>
+        </death-zone>
+        <scene-loader-zone width="">
+
+        </scene-loader-zone>
+    </statics>
+    <dynamics>
+        <player>
+            <!--transform x="700" y="950"/-->
+            <transform x="4250" y="800"/>
+        </player>
+        <wind-area width="200" height="400" direction="up">
+            <transform x="2500" y="450"/>
+        </wind-area>
+    </dynamics>
+    <ui>
+        <ui-player-health/>
+        <ui-player-mana/>
+        <box src="ui-player-stat-overlay.png">
+            <transform x="10" y="10"/>
+        </box>
+        <ui-ability-jump/>
+    </ui>
+</level>

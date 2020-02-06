@@ -4,11 +4,12 @@ from abc import ABC, abstractmethod
 from pygame import Vector2
 from pygame.surface import Surface
 
-from animation import AnimatedSprite
 from constants import PlayerSettings
-from enums import ImpactSide, ProjectileState, TornadoProjectileState
-from game_object import GameObject
-from physics import RigidPhysicsAwareGameObject
+from enums import ImpactSide
+from enums import ProjectileState, TornadoProjectileState
+from game_objects.animation import AnimatedSprite
+from game_objects.game_object import GameObject
+from game_objects.physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
 
 
@@ -55,7 +56,7 @@ class TornadoProjectile(Projectile, AnimatedSprite):
             self.center = self._player.center
             self.transform.y = self._player.rect.bottom - self.height / 2
             Projectile.update(self, delta_time)
-        AnimatedSprite.update(self, delta_time)
+            AnimatedSprite.update(self, delta_time)
 
 
 class GustProjectile(Projectile, AnimatedSprite):
@@ -76,7 +77,7 @@ class GustProjectile(Projectile, AnimatedSprite):
             self.kill()
         else:
             Projectile.update(self, delta_time)
-        AnimatedSprite.update(self, delta_time)
+            AnimatedSprite.update(self, delta_time)
 
 
 class SlamProjectile(Projectile, AnimatedSprite):

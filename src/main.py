@@ -4,11 +4,11 @@ import pygame
 from pygame import Surface, Vector2
 
 from constants import GlobalSettings
-from entities.hostiles.hth_enemy import HthEnemy
-from entities.hostiles.ranged_enemy import RangedEnemy
-from entities.player import Player
-from environement_props import ButtonGameObject, WindGameObject
-from game_object import GameObject
+from game_objects.entities.hostiles.hth_enemy import HthEnemy
+from game_objects.entities.hostiles.ranged_enemy import RangedEnemy
+from game_objects.entities.player import Player
+from game_objects.environement_props import ButtonGameObject, WindGameObject
+from game_objects.game_object import GameObject
 from keyboard_input import InputController
 from scene import Scene
 from scene_loader import SceneLoader
@@ -96,9 +96,11 @@ def main():
     # Setup scene management
     SceneManagement.init({
         'main': create_test_scene(screen),
-        'level_test': SceneLoader('levels/level_test.xml').parse_all()
+        'level_test': SceneLoader('levels/level_test.xml').parse_all(),
+        'vision_test': SceneLoader('levels/vision_test.xml').parse_all(),
+        'level_1': SceneLoader('levels/level_1_tutorial.xml').parse_all()
     })
-    SceneManagement.load_scene('main', screen)
+    SceneManagement.load_scene('level_1', screen)
 
     SceneManagement.active_scene.start()
 

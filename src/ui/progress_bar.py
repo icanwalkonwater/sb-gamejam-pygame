@@ -4,7 +4,7 @@ from pygame.math import Vector2
 from pygame.rect import Rect
 from pygame.surface import Surface
 
-from game_object import GameObject
+from game_objects.game_object import GameObject
 
 
 class UIProgressBar(GameObject):
