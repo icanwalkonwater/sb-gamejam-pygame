@@ -2,9 +2,9 @@ from enum import Enum
 from os import path
 from typing import Dict, List
 
-from pygame import Surface, image
+from pygame import Surface, image, Vector2, transform
 
-from enums import PlayerState, ButtonState
+from enums import PlayerState, ButtonState, EnemyState, WindDirection, ProjectileState
 
 
 class ResourceManagement:
@@ -24,13 +24,66 @@ class ResourceManagement:
     @classmethod
     def get_environment_button_sprites(cls) -> {Enum, List[Surface]}:
         return {
-            ButtonState.ON: [cls._get_image("button_on.png")],
-            ButtonState.OFF: [cls._get_image("button_off.png")]
+            ButtonState.ON: [cls._get_image(path.join("props", "button_on.png"))],
+            ButtonState.OFF: [cls._get_image(path.join("props", "button_off.png"))]
         }
 
     @classmethod
+    def get_environment_wind_stream_sprites(cls, size: Vector2) -> {Enum, List[Surface]}:
+        sprites = {
+            WindDirection.UP: [cls._get_image(path.join("props", "wind_stream_1.png")),
+                               cls._get_image(path.join("props", "wind_stream_2.png"))],
+            WindDirection.DOWN: [transform.flip(e, False, True) for e in
+                                 [cls._get_image(path.join("props", "wind_stream_1.png")),
+                                  cls._get_image(path.join("props", "wind_stream_2.png"))]
+                                 ],
+            WindDirection.LEFT: [transform.rotate(e, -90) for e in
+                                 [cls._get_image(path.join("props", "wind_stream_1.png")),
+                                  cls._get_image(path.join("props", "wind_stream_2.png"))]
+                                 ],
+            WindDirection.RIGHT: [transform.rotate(e, 90) for e in
+                                  [cls._get_image(path.join("props", "wind_stream_1.png")),
+                                   cls._get_image(path.join("props", "wind_stream_2.png"))]
+                                  ],
+
+        }
+        for key in sprites.keys():
+            sprites[key] = [transform.scale(sprite, (int(size.x), int(size.y))) for sprite in sprites.get(key)]
+        return sprites
+
+    @classmethod
+    def get_enemy_ice_sprites(cls) -> {Enum, List[Surface]}:
+        return {
+            EnemyState.RUNNING_RIGHT: [cls._get_image(path.join("hostiles", "ice_running_1.png")),
+                                       cls._get_image(path.join("hostiles", "ice_running_2.png"))],
+            EnemyState.RUNNING_LEFT: [cls._get_image(path.join("hostiles", "ice_running_1.png")),
+                                      cls._get_image(path.join("hostiles", "ice_running_2.png"))],
+            EnemyState.ATTACKING_LEFT: [cls._get_image(path.join("hostiles", "ice_jumping.png"))],
+            EnemyState.ATTACKING_RIGHT: [cls._get_image(path.join("hostiles", "ice_jumping.png"))]
+        }
+
+    @classmethod
+    def get_projectile_gust_sprites(cls) -> {Enum, List[Surface]}:
+        return {
+            ProjectileState.DEFAULT: [cls._get_image(path.join("projectiles", "gust_1.png")),
+                                      cls._get_image(path.join("projectiles", "gust_2.png")),
+                                      cls._get_image(path.join("projectiles", "gust_3.png"))]
+        }
+
+    @classmethod
+    def get_projectile_slam_sprites(cls, size: Vector2) -> {Enum, List[Surface]}:
+        sprites = {
+            ProjectileState.DEFAULT: [cls._get_image(path.join("projectiles", "slam_1.png")),
+                                      cls._get_image(path.join("projectiles", "slam_2.png")),
+                                      cls._get_image(path.join("projectiles", "slam_3.png"))]
+        }
+        for key in sprites.keys():
+            sprites[key] = [transform.scale(sprite, (int(size.x), int(size.y))) for sprite in sprites.get(key)]
+        return sprites
+
+    @classmethod
     def _get_image(cls, image_path: str):
-        target_image: Surface = cls.__images_cache.get(image_path)
+        target_image = cls.__images_cache.get(image_path)
         if target_image is None:
             target_image: Surface = image.load(path.join('assets', image_path))
             cls.__images_cache[image_path] = target_image.convert_alpha()

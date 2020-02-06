@@ -1,32 +1,51 @@
+import math
+import os
 from typing import Callable, Generator
 
 from pygame import Vector2, Surface
 
 from animation import AnimatedSprite
 from entities.player import Player
+from enums import ImpactSide, ButtonState, WindDirection
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject, PhysicsReceiver
-from enums import ImpactSide, ButtonState
 from ressource_management import ResourceManagement
 
 
-class WindGameObject(RigidPhysicsAwareGameObject):
+class WindGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
 
     def __init__(self, surface: Surface, direction: Vector2, force: float):
         RigidPhysicsAwareGameObject.__init__(self, surface, 0)
-        self.__direction = direction.normalize()
-        self.__force = force
+        AnimatedSprite.__init__(self, ResourceManagement.get_environment_wind_stream_sprites(
+            Vector2(self.width, self.height)), 2, WindDirection.UP)
+        self._direction = direction.normalize()
+        self._force = force
+        if math.fabs(direction.x) > math.fabs(direction.y):
+            if direction.x > 0:
+                self._state = WindDirection.RIGHT
+            else:
+                self._state = WindDirection.LEFT
+        else:
+            if direction.y > 0:
+                self._state = WindDirection.DOWN
+            else:
+                self._state = WindDirection.UP
+
+    def update(self, delta_time: float):
+        RigidPhysicsAwareGameObject.update(self, delta_time)
+        AnimatedSprite.update(self, delta_time)
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, PhysicsReceiver):
-            other.apply_force(self.__direction * self.__force * delta_time)
+            other.apply_force(self._direction * self._force * delta_time)
 
 
 class ButtonGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
 
-    def __init__(self, surface: Surface, on_enter: [Callable[[], None]], on_stay_inside: [Callable[[], None]],
+    def __init__(self, on_enter: [Callable[[], None]], on_stay_inside: [Callable[[], None]],
                  on_exit: [Callable[[], None]]):
-        RigidPhysicsAwareGameObject.__init__(self, surface, 0)
+        RigidPhysicsAwareGameObject.__init__(self,
+                                             ResourceManagement._get_image(os.path.join("props", "button_off.png")), 0)
         AnimatedSprite.__init__(self, ResourceManagement.get_environment_button_sprites(), 1, ButtonState.OFF)
         self.on_enter = on_enter
         self.on_enter.append(self.__hide)

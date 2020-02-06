@@ -57,14 +57,14 @@ class PlayerSettings:
             MANA_COST = 50
 
         class Gust:
-            STRENGTH = 20_000
+            STRENGTH = 10_000
             KNOCKBACK_STRENGTH = -2_000
             PROJECTILE_HIT_STRENGTH_Y = -2_000
             MANA_COST = 30
 
         class Slam:
-            STRENGTH = -8_000
-            AREA_SIZE = (200, 5)
+            STRENGTH = -800
+            AREA_SIZE = (200, 100)
             AREA_TIME_TO_LIVE = 1
             MANA_COST = 70
 

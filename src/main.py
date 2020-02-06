@@ -1,4 +1,3 @@
-import cProfile
 import time
 
 import pygame
@@ -7,7 +6,7 @@ from pygame import Surface, Vector2
 from constants import GlobalSettings
 from entities.hostiles.hth_enemy import HthEnemy
 from entities.player import Player
-from environement_props import ButtonGameObject
+from environement_props import ButtonGameObject, WindGameObject
 from game_object import GameObject
 from keyboard_input import InputController
 from ressource_management import ResourceManagement
@@ -50,7 +49,7 @@ def create_test_scene(screen: Surface) -> Scene:
     floor: GameObject = GameObject(floor_s)
     floor.move(Vector2(0, 600))
 
-    button: ButtonGameObject = ButtonGameObject(ResourceManagement._get_image("button_off.png"), [], [], [])
+    button: ButtonGameObject = ButtonGameObject([], [], [])
     button.move(Vector2(500, 580))
 
     wall_left_s: Surface = Surface((50, 100))
@@ -63,7 +62,12 @@ def create_test_scene(screen: Surface) -> Scene:
     wall_right: GameObject = GameObject(wall_left_s)
     wall_right.move(Vector2(1000, 500))
 
-    player = Player(ResourceManagement._get_image('mage_idle.png'), .5)
+    wind_stream_s: Surface = Surface((200, 50))
+    wind_stream_s.fill((0, 0, 0, 0))
+    wind_stream: WindGameObject = WindGameObject(wind_stream_s, Vector2(-1, 0), 20)
+    wind_stream.move(Vector2(950, 200))
+
+    player = Player(ResourceManagement._get_image('wizard_idle_1.png'), .5)
     player.move(Vector2(100, 200))
 
     enemy = HthEnemy(player)
@@ -72,7 +76,7 @@ def create_test_scene(screen: Surface) -> Scene:
     ui_comps = get_ui(player)
 
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
-                         [player, enemy, button], ui_comps)
+                         [player, enemy, button, wind_stream], ui_comps)
 
     scene.environment.add(red_box, orange_box, floor, wall_left, wall_right)
     scene.player.add(player)
@@ -81,6 +85,7 @@ def create_test_scene(screen: Surface) -> Scene:
     player.add_to_collision_mask(scene.environment, scene.enemies)
     enemy.add_to_collision_mask(scene.environment, scene.player)
     button.add_to_collision_mask(scene.player)
+    wind_stream.add_to_collision_mask(scene.player)
 
     return scene
 
