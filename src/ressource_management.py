@@ -27,6 +27,18 @@ class ResourceManagement:
         }
 
     @classmethod
+    def get_ability_jump_sprite(cls) -> Surface:
+        return cls.get_image("ui-ability-jump-button.png")
+
+    @classmethod
+    def get_ability_gust_sprite(cls) -> Surface:
+        return cls.get_image("ui-ability-gust-button.png")
+
+    @classmethod
+    def get_ability_slam_sprite(cls) -> Surface:
+        return cls.get_image("ui-ability-slam-button.png")
+
+    @classmethod
     def get_image(cls, image_path: str):
         target_image: Surface = cls.__images_cache.get(image_path)
         if target_image is None:
