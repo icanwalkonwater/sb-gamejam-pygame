@@ -14,9 +14,11 @@ class ResourceManagement:
     def get_player_sprites(cls) -> {Enum, List[Surface]}:
         return {
             PlayerState.IDLE: [cls._get_image("wizard_idle_1.png"), cls._get_image("wizard_idle_2.png")],
-            PlayerState.RUNNING_RIGHT: [cls._get_image("wizard_running_1R.png"), cls._get_image("wizard_running_2R.png")],
-            PlayerState.RUNNING_LEFT: [cls._get_image("wizard_running_1L.png"), cls._get_image("wizard_running_2L.png")],
-            PlayerState.FLYING: [cls._get_image("wizard_flying.png")]
+            PlayerState.RUNNING_RIGHT: [cls._get_image("wizard_running_1R.png"),
+                                        cls._get_image("wizard_running_2R.png")],
+            PlayerState.RUNNING_LEFT: [cls._get_image("wizard_running_1L.png"),
+                                       cls._get_image("wizard_running_2L.png")],
+            PlayerState.FLYING: [cls._get_image("wizard_flying_1.png"), cls._get_image("wizard_flying_2.png")]
         }
 
     @classmethod
