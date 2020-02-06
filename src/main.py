@@ -98,7 +98,7 @@ def main():
         'main': create_test_scene(screen),
         'level_test': SceneLoader('levels/level_test.xml').parse_all()
     })
-    SceneManagement.load_scene('level_test', screen)
+    SceneManagement.load_scene('main', screen)
 
     SceneManagement.active_scene.start()
 

@@ -2,9 +2,26 @@ from enum import Enum
 from os import path
 from typing import Dict, List
 
-from pygame import Surface, image, transform
+from pygame import Surface, image, transform, SRCALPHA
 
 from enums import PlayerState, ButtonState, EnemyState, WindDirection, ProjectileState, TornadoProjectileState
+
+
+def scaling_repeat(surface: Surface, size: (int, int)):
+    return_surface = Surface(size, SRCALPHA)
+    return_surface.fill((0, 0, 0, 0), )
+    i, j = 0, 0
+    while True:
+        while True:
+            return_surface.blit(surface, (i, j, surface.get_rect().width, surface.get_rect().height))
+            j += surface.get_rect().height
+            if j > size[0]:
+                break
+        j = 0
+        i += surface.get_rect().width
+        if i > size[0]:
+            break
+    return return_surface
 
 
 class ResourceManagement:
@@ -48,7 +65,7 @@ class ResourceManagement:
 
         }
         for key in sprites.keys():
-            sprites[key] = [transform.scale(sprite, size) for sprite in sprites.get(key)]
+            sprites[key] = [scaling_repeat(sprite, size) for sprite in sprites.get(key)]
         return sprites
 
     @classmethod
@@ -100,8 +117,9 @@ class ResourceManagement:
     @classmethod
     def get_projectile_fire_ball_sprites(cls) -> {Enum, List[Surface]}:
         return {
-            ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "FB00" + str(i) + ".png")) for i in
-                                      range(1, 5)]
+            ProjectileState.DEFAULT: [
+                transform.scale(cls.get_image(path.join("projectiles", "FB00" + str(i) + ".png")), (16, 32)) for i in
+                range(1, 5)]
         }
 
     @classmethod
