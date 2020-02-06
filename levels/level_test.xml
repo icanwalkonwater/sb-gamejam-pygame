@@ -40,10 +40,18 @@
         <enemy-ranged>
             <transform x="600" y="500"/>
         </enemy-ranged>
-         <enemy-heavy-rock>
+        <enemy-heavy-rock>
             <transform x="200" y="500"/>
         </enemy-heavy-rock>
-
+        <orb-tornado>
+            <transform x="200" y="400"/>
+        </orb-tornado>
+        <orb-slam>
+            <transform x="200" y="200"/>
+        </orb-slam>
+        <orb-gust>
+            <transform x="200" y="500"/>
+        </orb-gust>
     </dynamics>
     <ui>
         <ui-player-health/>

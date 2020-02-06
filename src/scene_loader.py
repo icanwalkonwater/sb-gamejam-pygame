@@ -79,7 +79,11 @@ class SceneLoader:
             elif element.tag == 'prop-button':
                 go = self.__parse_prop_button(element)
             elif element.tag == 'orb-tornado':
-                go = self.__parse_orb_tornado()
+                go = self.__parse_orb_tornado(scene, element)
+            elif element.tag == 'orb-gust':
+                go = self.__parse_orb_gust(scene, element)
+            elif element.tag == 'orb-slam':
+                go = self.__parse_orb_slam(scene, element)
             elif element.tag == 'ui-player-health':
                 go = UIHealthBar()
             elif element.tag == 'ui-player-mana':
@@ -159,7 +163,7 @@ class SceneLoader:
         return enemy
 
     def __parse_orb_tornado(self, scene: Scene, element: ET.Element) -> OrbTornado:
-        orb = OrbTornado
+        orb = OrbTornado()
         self.__assign_transform(element, orb)
         self.__assign_collision_masks(scene, orb, self.__parse_collision_mask(element))
 

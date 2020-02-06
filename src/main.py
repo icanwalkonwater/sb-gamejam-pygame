@@ -74,6 +74,8 @@ def create_test_scene(screen: Surface) -> Scene:
 
     ui_comps = get_ui(player)
 
+
+
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
                          [player, enemy, enemy2, button, wind_stream], ui_comps)
 
@@ -98,7 +100,7 @@ def main():
         'main': create_test_scene(screen),
         'level_test': SceneLoader('levels/level_test.xml').parse_all()
     })
-    SceneManagement.load_scene('main', screen)
+    SceneManagement.load_scene('level_test', screen)
 
     SceneManagement.active_scene.start()
 
