@@ -67,9 +67,3 @@ class EnemyState(Enum):
 class TornadoProjectileState:
     SMALL = 1
     BIG = 2
-
-
-class PowerOrb:
-    TORNADO_JUMP = 1
-    GUST = 2
-    SLAM = 3
