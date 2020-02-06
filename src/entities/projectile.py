@@ -83,9 +83,10 @@ class GustProjectile(Projectile, AnimatedSprite):
 class SlamProjectile(Projectile, AnimatedSprite):
     def __init__(self, level, strength: Vector2):
         sprites = ResourceManagement.get_projectile_slam_sprites(
-            Vector2(
-                PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[level],
-                PlayerSettings.Ability.Slam.AREA_SIZE[1])
+            (
+                int(PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[level]),
+                PlayerSettings.Ability.Slam.AREA_SIZE[1]
+            )
         )
         first_sprite = next(iter(sprites.values()))[0]
 
@@ -93,9 +94,10 @@ class SlamProjectile(Projectile, AnimatedSprite):
         AnimatedSprite.__init__(
             self,
             ResourceManagement.get_projectile_slam_sprites(
-                Vector2(
-                    PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[level],
-                    PlayerSettings.Ability.Slam.AREA_SIZE[1])
+                (
+                    int(PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[level]),
+                    PlayerSettings.Ability.Slam.AREA_SIZE[1]
+                )
             ),
             12, ProjectileState.DEFAULT)
         self.strength = strength
