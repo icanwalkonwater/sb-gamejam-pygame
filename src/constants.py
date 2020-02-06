@@ -127,22 +127,22 @@ class EnemySettings:
         """Cooldown between attacks"""
         ATTACK_COOLDOWN_S = 1
 
-        """Masse of the enemy"""
+        """WIEGHT of the enemy"""
         WIEGHT = .5
 
-        """A rect centered on the enemy. If the player enter this rect, the enemy
+        """A circle centered on the enemy. If the player enter this rect, the enemy
         will start attacking him.
         """
         DETECTION_RANGE_SQR = 350 ** 2
 
         """A rect centered on the enemy. If the player enter this rect, the enemy
-             will run into the opposite of payer
-             """
+        will run into the opposite of payer
+        """
         FEAR_RANGE_SQR = 150 ** 2
 
         """Enemy walking velocity.
-            When afraid by a player, they will walk according to this velocity.
-            """
+        When afraid by a player, they will walk according to this velocity.
+        """
         FEAR_WALK_VELOCITY = Vector2(.4, 0)
 
         class Projectile:

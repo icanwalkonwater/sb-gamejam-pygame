@@ -5,7 +5,7 @@ from pygame.math import Vector2
 from pygame.surface import Surface
 
 from entities.hostiles.hth_enemy import HthEnemy
-from entities.hostiles.ran_enemy import RanEnemy
+from entities.hostiles.ran_enemy import RangedEnemy
 from entities.player import Player
 from enums import Layers
 from environement_props import ButtonGameObject
@@ -127,8 +127,8 @@ class SceneLoader:
 
         return enemy
 
-    def __parse_enemy_ranged(self, scene: Scene, element: ET.Element) -> HthEnemy:
-        enemy = RanEnemy()
+    def __parse_enemy_ranged(self, scene: Scene, element: ET.Element) -> RangedEnemy:
+        enemy = RangedEnemy()
         self.__assign_transform(element, enemy)
         self.__assign_collision_masks(scene, enemy, self.__parse_collision_mask(element))
 

@@ -13,16 +13,17 @@ from scene import Scene
 from scene_management import SceneManagement
 
 
-class RanEnemy(Enemy):
+class RangedEnemy(Enemy):
     def __init__(self):
         surface = Surface((50, 50))
         surface.fill((255, 0, 0))
         Enemy.__init__(self, surface, EnemySettings.Ranged.WIEGHT, EnemySettings.Ranged.HEALTH_MAX,
                        EnemySettings.Ranged.ATTACK_COOLDOWN_S)
-        self.__cooldown_expire = time.time()
+        self.__cooldown_expire = 0
 
     def start(self, scene: Scene):
         Enemy.start(self, scene)
+        self.__cooldown_expire = 0
 
     def _target_direction(self) -> int:
         diff = self.center.x - self._target.center.x
@@ -32,12 +33,10 @@ class RanEnemy(Enemy):
             return -1
 
     def attack(self):
-        scene: Scene = SceneManagement.active_scene
-        enemy_projectile: EnemyProjectile = EnemyProjectile(Vector2(self._target.center - self.center))
-        enemy_projectile.add_to_collision_mask(scene.environment, scene.player)
+        scene = SceneManagement.active_scene
+        enemy_projectile: EnemyProjectile = EnemyProjectile(self._target.center - self.center)
+        enemy_projectile.start(self, scene)
         enemy_projectile.move(self.center)
-        scene.projectiles.add(enemy_projectile)
-        scene.dynamics.add(enemy_projectile)
         self.__cooldown_expire = time.time() + EnemySettings.Ranged.ATTACK_COOLDOWN_S
 
     def update(self, delta_time: float):

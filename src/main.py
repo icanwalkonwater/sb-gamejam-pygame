@@ -5,7 +5,7 @@ from pygame import Surface, Vector2
 
 from constants import GlobalSettings
 from entities.hostiles.hth_enemy import HthEnemy
-from entities.hostiles.ran_enemy import RanEnemy
+from entities.hostiles.ran_enemy import RangedEnemy
 from entities.player import Player
 from environement_props import ButtonGameObject
 from game_object import GameObject
@@ -66,7 +66,7 @@ def create_test_scene(screen: Surface) -> Scene:
     enemy = HthEnemy()
     enemy.move(Vector2(900, 500))
 
-    enemy2 = RanEnemy()
+    enemy2 = RangedEnemy()
     enemy2.move(Vector2(600, 500))
 
     ui_comps = get_ui(player)
