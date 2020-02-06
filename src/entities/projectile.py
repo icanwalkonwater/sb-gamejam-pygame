@@ -38,8 +38,7 @@ class TornadoProjectile(Projectile, AnimatedSprite):
         first_sprite = sprites[default_state][0]
 
         Projectile.__init__(self, first_sprite)
-        AnimatedSprite.__init__(
-            self, ResourceManagement.get_projectile_tornado_sprites(), 3, default_state)
+        AnimatedSprite.__init__(self, sprites, 3, default_state)
         self.___death_time = time.time() + PlayerSettings.Ability.TornadoJump.TIME_TO_LIVE
         self._player = player
         self.level = level
@@ -61,10 +60,10 @@ class TornadoProjectile(Projectile, AnimatedSprite):
 
 class GustProjectile(Projectile, AnimatedSprite):
     def __init__(self):
-        sprites = ResourceManagement.get_environment_button_sprites()
+        sprites = ResourceManagement.get_projectile_gust_sprites()
         first_sprite = next(iter(sprites.values()))[0]
         Projectile.__init__(self, first_sprite)
-        AnimatedSprite.__init__(self, ResourceManagement.get_projectile_gust_sprites(), 12, ProjectileState.DEFAULT)
+        AnimatedSprite.__init__(self, sprites, 12, ProjectileState.DEFAULT)
         self.__death_time = time.time() + PlayerSettings.Ability.Gust.TIME_TO_LIVE
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
@@ -91,15 +90,7 @@ class SlamProjectile(Projectile, AnimatedSprite):
         first_sprite = next(iter(sprites.values()))[0]
 
         Projectile.__init__(self, first_sprite)
-        AnimatedSprite.__init__(
-            self,
-            ResourceManagement.get_projectile_slam_sprites(
-                (
-                    int(PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[level]),
-                    PlayerSettings.Ability.Slam.AREA_SIZE[1]
-                )
-            ),
-            12, ProjectileState.DEFAULT)
+        AnimatedSprite.__init__(self, sprites, 12, ProjectileState.DEFAULT)
         self.strength = strength
         self._level = level
         self.__death_time = self._death_time()
