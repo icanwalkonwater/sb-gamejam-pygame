@@ -7,7 +7,7 @@ from constants import GlobalSettings
 from entities.hostiles.hth_enemy import HthEnemy
 from entities.hostiles.ranged_enemy import RangedEnemy
 from entities.player import Player
-from environement_props import ButtonGameObject
+from environement_props import ButtonGameObject, WindGameObject
 from game_object import GameObject
 from keyboard_input import InputController
 from scene import Scene
@@ -60,6 +60,9 @@ def create_test_scene(screen: Surface) -> Scene:
     wall_right: GameObject = GameObject(wall_left_s)
     wall_right.move(Vector2(1000, 500))
 
+    wind_stream: WindGameObject = WindGameObject((200, 200), Vector2(1, 0), 20)
+    wind_stream.move(Vector2(950, 200))
+
     player = Player()
     player.move(Vector2(100, 200))
 
@@ -72,7 +75,7 @@ def create_test_scene(screen: Surface) -> Scene:
     ui_comps = get_ui(player)
 
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
-                         [player, enemy, enemy2, button], ui_comps)
+                         [player, enemy, enemy2, button, wind_stream], ui_comps)
 
     scene.environment.add(red_box, orange_box, floor, wall_left, wall_right)
 
@@ -95,7 +98,7 @@ def main():
         'main': create_test_scene(screen),
         'level_test': SceneLoader('levels/level_test.xml').parse_all()
     })
-    SceneManagement.load_scene('level_test', screen)
+    SceneManagement.load_scene('main', screen)
 
     SceneManagement.active_scene.start()
 

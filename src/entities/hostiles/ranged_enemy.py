@@ -1,25 +1,27 @@
 import time
 
 from pygame import Vector2
-from pygame.surface import Surface
 
+from animation import AnimatedSprite
 from constants import EnemySettings
 from entities.hostiles.enemy import Enemy
 from entities.player import Player
 from entities.projectile import Projectile
-from enums import ImpactSide
+from enums import ImpactSide, ProjectileState, EnemyState
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject
+from ressource_management import ResourceManagement
 from scene import Scene
 from scene_management import SceneManagement
 
 
-class RangedEnemy(Enemy):
+class RangedEnemy(Enemy, AnimatedSprite):
     def __init__(self):
-        surface = Surface((50, 50))
-        surface.fill((255, 0, 0))
-        Enemy.__init__(self, surface, EnemySettings.Ranged.WEIGHT, EnemySettings.Ranged.HEALTH_MAX,
+        sprites = ResourceManagement.get_enemy_fire_sprites()
+        first_sprite = next(iter(sprites.values()))[0]
+        Enemy.__init__(self, first_sprite, EnemySettings.Ranged.WEIGHT, EnemySettings.Ranged.HEALTH_MAX,
                        EnemySettings.Ranged.ATTACK_COOLDOWN_S)
+        AnimatedSprite.__init__(self, sprites, 3, EnemyState.RUNNING_LEFT)
         self.__cooldown_expire = 0
 
     def start(self, scene: Scene):
@@ -47,14 +49,17 @@ class RangedEnemy(Enemy):
         # If too far away, just walk
         if distance_to_target_sqr > EnemySettings.Ranged.DETECTION_RANGE_SQR and self.is_on_ground:
             self.move(EnemySettings.CHILL_WALK_VELOCITY * self._direction * delta_time)
+            self._state = (EnemyState.RUNNING_LEFT if self._direction < 0 else EnemyState.RUNNING_RIGHT)
 
         # If the player is on fear range run in the opposite direction
         elif distance_to_target_sqr < EnemySettings.Ranged.FEAR_RANGE_SQR and self.is_on_ground:
             self.move(EnemySettings.Ranged.FEAR_WALK_VELOCITY * self._target_direction() * delta_time)
+            self._state = (EnemyState.RUNNING_LEFT if self._direction < 0 else EnemyState.RUNNING_RIGHT)
 
         # If in range
         elif time.time() > self.__cooldown_expire:
             self.attack()
+            self._state = (EnemyState.ATTACKING_LEFT if self._direction < 0 else EnemyState.ATTACKING_RIGHT)
 
         RigidPhysicsAwareGameObject.update(self, delta_time)
 
@@ -65,7 +70,7 @@ class RangedEnemy(Enemy):
             Enemy._on_collide(self, other, direction_of_impact, impact_side, delta_time)
 
 
-class EnemyProjectile(Projectile):
+class EnemyProjectile(Projectile, AnimatedSprite):
     @staticmethod
     def _death_time() -> float:
         return time.time() + EnemySettings.Ranged.Projectile.TIME_TO_LIVE
@@ -77,9 +82,10 @@ class EnemyProjectile(Projectile):
         self.apply_force(self._direction * 30)
 
     def __init__(self, direction: Vector2):
-        sprite = Surface((10, 10))
-        sprite.fill((125, 125, 0))
+        sprites = ResourceManagement.get_projectile_fire_ball_sprites()
+        sprite = next(iter(sprites.values()))[0]
         Projectile.__init__(self, sprite)
+        AnimatedSprite.__init__(self, sprites, 3, ProjectileState.DEFAULT)
         self.__death_time = EnemyProjectile._death_time()
         self._direction = direction
 

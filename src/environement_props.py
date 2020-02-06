@@ -4,23 +4,46 @@ from pygame import Vector2, Surface
 
 from animation import AnimatedSprite
 from entities.player import Player
-from enums import ImpactSide, ButtonState
+from enums import ImpactSide, ButtonState, WindDirection
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject, PhysicsReceiver
 from ressource_management import ResourceManagement
 from scene import Scene
 
 
-class WindGameObject(RigidPhysicsAwareGameObject):
+class WindGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
 
-    def __init__(self, surface: Surface, direction: Vector2, force: float):
+    def __init__(self, size: (int, int), direction: Vector2, force: float):
+        surface = Surface(size)
+
         RigidPhysicsAwareGameObject.__init__(self, surface, 0)
-        self.__direction = direction.normalize()
-        self.__force = force
+        AnimatedSprite.__init__(
+            self,
+            ResourceManagement.get_environment_wind_stream_sprites(size),
+            2, WindDirection.UP)
+        self._direction = direction.normalize()
+        self._force = force
+        if abs(direction.x) > abs(direction.y):
+            if direction.x > 0:
+                self._state = WindDirection.RIGHT
+            else:
+                self._state = WindDirection.LEFT
+        else:
+            if direction.y > 0:
+                self._state = WindDirection.DOWN
+            else:
+                self._state = WindDirection.UP
+
+    def start(self, scene):
+        self.add_to_collision_mask(scene.player)
+
+    def update(self, delta_time: float):
+        RigidPhysicsAwareGameObject.update(self, delta_time)
+        AnimatedSprite.update(self, delta_time)
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, PhysicsReceiver):
-            other.apply_force(self.__direction * self.__force * delta_time)
+            other.apply_force(self._direction * self._force * delta_time)
 
 
 class ButtonGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):

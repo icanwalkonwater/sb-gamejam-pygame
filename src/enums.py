@@ -44,3 +44,26 @@ class PlayerState(Enum):
 class ButtonState(Enum):
     ON = 1
     OFF = 2
+
+
+class WindDirection(Enum):
+    UP = 1
+    RIGHT = 2
+    DOWN = 3
+    LEFT = 4
+
+
+class ProjectileState(Enum):
+    DEFAULT = 0
+
+
+class EnemyState(Enum):
+    RUNNING_RIGHT = 1
+    RUNNING_LEFT = 2
+    ATTACKING_RIGHT = 3
+    ATTACKING_LEFT = 4
+
+
+class TornadoProjectileState:
+    SMALL = 1
+    BIG = 2

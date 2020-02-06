@@ -1,20 +1,22 @@
 from pygame import Vector2
-from pygame.surface import Surface
 
+from animation import AnimatedSprite
 from constants import EnemySettings
 from entities.hostiles.enemy import Enemy
-from enums import ImpactSide
+from enums import ImpactSide, EnemyState
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject
+from ressource_management import ResourceManagement
 from scene import Scene
 
 
-class HeavyRockEnemy(Enemy):
+class HeavyRockEnemy(Enemy, AnimatedSprite):
     def __init__(self):
-        surface = Surface((50, 50))
-        surface.fill((100, 100, 100))
-        Enemy.__init__(self, surface, EnemySettings.HeavyRock.WEIGHT, EnemySettings.HeavyRock.HEALTH_MAX,
+        sprites = ResourceManagement.get_enemy_stone_sprites()
+        sprite = next(iter(sprites.values()))[0]
+        Enemy.__init__(self, sprite, EnemySettings.HeavyRock.WEIGHT, EnemySettings.HeavyRock.HEALTH_MAX,
                        EnemySettings.HeavyRock.ATTACK_COOLDOWN_S)
+        AnimatedSprite.__init__(self, sprites, 2, EnemyState.RUNNING_LEFT)
 
     def attack(self, delta_time: float, distance_sqr: float) -> bool:
         # i'am not violent !
@@ -24,7 +26,9 @@ class HeavyRockEnemy(Enemy):
 
         # I'am just good guy you kown
         self.move(EnemySettings.HeavyRock.SPEED * self._direction * delta_time)
+        self._state = (EnemyState.RUNNING_LEFT if self._direction < 0 else EnemyState.RUNNING_RIGHT)
         RigidPhysicsAwareGameObject.update(self, delta_time)
+        AnimatedSprite.update(self, delta_time)
 
     def start(self, scene: Scene):
         Enemy.start(self, scene)
