@@ -62,3 +62,8 @@ class EnemyState(Enum):
     RUNNING_LEFT = 2
     ATTACKING_RIGHT = 3
     ATTACKING_LEFT = 4
+
+
+class TornadoProjectileState:
+    SMALL = 1
+    BIG = 2

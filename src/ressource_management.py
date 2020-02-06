@@ -4,7 +4,7 @@ from typing import Dict, List
 
 from pygame import Surface, image, Vector2, transform
 
-from enums import PlayerState, ButtonState, EnemyState, WindDirection, ProjectileState
+from enums import PlayerState, ButtonState, EnemyState, WindDirection, ProjectileState, TornadoProjectileState
 
 
 class ResourceManagement:
@@ -82,14 +82,13 @@ class ResourceManagement:
         return sprites
 
     @classmethod
-    def get_projectile_tornado_sprites(cls, size: Vector2) -> {Enum, List[Surface]}:
-        sprites = {
-            ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "tornado_1.png")),
-                                      cls.get_image(path.join("projectiles", "tornado_2.png")), ]
+    def get_projectile_tornado_sprites(cls) -> {Enum, List[Surface]}:
+        return {
+            TornadoProjectileState.SMALL: [cls.get_image(path.join("projectiles", "tornado_1_sml.png")),
+                                           cls.get_image(path.join("projectiles", "tornado_2_sml.png")), ],
+            TornadoProjectileState.BIG: [cls.get_image(path.join("projectiles", "tornado_1_big.png")),
+                                         cls.get_image(path.join("projectiles", "tornado_2_big.png")), ]
         }
-        for key in sprites.keys():
-            sprites[key] = [transform.scale(sprite, (int(size.x), int(size.y))) for sprite in sprites.get(key)]
-        return sprites
 
     @classmethod
     def get_image(cls, image_path: str):

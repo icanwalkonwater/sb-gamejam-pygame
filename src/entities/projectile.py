@@ -6,7 +6,7 @@ from pygame.surface import Surface
 
 from animation import AnimatedSprite
 from constants import PlayerSettings
-from enums import ImpactSide, ProjectileState
+from enums import ImpactSide, ProjectileState, TornadoProjectileState
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
@@ -33,17 +33,15 @@ class Projectile(RigidPhysicsAwareGameObject):
 
 class TornadoProjectile(Projectile, AnimatedSprite):
     def __init__(self, level: int, player: GameObject):
-        sprites = ResourceManagement.get_projectile_slam_sprites(
-            Vector2(PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[
-                level], PlayerSettings.Ability.Slam.AREA_SIZE[1])
-        )
-        first_sprite = next(iter(sprites.values()))[0]
+        default_state = (TornadoProjectileState.BIG if level > 1 else TornadoProjectileState.SMALL)
+        sprites = ResourceManagement.get_projectile_tornado_sprites()
+        first_sprite = sprites[default_state][0]
 
         Projectile.__init__(self, first_sprite)
         AnimatedSprite.__init__(self,
-                                ResourceManagement.get_projectile_tornado_sprites(Vector2({1: 50, 2: 200}[level], 30)),
+                                ResourceManagement.get_projectile_tornado_sprites(),
                                 3,
-                                ProjectileState.DEFAULT)
+                                default_state)
         self.___death_time = time.time() + PlayerSettings.Ability.TornadoJump.TIME_TO_LIVE
         self._player = player
         self.level = level

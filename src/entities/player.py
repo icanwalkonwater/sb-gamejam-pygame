@@ -22,7 +22,7 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
         RigidPhysicsAwareGameObject.__init__(self, first_sprite, weight)
         LivingEntity.__init__(self, PlayerSettings.HEALTH_MAX, invincibility_duration=1)
         AnimatedSprite.__init__(self, sprites, 3, PlayerState.IDLE)
-        self._ability_tornado_jump = TornadoJumpAbility(2)
+        self._ability_tornado_jump = TornadoJumpAbility(3)
         self._ability_gust = GustAbility()
         self._ability_slam = SlamAbility(1, 1)
         self.mana: float = PlayerSettings.MANA_MAX
