@@ -120,6 +120,28 @@ class EnemySettings:
         """Force to apply when the enemy need to retreat."""
         RETREAT_FORCE = -500
 
+        """Damage given to the player when he touch it"""
+        DAMAGE = 10
+
+    class HeavyRock:
+        """Health of the enemy"""
+        HEALTH_MAX = 1_000
+
+        """Damage given to the player when he touch heavyRock E"""
+        SIDE_DAMAGE = 70
+
+        """Cooldown between attacks"""
+        ATTACK_COOLDOWN_S = .2
+
+        """WEIGHT"""
+        WEIGHT = 1
+
+        """Walking speed"""
+        SPEED = Vector2(.05, 0)
+
+        """"knowkback"""
+        KNOCKBACK = Vector2(5000,800)
+
     class Ranged:
         """Health of enemy"""
         HEALTH_MAX = 100
