@@ -13,7 +13,7 @@ class HeavyRockEnemy(Enemy):
     def __init__(self):
         surface = Surface((50, 50))
         surface.fill((100, 100, 100))
-        Enemy.__init__(self, surface, EnemySettings.HeavyRock.WIGHT, EnemySettings.HeavyRock.HEALTH_MAX,
+        Enemy.__init__(self, surface, EnemySettings.HeavyRock.WEIGHT, EnemySettings.HeavyRock.HEALTH_MAX,
                        EnemySettings.HeavyRock.ATTACK_COOLDOWN_S)
 
     def attack(self, delta_time: float, distance_sqr: float) -> bool:

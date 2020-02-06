@@ -5,7 +5,9 @@ from pygame.math import Vector2
 from pygame.surface import Surface
 
 from entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
+from constants import VECTOR2_NULL
 from entities.hostiles.hth_enemy import HthEnemy
+from entities.hostiles.ranged_enemy import RangedEnemy
 from entities.player import Player
 from enums import Layers
 from environement_props import ButtonGameObject
@@ -13,6 +15,7 @@ from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
 from scene import Scene
+from ui.abilities_indicators import UITornadoJumpIndicator, UIGustIndicator, UISlamIndicator
 from ui.player_bar import UIHealthBar, UIManaBar
 
 
@@ -22,7 +25,7 @@ class SceneLoader:
         tree: ET.ElementTree = ET.parse(filename)
         self.root: ET.Element = tree.getroot()
         self._button_bindings: Dict[str, Callable] = button_bindings if button_bindings is not None else {}
-        self._global_offset = Vector2(0, 0)
+        self._global_offset = VECTOR2_NULL
 
     def parse_all(self):
         scene: Scene = Scene(self.__parse_background(), [], [], [])
@@ -30,6 +33,9 @@ class SceneLoader:
 
         statics = self.__parse_go_list(scene, self.root.find('statics'))
         dynamics = self.__parse_go_list(scene, self.root.find('dynamics'))
+
+        # Reset global offset for the UI
+        self._global_offset = VECTOR2_NULL
         ui = self.__parse_go_list(scene, self.root.find('ui'))
 
         scene.statics.add(*statics)
@@ -65,6 +71,8 @@ class SceneLoader:
                 go = self.__parse_player(scene, element)
             elif element.tag == 'enemy-hth':
                 go = self.__parse_enemy_hth(scene, element)
+            elif element.tag == 'enemy-ranged':
+                go = self.__parse_enemy_ranged(scene, element)
             elif element.tag == 'enemy-heavy-rock':
                 go = self.__parse_enemy_heavy_rock(scene, element)
             elif element.tag == 'prop-button':
@@ -73,6 +81,12 @@ class SceneLoader:
                 go = UIHealthBar()
             elif element.tag == 'ui-player-mana':
                 go = UIManaBar()
+            elif element.tag == 'ui-ability-jump':
+                go = UITornadoJumpIndicator()
+            elif element.tag == 'ui-ability-gust':
+                go = UIGustIndicator()
+            elif element.tag == 'ui-ability-slam':
+                go = UISlamIndicator()
             else:
                 go = None
 
@@ -83,16 +97,16 @@ class SceneLoader:
         return gos
 
     def __parse_box(self, element: ET.Element) -> GameObject:
-        if element.attrib['color']:
+        if 'src' in element.attrib:
+            surface: Surface = ResourceManagement.get_image(element.attrib['src'])
+        else:
             surface: Surface = Surface(self.__parse_dimensions(element))
             surface.fill(self.__parse_color(element))
 
-            go = GameObject(surface)
-            self.__assign_transform(element, go)
+        go = GameObject(surface)
+        self.__assign_transform(element, go)
 
-            return go
-        else:
-            raise RuntimeError('no color on box')
+        return go
 
     @classmethod
     def __parse_rigid_box(cls, scene: Scene, element: ET.Element) -> GameObject:
@@ -129,6 +143,13 @@ class SceneLoader:
 
     def __parse_enemy_heavy_rock(self, scene: Scene, element: ET.Element) -> HeavyRockEnemy:
         enemy = HeavyRockEnemy()
+        self.__assign_transform(element, enemy)
+        self.__assign_collision_masks(scene, enemy, self.__parse_collision_mask(element))
+
+        return enemy
+
+    def __parse_enemy_ranged(self, scene: Scene, element: ET.Element) -> RangedEnemy:
+        enemy = RangedEnemy()
         self.__assign_transform(element, enemy)
         self.__assign_collision_masks(scene, enemy, self.__parse_collision_mask(element))
 

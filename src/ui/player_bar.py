@@ -4,7 +4,6 @@ from pygame.color import Color
 from pygame.rect import Rect
 
 from constants import GlobalSettings, PlayerSettings
-from entities.player import Player
 from scene import Scene
 from ui.progress_bar import UIProgressBar
 
@@ -12,12 +11,11 @@ from ui.progress_bar import UIProgressBar
 class UIHealthBar(UIProgressBar):
 
     def __init__(self):
-        top = GlobalSettings.RESOLUTION[1] - 30
-        mid_screen = math.ceil(GlobalSettings.RESOLUTION[0] / 2)
         UIProgressBar.__init__(
-            self, Rect((0, top), (mid_screen, 30)),
+            # Pixel perfect position from the overlay
+            self, Rect((28, 49), (201, 18)),
             color=Color(255, 0, 0), background_color=Color(255, 0, 0, 70),
-            maximum=PlayerSettings.HEALTH_MAX, reverse=True
+            maximum=PlayerSettings.HEALTH_MAX
         )
         self.__player = None
 
@@ -32,10 +30,9 @@ class UIHealthBar(UIProgressBar):
 class UIManaBar(UIProgressBar):
 
     def __init__(self):
-        top = GlobalSettings.RESOLUTION[1] - 30
-        mid_screen = math.floor(GlobalSettings.RESOLUTION[0] / 2)
         UIProgressBar.__init__(
-            self, Rect((mid_screen, top), (mid_screen + 1, 30)),
+            # Pixel perfect position from the overlay
+            self, Rect((28, 110), (201, 18)),
             color=Color(0, 0, 255), background_color=Color(0, 0, 255, 70),
             maximum=PlayerSettings.MANA_MAX, value=PlayerSettings.MANA_MAX
         )
