@@ -2,7 +2,7 @@ from pygame import Vector2
 
 from abilities import TornadoJumpAbility, GustAbility, SlamAbility
 from animation import AnimatedSprite
-from constants import PlayerSettings
+from constants import PlayerSettings, VECTOR2_NULL
 from entities.hostiles.enemy import Enemy
 from entities.living_entity import LivingEntity
 from enums import ImpactSide, PlayerState
@@ -26,6 +26,7 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
         self._ability_gust = GustAbility()
         self._ability_slam = SlamAbility(1, 1)
         self.mana: float = PlayerSettings.MANA_MAX
+        self._last_direction = 1
 
     def start(self, scene: Scene):
         LivingEntity.start(self)
@@ -49,12 +50,12 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
     def __update_state(self):
         if not self.is_on_ground:
             self._state = PlayerState.FLYING
-        elif self.velocity.x > 0:
-            self._state = PlayerState.RUNNING_RIGHT
-        elif self.velocity.x < -0:
-            self._state = PlayerState.RUNNING_LEFT
-        else:
+        elif self.velocity == VECTOR2_NULL:
             self._state = PlayerState.IDLE
+        elif self._last_direction > 0:
+            self._state = PlayerState.RUNNING_RIGHT
+        elif self._last_direction < -0:
+            self._state = PlayerState.RUNNING_LEFT
 
     def __update_controls(self, delta_time: float):
 
@@ -70,6 +71,12 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
         # Apply left/right controls
         if motion.x != 0:
             self.apply_force(Vector2(motion.x, 0))
+
+        # Keep track of the last direction we were looking at
+        if motion.x < 0:
+            self._last_direction = -1
+        elif motion.x > 0:
+            self._last_direction = 1
 
         # Jump
         if motion.y < 0 and self.is_on_ground:
