@@ -15,7 +15,7 @@ from scene import Scene
 class Enemy(RigidPhysicsAwareGameObject, LivingEntity, ABC):
 
     def __init__(self, surface: Surface, weight: float, max_health: float, attack_cooldown: float,
-                 damage_reduction: float = 0):
+                 damage_reduction: float = 1):
         RigidPhysicsAwareGameObject.__init__(self, surface, weight)
         LivingEntity.__init__(self, max_health, damage_reduction)
         self._attack_cooldown: float = attack_cooldown
@@ -48,6 +48,10 @@ class Enemy(RigidPhysicsAwareGameObject, LivingEntity, ABC):
         RigidPhysicsAwareGameObject.update(self, delta_time)
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
+        collision_damage = LivingEntity._velocity_to_damage(self.velocity)
+        if collision_damage > 0:
+            self.take_damage(collision_damage)
+
         RigidPhysicsAwareGameObject._on_collide(self, other, direction_of_impact, impact_side, delta_time)
 
         if impact_side == ImpactSide.LEFT:
