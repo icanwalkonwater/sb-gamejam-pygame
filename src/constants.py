@@ -8,6 +8,9 @@ class GlobalSettings:
     """Screen resolution"""
     RESOLUTION = (1024, 768)
 
+    """Link to the banner font"""
+    FONT = "/usr/share/fonts/noto/NotoSans-Regular.ttf"
+
 
 class PhysicsSettings:
     """Physics operate on a higher scale than the transform.

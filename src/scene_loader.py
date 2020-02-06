@@ -79,6 +79,12 @@ class SceneLoader:
                 go = self.__parse_prop_button(element)
             elif element.tag == 'death-zone':
                 go = self.__parse_death_zone(element)
+            elif element.tag == 'orb-tornado':
+                go = self.__parse_orb_tornado(scene, element)
+            elif element.tag == 'orb-gust':
+                go = self.__parse_orb_gust(scene, element)
+            elif element.tag == 'orb-slam':
+                go = self.__parse_orb_slam(scene, element)
             elif element.tag == 'ui-player-health':
                 go = UIHealthBar()
             elif element.tag == 'ui-player-mana':
@@ -162,6 +168,27 @@ class SceneLoader:
         self.__assign_collision_masks(scene, enemy, self.__parse_collision_mask(element))
 
         return enemy
+
+    def __parse_orb_tornado(self, scene: Scene, element: ET.Element) -> OrbTornado:
+        orb = OrbTornado()
+        self.__assign_transform(element, orb)
+        self.__assign_collision_masks(scene, orb, self.__parse_collision_mask(element))
+
+        return orb
+
+    def __parse_orb_gust(self, scene: Scene, element: ET.Element) -> OrbGust:
+        orb = OrbGust()
+        self.__assign_transform(element, orb)
+        self.__assign_collision_masks(scene, orb, self.__parse_collision_mask(element))
+
+        return orb
+
+    def __parse_orb_slam(self, scene: Scene, element: ET.Element) -> OrbSlam:
+        orb = OrbSlam()
+        self.__assign_transform(element, orb)
+        self.__assign_collision_masks(scene, orb, self.__parse_collision_mask(element))
+
+        return orb
 
     def __parse_prop_button(self, element: ET.Element):
         button = ButtonGameObject()
