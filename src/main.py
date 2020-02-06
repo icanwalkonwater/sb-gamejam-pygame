@@ -100,7 +100,7 @@ def main():
         'vision_test': SceneLoader('levels/vision_test.xml').parse_all(),
         'level_1': SceneLoader('levels/level_1_tutorial.xml').parse_all()
     })
-    SceneManagement.load_scene('level_1', screen)
+    SceneManagement.load_scene('main', screen)
 
     SceneManagement.active_scene.start()
 

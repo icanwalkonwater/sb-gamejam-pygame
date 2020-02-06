@@ -39,7 +39,7 @@ class RangedEnemy(Enemy, AnimatedSprite):
         scene = SceneManagement.active_scene
         enemy_projectile: EnemyProjectile = EnemyProjectile(self._target.center - self.center)
         enemy_projectile.start(scene)
-        enemy_projectile.move(self.center)
+        enemy_projectile.center = self.center
         self.__cooldown_expire = time.time() + EnemySettings.Ranged.ATTACK_COOLDOWN_S
 
     def update(self, delta_time: float):
@@ -62,6 +62,7 @@ class RangedEnemy(Enemy, AnimatedSprite):
             self._state = (EnemyState.ATTACKING_LEFT if self._direction < 0 else EnemyState.ATTACKING_RIGHT)
 
         RigidPhysicsAwareGameObject.update(self, delta_time)
+        AnimatedSprite.update(self, delta_time)
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide,
                     delta_time: float):
