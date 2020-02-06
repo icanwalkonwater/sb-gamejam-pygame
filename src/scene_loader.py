@@ -4,16 +4,15 @@ from xml.etree import ElementTree as ET
 from pygame.math import Vector2
 from pygame.surface import Surface
 
-from entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
+from game_objects.entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
 from constants import VECTOR2_NULL
-from entities.hostiles.hth_enemy import HthEnemy
-from entities.hostiles.ranged_enemy import RangedEnemy
-from entities.orb import OrbTornado, OrbGust, OrbSlam
-from entities.player import Player
+from game_objects.entities.hostiles.hth_enemy import HthEnemy
+from game_objects.entities.hostiles.ranged_enemy import RangedEnemy
+from game_objects.entities.player import Player
 from enums import Layers
-from environement_props import ButtonGameObject
-from game_object import GameObject
-from physics import RigidPhysicsAwareGameObject
+from game_objects.environement_props import ButtonGameObject, DeathZone
+from game_objects.game_object import GameObject
+from game_objects.physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
 from scene import Scene
 from ui.abilities_indicators import UITornadoJumpIndicator, UIGustIndicator, UISlamIndicator
@@ -47,7 +46,7 @@ class SceneLoader:
 
     def __parse_background(self) -> Surface:
         element: ET.Element = self.root.find('background')
-        if element.attrib['color']:
+        if 'color' in element.attrib:
             surface: Surface = Surface(self.__parse_dimensions(element))
             surface.fill(self.__parse_color(element))
             return surface
@@ -78,6 +77,8 @@ class SceneLoader:
                 go = self.__parse_enemy_heavy_rock(scene, element)
             elif element.tag == 'prop-button':
                 go = self.__parse_prop_button(element)
+            elif element.tag == 'death-zone':
+                go = self.__parse_death_zone(element)
             elif element.tag == 'orb-tornado':
                 go = self.__parse_orb_tornado(scene, element)
             elif element.tag == 'orb-gust':
@@ -108,7 +109,11 @@ class SceneLoader:
             surface: Surface = ResourceManagement.get_image(element.attrib['src'])
         else:
             surface: Surface = Surface(self.__parse_dimensions(element))
-            surface.fill(self.__parse_color(element))
+            if 'invisible' in element.attrib:
+                surface = surface.convert_alpha()
+                surface.fill((0, 0, 0, 0))
+            else:
+                surface.fill(self.__parse_color(element))
 
         go = GameObject(surface)
         self.__assign_transform(element, go)
@@ -192,6 +197,13 @@ class SceneLoader:
             self._button_bindings.get(button_id)(button)
 
         return button
+
+    def __parse_death_zone(self, element: ET.Element) -> DeathZone:
+        size = self.__parse_dimensions(element)
+        death_zone = DeathZone(size)
+        self.__assign_transform(element, death_zone)
+
+        return death_zone
 
     def __assign_transform(self, element: ET.Element, go: GameObject):
         (x, y, center) = self.__parse_transform(element.find('transform'))

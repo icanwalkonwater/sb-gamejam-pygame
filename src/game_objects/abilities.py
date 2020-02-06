@@ -4,9 +4,9 @@ from abc import ABC
 from pygame import Vector2, Surface
 
 from constants import PlayerSettings
-from entities.projectile import GustProjectile, SlamProjectile, TornadoProjectile
-from game_object import GameObject
-from physics import RigidPhysicsAwareGameObject
+from game_objects.entities.projectile import GustProjectile, SlamProjectile, TornadoProjectile
+from game_objects.game_object import GameObject
+from game_objects.physics import RigidPhysicsAwareGameObject
 from scene import Scene
 from scene_management import SceneManagement
 
@@ -29,6 +29,16 @@ class TornadoJumpAbility(Ability):
     def __init__(self, level: int, mana_cost: float = PlayerSettings.Ability.TornadoJump.MANA_COST):
         Ability.__init__(self, level, PlayerSettings.Ability.TornadoJump.COOLDOWN)
         self.mana_cost = mana_cost
+
+    def _create_tornado_surface(self) -> Surface:  # TODO remplacr par les srpite
+        if self.level == 1:
+            sprite: Surface = Surface((50, 30))
+            sprite.fill((0, 0, 255))
+        else:
+            sprite: Surface = Surface((200, 30))
+            sprite.fill((0, 0, 255))
+
+        return sprite
 
     def use(self, player: GameObject):
         if self._next_usage <= time.time() and player.mana > self.mana_cost:

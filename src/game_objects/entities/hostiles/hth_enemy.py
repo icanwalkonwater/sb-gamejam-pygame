@@ -1,12 +1,12 @@
 from pygame.math import Vector2
 
-from animation import AnimatedSprite
 from constants import VECTOR2_NULL, EnemySettings
-from entities.hostiles.enemy import Enemy
-from entities.living_entity import LivingEntity
 from enums import EnemyState
 from enums import ImpactSide
-from game_object import GameObject
+from game_objects.animation import AnimatedSprite
+from game_objects.entities.hostiles.enemy import Enemy
+from game_objects.entities.living_entity import LivingEntity
+from game_objects.game_object import GameObject
 from ressource_management import ResourceManagement
 from scene import Scene
 

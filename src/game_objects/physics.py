@@ -9,7 +9,7 @@ from pygame.surface import Surface
 from constants import VECTOR2_NULL, \
     PhysicsSettings
 from enums import ImpactSide
-from game_object import Moveable, GameObject
+from game_objects.game_object import Moveable, GameObject
 
 
 class PhysicsReceiver(Moveable, ABC):

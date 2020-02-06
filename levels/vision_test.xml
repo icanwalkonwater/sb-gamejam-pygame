@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<level>
+    <background width="2000" height="2000" color="0,0,0"/>
+
+    <statics>
+        <box width="100" height="20" color="255,255,255" additional-layers="environment">
+            <transform x="1000" y="1040" center=""/>
+        </box>
+        <box width="1" height="768" color="255,0,0">
+            <transform x="512" y="1000" center=""/>
+        </box>
+        <box width="1" height="768" color="255,0,0">
+            <transform x="1512" y="1000" center=""/>
+        </box>
+    </statics>
+    <dynamics>
+        <player>
+            <transform x="1000" y="1000" center=""/>
+        </player>
+    </dynamics>
+    <ui/>
+</level>

@@ -5,8 +5,8 @@ import pygame
 from pygame.math import Vector2
 from pygame.surface import Surface
 
-from entities.player import Player
-from game_object import GameObject
+from game_objects.entities.player import Player
+from game_objects.game_object import GameObject
 from ressource_management import ResourceManagement
 from scene import Scene
 

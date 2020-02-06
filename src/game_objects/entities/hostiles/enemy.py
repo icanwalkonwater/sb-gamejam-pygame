@@ -5,10 +5,10 @@ from pygame.math import Vector2
 from pygame.surface import Surface
 
 from constants import EnemySettings
-from entities.living_entity import LivingEntity
 from enums import ImpactSide
-from game_object import GameObject
-from physics import RigidPhysicsAwareGameObject
+from game_objects.entities.living_entity import LivingEntity
+from game_objects.game_object import GameObject
+from game_objects.physics import RigidPhysicsAwareGameObject
 from scene import Scene
 
 
