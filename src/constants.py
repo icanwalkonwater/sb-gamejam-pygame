@@ -133,8 +133,8 @@ class EnemySettings:
         """Cooldown between attacks"""
         ATTACK_COOLDOWN_S = .2
 
-        """WIGHT"""
-        WIGHT = 1
+        """WEIGHT"""
+        WEIGHT = 1
 
         """Walking speed"""
         SPEED = Vector2(.05, 0)
