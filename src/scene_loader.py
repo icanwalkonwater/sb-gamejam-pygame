@@ -79,7 +79,7 @@ class SceneLoader:
             elif element.tag == 'prop-button':
                 go = self.__parse_prop_button(element)
             elif element.tag == 'orb-tornado':
-                go = self.__
+                go = self.__parse_orb_tornado()
             elif element.tag == 'ui-player-health':
                 go = UIHealthBar()
             elif element.tag == 'ui-player-mana':
