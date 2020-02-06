@@ -5,6 +5,7 @@ from pygame import Surface, Vector2
 
 from constants import GlobalSettings
 from entities.hostiles.hth_enemy import HthEnemy
+from entities.hostiles.ranged_enemy import RangedEnemy
 from entities.player import Player
 from environement_props import ButtonGameObject, WindGameObject
 from game_object import GameObject
@@ -68,19 +69,15 @@ def create_test_scene(screen: Surface) -> Scene:
     enemy = HthEnemy()
     enemy.move(Vector2(900, 500))
 
+    enemy2 = RangedEnemy()
+    enemy2.move(Vector2(600, 500))
+
     ui_comps = get_ui(player)
 
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
-                         [player, enemy, button, wind_stream], ui_comps)
+                         [player, enemy, enemy2, button, wind_stream], ui_comps)
 
     scene.environment.add(red_box, orange_box, floor, wall_left, wall_right)
-    scene.player.add(player)
-    scene.enemies.add(enemy)
-
-    player.add_to_collision_mask(scene.environment, scene.enemies)
-    enemy.add_to_collision_mask(scene.environment, scene.player)
-    button.add_to_collision_mask(scene.player)
-    wind_stream.add_to_collision_mask(scene.player)
 
     return scene
 
