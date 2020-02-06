@@ -120,7 +120,9 @@ class ResourceManagement:
         sprites = {
             ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "slam_1.png")),
                                       cls.get_image(path.join("projectiles", "slam_2.png")),
-                                      cls.get_image(path.join("projectiles", "slam_3.png"))]
+                                      cls.get_image(path.join("projectiles", "slam_3.png")),
+                                      cls.get_image(path.join("projectiles", "slam_4.png")),
+                                      cls.get_image(path.join("projectiles", "slam_5.png"))]
         }
         for key in sprites.keys():
             sprites[key] = [transform.scale(sprite, size) for sprite in sprites.get(key)]
