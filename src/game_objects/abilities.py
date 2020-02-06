@@ -19,6 +19,10 @@ class Ability(ABC):
         self.cooldown: float = cooldown
         self._next_usage: float = 0
 
+    def level_up(self):
+        if self.level < 3:
+            self.level += 1
+
 
 class TornadoJumpAbility(Ability):
 
