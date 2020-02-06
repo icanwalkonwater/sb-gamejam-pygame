@@ -1,3 +1,4 @@
+import random
 import time
 from abc import ABC, abstractmethod
 
@@ -97,16 +98,18 @@ class EnemyProjectile(Projectile):
     def _death_time() -> float:
         return time.time() + EnemySettings.Ranged.Projectile.TIME_TO_LIVE
 
-    def __init__(self):
+    def __init__(self, direction: Vector2):
         sprite = Surface((10, 10))
         sprite.fill((125, 125, 0))
         Projectile.__init__(self, sprite)
         self.__death_time = EnemyProjectile._death_time()
         self._strength = EnemySettings.Ranged.Projectile.STRENGTH
+        self._direction = direction
+        self.apply_force(direction * 30)
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, RigidPhysicsAwareGameObject):
-            other.apply_force(self._strength)
+            other.apply_force(self._direction * 30)
         self.kill()
 
     def update(self, delta_time: float):

@@ -125,20 +125,20 @@ class EnemySettings:
         HEALTH_MAX = 100
 
         """Cooldown between attacks"""
-        ATTACK_COOLDOWN_S = .2
+        ATTACK_COOLDOWN_S = 1
 
         """Masse of the enemy"""
-        WIEGHT = .8
+        WIEGHT = .5
 
         """A rect centered on the enemy. If the player enter this rect, the enemy
         will start attacking him.
         """
-        DETECTION_RANGE_SQR = 300 ** 2
+        DETECTION_RANGE_SQR = 350 ** 2
 
         """A rect centered on the enemy. If the player enter this rect, the enemy
              will run into the opposite of payer
              """
-        FEAR_RANGE_SQR = 100 ** 2
+        FEAR_RANGE_SQR = 150 ** 2
 
         """Enemy walking velocity.
             When afraid by a player, they will walk according to this velocity.
@@ -147,8 +147,10 @@ class EnemySettings:
 
         class Projectile:
             """Duration of projectile life"""
-            TIME_TO_LIVE = .5
+            TIME_TO_LIVE = 10
 
             """"Strength of the projectile when it impact"""
             STRENGTH = 4000
 
+            """Speed of projectile when lunched by enemy"""
+            SPEED = 800

@@ -6,6 +6,7 @@ from pygame import Surface, Vector2
 
 from constants import GlobalSettings
 from entities.hostiles.hth_enemy import HthEnemy
+from entities.hostiles.ran_enemy import RanEnemy
 from entities.player import Player
 from environement_props import ButtonGameObject
 from game_object import GameObject
@@ -15,7 +16,7 @@ from scene import Scene
 from scene_management import SceneManagement
 from ui.player_bar import UIHealthBar, UIManaBar
 
-FPS_LIMIT = 60
+FPS_LIMIT = 30
 frames = 0
 
 
@@ -69,17 +70,21 @@ def create_test_scene(screen: Surface) -> Scene:
     enemy = HthEnemy(player)
     enemy.move(Vector2(900, 500))
 
+    enemy2 = RanEnemy(player)
+    enemy2.move(Vector2(600, 500))
+
     ui_comps = get_ui(player)
 
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
-                         [player, enemy, button], ui_comps)
+                         [player, enemy, enemy2, button], ui_comps)
 
     scene.environment.add(red_box, orange_box, floor, wall_left, wall_right)
     scene.player.add(player)
-    scene.enemies.add(enemy)
+    scene.enemies.add(enemy, enemy2)
 
     player.add_to_collision_mask(scene.environment, scene.enemies)
     enemy.add_to_collision_mask(scene.environment, scene.player)
+    enemy2.add_to_collision_mask(scene.environment, scene.player)
     button.add_to_collision_mask(scene.player)
 
     return scene
