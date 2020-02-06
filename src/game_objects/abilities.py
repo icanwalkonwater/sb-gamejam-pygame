@@ -23,6 +23,7 @@ class Ability(ABC):
         if self.level < 3:
             self.level += 1
 
+
 class TornadoJumpAbility(Ability):
 
     def __init__(self, level: int, mana_cost: float = PlayerSettings.Ability.TornadoJump.MANA_COST):
@@ -112,7 +113,7 @@ class SlamAbility(Ability):
         return Vector2(x, player.transform.y - surface.get_height() + player.height)
 
     def use(self, player: RigidPhysicsAwareGameObject):
-        if self.level >0:
+        if self.level > 0:
             if self._next_usage <= time.time() and player.mana > self.mana_cost:
                 player.mana -= self.mana_cost
                 scene: Scene = SceneManagement.active_scene

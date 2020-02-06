@@ -61,13 +61,11 @@ class RangedEnemy(Enemy, AnimatedSprite):
             self.attack()
             self._state = (EnemyState.ATTACKING_LEFT if self._direction < 0 else EnemyState.ATTACKING_RIGHT)
 
-
         RigidPhysicsAwareGameObject.update(self, delta_time)
         AnimatedSprite.update(self, delta_time)
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide,
                     delta_time: float):
-        RigidPhysicsAwareGameObject._on_collide(self, other, direction_of_impact, impact_side, delta_time)
         if other != self._target:
             Enemy._on_collide(self, other, direction_of_impact, impact_side, delta_time)
 
