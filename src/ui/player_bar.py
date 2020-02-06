@@ -5,12 +5,13 @@ from pygame.rect import Rect
 
 from constants import GlobalSettings, PlayerSettings
 from entities.player import Player
+from scene import Scene
 from ui.progress_bar import UIProgressBar
 
 
 class UIHealthBar(UIProgressBar):
 
-    def __init__(self, player: Player):
+    def __init__(self):
         top = GlobalSettings.RESOLUTION[1] - 30
         mid_screen = math.ceil(GlobalSettings.RESOLUTION[0] / 2)
         UIProgressBar.__init__(
@@ -18,7 +19,10 @@ class UIHealthBar(UIProgressBar):
             color=Color(255, 0, 0), background_color=Color(255, 0, 0, 70),
             maximum=PlayerSettings.HEALTH_MAX, reverse=True
         )
-        self.__player = player
+        self.__player = None
+
+    def start(self, scene: Scene):
+        self.__player = scene.player.sprite
 
     def update(self, delta_time: float):
         self.value = self.__player.health
@@ -27,7 +31,7 @@ class UIHealthBar(UIProgressBar):
 
 class UIManaBar(UIProgressBar):
 
-    def __init__(self, player: Player):
+    def __init__(self):
         top = GlobalSettings.RESOLUTION[1] - 30
         mid_screen = math.floor(GlobalSettings.RESOLUTION[0] / 2)
         UIProgressBar.__init__(
@@ -35,7 +39,10 @@ class UIManaBar(UIProgressBar):
             color=Color(0, 0, 255), background_color=Color(0, 0, 255, 70),
             maximum=PlayerSettings.MANA_MAX, value=PlayerSettings.MANA_MAX
         )
-        self.__player = player
+        self.__player = None
+
+    def start(self, scene: Scene):
+        self.__player = scene.player.sprite
 
     def update(self, delta_time: float):
         self.value = self.__player.mana

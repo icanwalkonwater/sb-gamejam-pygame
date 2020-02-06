@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<level id="level_test">
+    <background width="3000" height="3000" color="255,255,255"/>
+    <global-offset x="1000" y="1000"/>
+    <statics>
+        <!-- Red box -->
+        <box width="300" height="50" color="255,0,0" additional-layers="environment">
+            <transform x="50" y="250"/>
+        </box>
+
+        <!-- Orange box -->
+        <box width="300" height="50" color="255,100,200" additional-layers="environment">
+            <transform x="400" y="350"/>
+        </box>
+
+        <!-- Floor -->
+        <box width="1080" height="50" color="0,0,0" additional-layers="environment">
+            <transform y="600"/>
+        </box>
+        <!-- Wall left -->
+        <box width="50" height="100" color="0,0,0" additional-layers="environment">
+            <transform y="500"/>
+        </box>
+        <!-- Wall right -->
+        <box width="50" height="100" color="0,0,0" additional-layers="environment">
+            <transform x="1000" y="500"/>
+        </box>
+    </statics>
+    <dynamics>
+        <player>
+            <transform x="100" y="200"/>
+        </player>
+        <prop-button id="btn-test">
+            <transform x="500" y="580"/>
+        </prop-button>
+        <enemy-hth>
+            <transform x="900" y="500"/>
+        </enemy-hth>
+    </dynamics>
+    <ui>
+        <ui-player-health/>
+        <ui-player-mana/>
+    </ui>
+</level>
