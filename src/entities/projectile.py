@@ -19,8 +19,8 @@ class Hitable(ABC):
 
 class Projectile(RigidPhysicsAwareGameObject):
 
-    def __init__(self, surface: Surface, collides_with: [GameObject]):
-        RigidPhysicsAwareGameObject.__init__(self, surface, 0, collides_with)
+    def __init__(self, surface: Surface):
+        RigidPhysicsAwareGameObject.__init__(self, surface, 0)
         self.resistance_amount = 0
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
@@ -30,10 +30,10 @@ class Projectile(RigidPhysicsAwareGameObject):
 
 
 class GustProjectile(Projectile):
-    def __init__(self, collides_with: [GameObject] = None):
+    def __init__(self):
         surface: Surface = Surface((10, 10))
         surface.fill((0, 255, 255))
-        Projectile.__init__(self, surface, collides_with)
+        Projectile.__init__(self, surface)
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, RigidPhysicsAwareGameObject):
@@ -42,10 +42,10 @@ class GustProjectile(Projectile):
 
 
 class SlamProjectile(Projectile):
-    def __init__(self, strength: Vector2, collides_with: [GameObject] = None):
+    def __init__(self, strength: Vector2):
         image: Surface = Surface((PlayerSettings.Ability.Slam.AREA_SIZE[0], PlayerSettings.Ability.Slam.AREA_SIZE[1]))
         image.fill((0, 255, 0))
-        Projectile.__init__(self, image, collides_with)
+        Projectile.__init__(self, image)
         self.strength = strength
         self.__death_time = time.time() + PlayerSettings.Ability.Slam.AREA_TIME_TO_LIVE
 

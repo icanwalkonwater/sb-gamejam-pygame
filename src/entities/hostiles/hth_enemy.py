@@ -2,18 +2,24 @@ from pygame.math import Vector2
 from pygame.surface import Surface
 
 from constants import VECTOR2_NULL, EnemySettings
-from enums import ImpactSide
 from entities.hostiles.enemy import Enemy
 from entities.player import Player
+from enums import ImpactSide
 from game_object import GameObject
+from scene import Scene
 
 
 class HthEnemy(Enemy):
 
-    def __init__(self, target: GameObject):
+    def __init__(self):
         surface = Surface((50, 50))
         surface.fill((0, 0, 255))
-        Enemy.__init__(self, surface, .5, EnemySettings.HandToHand.HEALTH_MAX, EnemySettings.HandToHand.ATTACK_COOLDOWN_S, target=target)
+        Enemy.__init__(self, surface, .5, EnemySettings.HandToHand.HEALTH_MAX,
+                       EnemySettings.HandToHand.ATTACK_COOLDOWN_S)
+        self.__retreat_distance_sqr: float = 0
+
+    def start(self, scene: Scene):
+        Enemy.start(self, scene)
         self.__retreat_distance_sqr = (self.width / 2 + self._target.width / 2) ** 2
 
     def attack(self, delta_time: float, distance_sqr: float) -> bool:

@@ -23,3 +23,5 @@ class SceneManagement:
             sys.exit(1)
 
         cls.active_scene.draw_init(screen)
+
+

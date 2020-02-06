@@ -1,4 +1,4 @@
-from pygame import Vector2, Surface
+from pygame import Vector2
 
 from abilities import TornadoJumpAbility, GustAbility, SlamAbility
 from animation import AnimatedSprite
@@ -10,18 +10,27 @@ from game_object import GameObject
 from keyboard_input import InputController
 from physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
+from scene import Scene
 
 
 class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
 
-    def __init__(self, surface: Surface, weight: float, collides_with: [GameObject] = None):
-        RigidPhysicsAwareGameObject.__init__(self, surface, weight, collides_with)
+    def __init__(self, weight: float = .5):
+        sprites = ResourceManagement.get_player_sprites()
+        first_sprite = next(iter(sprites.values()))[0]
+
+        RigidPhysicsAwareGameObject.__init__(self, first_sprite, weight)
         LivingEntity.__init__(self, PlayerSettings.HEALTH_MAX, invincibility_duration=1)
-        AnimatedSprite.__init__(self, ResourceManagement.get_player_sprites(), 3, PlayerState.IDLE)
+        AnimatedSprite.__init__(self, sprites, 3, PlayerState.IDLE)
         self._ability_tornado_jump = TornadoJumpAbility(1)
         self._ability_gust = GustAbility()
         self._ability_slam = SlamAbility(1, 1)
         self.mana: float = PlayerSettings.MANA_MAX
+
+    def start(self, scene: Scene):
+        LivingEntity.start(self)
+        scene.player.add(self)
+        self.add_to_collision_mask(scene.environment, scene.enemies)
 
     def update(self, delta_time: float):
         # Update controls

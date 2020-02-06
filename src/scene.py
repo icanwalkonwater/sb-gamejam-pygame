@@ -1,4 +1,4 @@
-from typing import List, Callable
+from typing import List, Callable, Dict
 
 from pygame import Surface, Rect
 from pygame.math import Vector2
@@ -106,7 +106,7 @@ class Scene:
         self.ui: RenderUpdates = RenderUpdates(ui)
 
         # Layers used for collision masks
-        self.layers = {
+        self.layers: Dict[Layers, Group] = {
             Layers.ENVIRONMENT: Group(),
             Layers.PLAYER: GroupSingle(),
             Layers.ENEMY: Group(),
@@ -173,11 +173,22 @@ class Scene:
         self.dynamics.clear(surface, self.background)
         return self.dynamics.draw(surface)
 
+    def start(self):
+        for go in self.statics.sprites():
+            go.start(self)
+
+        for go in self.dynamics.sprites():
+            go.start(self)
+
+        for go in self.ui.sprites():
+            go.start(self)
+
     def update(self, delta_time: float):
         # Center the camera around the player
         # but only if the player has moved enough
-        if self.dynamics.center(self.player.sprite.transform):
-            self.__state_dirty = True
+        if len(self.player) > 0:
+            if self.dynamics.center(self.player.sprite.transform):
+                self.__state_dirty = True
 
         # Dispatch updates to every game object
         self.statics.update(delta_time)
