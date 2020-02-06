@@ -61,6 +61,7 @@ class RangedEnemy(Enemy, AnimatedSprite):
             self.attack()
             self._state = (EnemyState.ATTACKING_LEFT if self._direction < 0 else EnemyState.ATTACKING_RIGHT)
 
+
         RigidPhysicsAwareGameObject.update(self, delta_time)
         AnimatedSprite.update(self, delta_time)
 

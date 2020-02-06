@@ -24,9 +24,9 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
         RigidPhysicsAwareGameObject.__init__(self, first_sprite, weight)
         LivingEntity.__init__(self, PlayerSettings.HEALTH_MAX, invincibility_duration=1)
         AnimatedSprite.__init__(self, sprites, 3, PlayerState.IDLE)
-        self._ability_tornado_jump = TornadoJumpAbility(3)
-        self._ability_gust = GustAbility()
-        self._ability_slam = SlamAbility(1, 1)
+        self.ability_tornado_jump = TornadoJumpAbility(1)
+        self.ability_gust = GustAbility(1)
+        self.ability_slam = SlamAbility(1, 1)
         self.mana: float = PlayerSettings.MANA_MAX
         self._last_direction = 1
 
@@ -66,9 +66,9 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
 
         # Use abilities
         if powers[0]:
-            self._ability_gust.use(self)
+            self.ability_gust.use(self)
         if powers[1]:
-            self._ability_slam.use(self)
+            self.ability_slam.use(self)
 
         # Apply left/right controls
         if motion.x != 0:
@@ -83,7 +83,7 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
         # Jump
         if motion.y < 0 and self.is_on_ground:
             self.is_on_ground = False
-            self._ability_tornado_jump.use(self)
+            self.ability_tornado_jump.use(self)
 
     def __update_mana_regeneration(self, delta_time: float):
         if self.mana < PlayerSettings.MANA_MAX:
