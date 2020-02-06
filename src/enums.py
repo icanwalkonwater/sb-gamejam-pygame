@@ -13,6 +13,19 @@ class Layers(Enum):
     """Layer containing the projectiles of any origin"""
     PROJECTILE = 4
 
+    @classmethod
+    def from_name(cls, name) -> Enum:
+        if name == 'environment':
+            return cls.ENVIRONMENT
+        elif name == 'player':
+            return cls.PLAYER
+        elif name == 'enemy':
+            return cls.ENEMY
+        elif name == 'projectile':
+            return cls.PROJECTILE
+        else:
+            raise TypeError(f'No layer with the name : {name}')
+
 
 class ImpactSide(Enum):
     TOP = 1

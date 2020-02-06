@@ -8,16 +8,21 @@ from entities.player import Player
 from enums import ImpactSide, EnemyState
 from game_object import GameObject
 from ressource_management import ResourceManagement
+from scene import Scene
 
 
 class HthEnemy(Enemy, AnimatedSprite):
 
-    def __init__(self, target: GameObject):
+    def __init__(self):
         surface = Surface((50, 50))
         surface.fill((0, 0, 255))
         Enemy.__init__(self, surface, .5, EnemySettings.HandToHand.HEALTH_MAX,
-                       EnemySettings.HandToHand.ATTACK_COOLDOWN_S, target=target)
+                       EnemySettings.HandToHand.ATTACK_COOLDOWN_S)
         AnimatedSprite.__init__(self, ResourceManagement.get_enemy_ice_sprites(), 4, EnemyState.RUNNING_RIGHT)
+        self.__retreat_distance_sqr: float = 0
+
+    def start(self, scene: Scene):
+        Enemy.start(self, scene)
         self.__retreat_distance_sqr = (self.width / 2 + self._target.width / 2) ** 2
 
     def attack(self, delta_time: float, distance_sqr: float) -> bool:

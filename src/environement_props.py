@@ -10,6 +10,7 @@ from enums import ImpactSide, ButtonState, WindDirection
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject, PhysicsReceiver
 from ressource_management import ResourceManagement
+from scene import Scene
 
 
 class WindGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
@@ -42,21 +43,26 @@ class WindGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
 
 class ButtonGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
 
-    def __init__(self, on_enter: [Callable[[], None]], on_stay_inside: [Callable[[], None]],
-                 on_exit: [Callable[[], None]]):
-        RigidPhysicsAwareGameObject.__init__(self,
-                                             ResourceManagement._get_image(os.path.join("props", "button_off.png")), 0)
-        AnimatedSprite.__init__(self, ResourceManagement.get_environment_button_sprites(), 1, ButtonState.OFF)
-        self.on_enter = on_enter
+    def __init__(self, on_enter: [Callable[[], None]] = None, on_stay_inside: [Callable[[], None]] = None,
+                 on_exit: [Callable[[], None]] = None):
+        sprites = ResourceManagement.get_environment_button_sprites()
+        first_sprite = next(iter(sprites.values()))[0]
+
+        RigidPhysicsAwareGameObject.__init__(self, first_sprite, 0)
+        AnimatedSprite.__init__(self, sprites, 1, ButtonState.OFF)
+        self.on_enter = on_enter if on_enter is not None else []
         self.on_enter.append(self.__hide)
 
-        self.during_activation = on_stay_inside
+        self.during_activation = on_stay_inside if on_stay_inside is not None else []
 
-        self.on_exit = on_exit
+        self.on_exit = on_exit if on_exit is not None else []
         self.on_exit.append(self.__show)
 
         self.was_pressed = False
         self.is_pressed = False
+
+    def start(self, scene: Scene):
+        self.add_to_collision_mask(scene.player)
 
     def __show(self):
         self._state = ButtonState.OFF

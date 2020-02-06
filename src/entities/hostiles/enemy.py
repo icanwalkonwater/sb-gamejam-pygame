@@ -9,18 +9,28 @@ from entities.living_entity import LivingEntity
 from enums import ImpactSide
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject
+from scene import Scene
 
 
 class Enemy(RigidPhysicsAwareGameObject, LivingEntity, ABC):
 
     def __init__(self, surface: Surface, weight: float, max_health: float, attack_cooldown: float,
-                 target: GameObject, damage_reduction: float = 0):
+                 damage_reduction: float = 0):
         RigidPhysicsAwareGameObject.__init__(self, surface, weight)
         LivingEntity.__init__(self, max_health, damage_reduction)
         self._attack_cooldown: float = attack_cooldown
         self.__cooldown_expire: float = 0
-        self._target: GameObject = target
+        self._target: GameObject = None
         self._direction = 1
+
+    def start(self, scene: Scene):
+        LivingEntity.start(self)
+        self.__cooldown_expire = 0
+        self._direction = 1
+        self._target = scene.player.sprite
+
+        scene.enemies.add(self)
+        self.add_to_collision_mask(scene.environment, scene.player)
 
     def update(self, delta_time: float):
         distance_to_target_sqr = EnemySettings.DETECTION_RANGE_SQR + 1 if self._target is None else \

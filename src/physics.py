@@ -67,12 +67,9 @@ class PhysicsAwareGameObject(GameObject, PhysicsReceiver):
 
 class RigidPhysicsAwareGameObject(PhysicsAwareGameObject):
 
-    def __init__(self, surface: Surface, weight: float, collides_with: [Group] = None):
+    def __init__(self, surface: Surface, weight: float):
         PhysicsAwareGameObject.__init__(self, surface, weight)
-
         self.collision_masks: [Group] = []
-        if collides_with is not None:
-            self.collision_masks.extend(collides_with)
 
     def add_to_collision_mask(self, *groups: [Group]):
         self.collision_masks.extend(groups)

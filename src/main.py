@@ -9,18 +9,18 @@ from entities.player import Player
 from environement_props import ButtonGameObject, WindGameObject
 from game_object import GameObject
 from keyboard_input import InputController
-from ressource_management import ResourceManagement
 from scene import Scene
+from scene_loader import SceneLoader
 from scene_management import SceneManagement
 from ui.player_bar import UIHealthBar, UIManaBar
 
-FPS_LIMIT = 30
+FPS_LIMIT = 60
 frames = 0
 
 
 def get_ui(player: Player) -> [GameObject]:
-    health_bar = UIHealthBar(player)
-    mana_bar = UIManaBar(player)
+    health_bar = UIHealthBar()
+    mana_bar = UIManaBar()
 
     return [health_bar, mana_bar]
 
@@ -41,15 +41,12 @@ def create_test_scene(screen: Surface) -> Scene:
     orange_box: GameObject = GameObject(orange_box_s)
     orange_box.move(Vector2(400, 350))
 
-    green_box_s = Surface((30, 50))
-    green_box_s.fill((0, 255, 0))
-
     floor_s: Surface = Surface((1080, 50))
     floor_s.fill((0, 0, 0))
     floor: GameObject = GameObject(floor_s)
     floor.move(Vector2(0, 600))
 
-    button: ButtonGameObject = ButtonGameObject([], [], [])
+    button: ButtonGameObject = ButtonGameObject()
     button.move(Vector2(500, 580))
 
     wall_left_s: Surface = Surface((50, 100))
@@ -67,10 +64,10 @@ def create_test_scene(screen: Surface) -> Scene:
     wind_stream: WindGameObject = WindGameObject(wind_stream_s, Vector2(-1, 0), 20)
     wind_stream.move(Vector2(950, 200))
 
-    player = Player(ResourceManagement._get_image('wizard_idle_1.png'), .5)
+    player = Player()
     player.move(Vector2(100, 200))
 
-    enemy = HthEnemy(player)
+    enemy = HthEnemy()
     enemy.move(Vector2(900, 500))
 
     ui_comps = get_ui(player)
@@ -103,9 +100,12 @@ def main():
 
     # Setup scene management
     SceneManagement.init({
-        'main': create_test_scene(screen)
+        'main': create_test_scene(screen),
+        'level_test': SceneLoader('levels/level_test.xml').parse_all()
     })
-    SceneManagement.load_scene('main', screen)
+    SceneManagement.load_scene('level_test', screen)
+
+    SceneManagement.active_scene.start()
 
     # Setup clock
     clock: pygame.time.Clock = pygame.time.Clock()
