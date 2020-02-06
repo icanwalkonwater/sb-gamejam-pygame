@@ -8,7 +8,7 @@ from entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
 from constants import VECTOR2_NULL
 from entities.hostiles.hth_enemy import HthEnemy
 from entities.hostiles.ranged_enemy import RangedEnemy
-from entities.orb import Orb
+from entities.orb import OrbTornado, OrbGust, OrbSlam
 from entities.player import Player
 from enums import Layers
 from environement_props import ButtonGameObject
@@ -78,7 +78,7 @@ class SceneLoader:
                 go = self.__parse_enemy_heavy_rock(scene, element)
             elif element.tag == 'prop-button':
                 go = self.__parse_prop_button(element)
-            elif element.tag == 'prop-orb':
+            elif element.tag == 'orb-tornado':
                 go = self.__
             elif element.tag == 'ui-player-health':
                 go = UIHealthBar()
@@ -157,6 +157,27 @@ class SceneLoader:
         self.__assign_collision_masks(scene, enemy, self.__parse_collision_mask(element))
 
         return enemy
+
+    def __parse_orb_tornado(self, scene: Scene, element: ET.Element) -> OrbTornado:
+        orb = OrbTornado
+        self.__assign_transform(element, orb)
+        self.__assign_collision_masks(scene, orb, self.__parse_collision_mask(element))
+
+        return orb
+
+    def __parse_orb_gust(self, scene: Scene, element: ET.Element) -> OrbGust:
+        orb = OrbGust()
+        self.__assign_transform(element, orb)
+        self.__assign_collision_masks(scene, orb, self.__parse_collision_mask(element))
+
+        return orb
+
+    def __parse_orb_slam(self, scene: Scene, element: ET.Element) -> OrbSlam:
+        orb = OrbSlam()
+        self.__assign_transform(element, orb)
+        self.__assign_collision_masks(scene, orb, self.__parse_collision_mask(element))
+
+        return orb
 
     def __parse_prop_button(self, element: ET.Element):
         button = ButtonGameObject()
