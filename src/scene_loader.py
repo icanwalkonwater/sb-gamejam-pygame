@@ -6,6 +6,7 @@ from pygame.surface import Surface
 
 from constants import VECTOR2_NULL
 from enums import Layers
+from game_objects.entities.orb import OrbTornado, OrbGust, OrbSlam
 from game_objects.entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
 from game_objects.entities.hostiles.hth_enemy import HthEnemy
 from game_objects.entities.hostiles.ranged_enemy import RangedEnemy

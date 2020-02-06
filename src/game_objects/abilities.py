@@ -23,7 +23,6 @@ class Ability(ABC):
         if self.level < 3:
             self.level += 1
 
-
 class TornadoJumpAbility(Ability):
 
     def __init__(self, level: int, mana_cost: float = PlayerSettings.Ability.TornadoJump.MANA_COST):
@@ -41,19 +40,20 @@ class TornadoJumpAbility(Ability):
         return sprite
 
     def use(self, player: GameObject):
-        if self._next_usage <= time.time() and player.mana > self.mana_cost:
-            player.mana -= self.mana_cost
-            tornado_projectile: TornadoProjectile = TornadoProjectile(self.level, player)
+        if self.level > 0:
+            if self._next_usage <= time.time() and player.mana > self.mana_cost:
+                player.mana -= self.mana_cost
+                tornado_projectile: TornadoProjectile = TornadoProjectile(self.level, player)
 
-            scene: Scene = SceneManagement.active_scene
-            tornado_projectile.move(Vector2(player.center.x - tornado_projectile.width / 2, player.transform.y))
-            tornado_projectile.add_to_collision_mask(scene.enemies)
+                scene: Scene = SceneManagement.active_scene
+                tornado_projectile.move(Vector2(player.center.x - tornado_projectile.width / 2, player.transform.y))
+                tornado_projectile.add_to_collision_mask(scene.enemies)
 
-            scene.projectiles.add(tornado_projectile)
-            scene.dynamics.add(tornado_projectile)
+                scene.projectiles.add(tornado_projectile)
+                scene.dynamics.add(tornado_projectile)
 
-            player.apply_force(Vector2(0, PlayerSettings.Ability.TornadoJump.STRENGTH))
-            self._next_usage = time.time() + self.cooldown
+                player.apply_force(Vector2(0, PlayerSettings.Ability.TornadoJump.STRENGTH))
+                self._next_usage = time.time() + self.cooldown
 
 
 class GustAbility(Ability):
@@ -64,28 +64,30 @@ class GustAbility(Ability):
         Ability.__init__(self, level, cooldown)
         self.mana_cost = mana_cost
 
-    def _gust_strength_calc(self, player: GameObject) -> Vector2:
+    @staticmethod
+    def _gust_strength_calc(player: GameObject) -> Vector2:
         return Vector2(PlayerSettings.Ability.Gust.STRENGTH * player._last_direction, 0)
 
     def _gust_backward_strength_calc(self, player: GameObject) -> Vector2:
         return Vector2(PlayerSettings.Ability.Gust.KNOCKBACK_STRENGTH / self.level * player._last_direction, 0)
 
     def use(self, player: RigidPhysicsAwareGameObject):
-        if self._next_usage <= time.time() and player.mana > self.mana_cost:
-            player.mana -= self.mana_cost
-            scene: Scene = SceneManagement.active_scene
+        if self.level > 0:
+            if self._next_usage <= time.time() and player.mana > self.mana_cost:
+                player.mana -= self.mana_cost
+                scene: Scene = SceneManagement.active_scene
 
-            gust_projectile: GustProjectile = GustProjectile()
-            gust_projectile.add_to_collision_mask(scene.environment, scene.enemies)
-            gust_projectile.move(Vector2(player.transform.x + player.width, player.transform.y + 10))
+                gust_projectile: GustProjectile = GustProjectile()
+                gust_projectile.add_to_collision_mask(scene.environment, scene.enemies)
+                gust_projectile.move(Vector2(player.transform.x + player.width, player.transform.y + 10))
 
-            scene.projectiles.add(gust_projectile)
-            scene.dynamics.add(gust_projectile)
+                scene.projectiles.add(gust_projectile)
+                scene.dynamics.add(gust_projectile)
 
-            gust_projectile.apply_force(self._gust_strength_calc(player))
-            player.apply_force(self._gust_backward_strength_calc(player))
+                gust_projectile.apply_force(GustAbility._gust_strength_calc(player))
+                player.apply_force(self._gust_backward_strength_calc(player))
 
-            self._next_usage = time.time() + self.cooldown
+                self._next_usage = time.time() + self.cooldown
 
 
 class SlamAbility(Ability):
@@ -110,17 +112,18 @@ class SlamAbility(Ability):
         return Vector2(x, player.transform.y - surface.get_height() + player.height)
 
     def use(self, player: RigidPhysicsAwareGameObject):
-        if self._next_usage <= time.time() and player.mana > self.mana_cost:
-            player.mana -= self.mana_cost
-            scene: Scene = SceneManagement.active_scene
-            projectile_slam: SlamProjectile = SlamProjectile(self.level,
-                                                             self._slam_strength_calc())
+        if self.level >0:
+            if self._next_usage <= time.time() and player.mana > self.mana_cost:
+                player.mana -= self.mana_cost
+                scene: Scene = SceneManagement.active_scene
+                projectile_slam: SlamProjectile = SlamProjectile(self.level,
+                                                                 self._slam_strength_calc())
 
-            projectile_slam.add_to_collision_mask(scene.enemies)
+                projectile_slam.add_to_collision_mask(scene.enemies)
 
-            scene.projectiles.add(projectile_slam)
-            scene.dynamics.add(projectile_slam)
+                scene.projectiles.add(projectile_slam)
+                scene.dynamics.add(projectile_slam)
 
-            projectile_slam.move(self._slam_position_calc(player, projectile_slam.image))
+                projectile_slam.move(self._slam_position_calc(player, projectile_slam.image))
 
-            self._next_usage = time.time() + self.cooldown
+                self._next_usage = time.time() + self.cooldown

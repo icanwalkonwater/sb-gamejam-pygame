@@ -15,7 +15,7 @@ from scene_loader import SceneLoader
 from scene_management import SceneManagement
 from ui.player_bar import UIHealthBar, UIManaBar
 
-FPS_LIMIT = 60
+FPS_LIMIT = 20
 frames = 0
 
 
@@ -104,8 +104,6 @@ def main():
         'level_2': SceneLoader('levels/level_2_tutorial.xml').parse_all()
     })
     SceneManagement.load_scene('level_test', screen)
-
-    SceneManagement.active_scene.start()
 
     # Setup clock
     clock: pygame.time.Clock = pygame.time.Clock()

@@ -6,7 +6,7 @@ from pygame.constants import SRCALPHA
 from pygame import Vector2
 
 from constants import GlobalSettings
-from game_object import GameObject
+from game_objects.game_object import GameObject
 
 
 class Vecteur2(object):
@@ -24,7 +24,7 @@ class InformationBanner(GameObject):
                                        InformationBanner.title_text_placer(banner_background_surface, text_surface))
 
         font = pyfont.Font(GlobalSettings.FONT, 19)
-        text_surface: Surface = InformationBanner.render_font(font, content)
+        text_surface: Surface = InformationBanner.render_font(font, content.upper())
         banner_background_surface.blit(text_surface,
                                        InformationBanner.content_text_placer(banner_background_surface, text_surface))
 

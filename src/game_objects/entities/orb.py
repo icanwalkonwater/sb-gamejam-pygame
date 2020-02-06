@@ -1,9 +1,9 @@
 from pygame import Surface, Vector2
 
-from entities.player import Player
 from enums import ImpactSide
-from game_object import GameObject
-from physics import PhysicsAwareGameObject, RigidPhysicsAwareGameObject
+from game_objects.entities.player import Player
+from game_objects.game_object import GameObject
+from game_objects.physics import RigidPhysicsAwareGameObject
 from scene import Scene
 from scene_management import SceneManagement
 from ui.information_banner import InformationBanner
@@ -19,11 +19,15 @@ class OrbTornado(RigidPhysicsAwareGameObject):
         self.add_to_collision_mask(scene.player)
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
+        self.kill()
         other: Player
         other.ability_tornado_jump.level_up()
-        text = InformationBanner("Tornado upgraded", "Your Tornado level up to " + str(other.ability_tornado_jump.level), 3)
+        text = InformationBanner("Tornado upgraded",
+                                 "Your Tornado level up to " + str(other.ability_tornado_jump.level), 3)
         text.start(SceneManagement.active_scene)
-        self.kill()
+
+    def update(self, delta_time: float):
+        RigidPhysicsAwareGameObject.update(self, delta_time)
 
 
 class OrbGust(RigidPhysicsAwareGameObject):

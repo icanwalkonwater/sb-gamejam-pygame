@@ -84,7 +84,7 @@ class SlamProjectile(Projectile, AnimatedSprite):
     def __init__(self, level, strength: Vector2):
         sprites = ResourceManagement.get_projectile_slam_sprites(
             (
-                int(PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 2: 3.60}[level]),
+                int(PlayerSettings.Ability.Slam.AREA_SIZE[0] * {1: 1, 2: 2, 3: 3.60}[level]),
                 PlayerSettings.Ability.Slam.AREA_SIZE[1]
             )
         )
