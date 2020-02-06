@@ -2,6 +2,7 @@
 <level id="level_test">
     <background width="3000" height="3000" color="255,255,255"/>
     <global-offset x="1000" y="1000"/>
+    <ambient-sound src="assets/sounds/ambient1.mp3"/>
     <statics>
         <!-- Red box -->
         <box width="300" height="50" color="255,0,0" additional-layers="environment">

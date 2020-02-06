@@ -72,6 +72,7 @@ class ButtonGameObject(RigidPhysicsAwareGameObject, AnimatedSprite):
 
 
 class MovableCube(RigidPhysicsAwareGameObject):
+
     def __init__(self, surface: Surface, weight: float, force_threshold: float):
         RigidPhysicsAwareGameObject.__init__(self, surface, weight)
         self.force_threshold = force_threshold
@@ -82,6 +83,7 @@ class MovableCube(RigidPhysicsAwareGameObject):
 
 
 class PathFollowingGameObject(GameObject):
+
     def __init__(self, surface: Surface, path_creator: Callable[[], Generator], start_on_creation: bool = True):
         GameObject.__init__(self, surface)
         self.__path_creator = path_creator
