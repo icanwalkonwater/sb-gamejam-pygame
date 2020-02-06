@@ -13,37 +13,37 @@ class ResourceManagement:
     @classmethod
     def get_player_sprites(cls) -> {Enum, List[Surface]}:
         return {
-            PlayerState.IDLE: [cls._get_image("wizard_idle_1.png"), cls._get_image("wizard_idle_2.png")],
-            PlayerState.RUNNING_RIGHT: [cls._get_image("wizard_running_1R.png"),
-                                        cls._get_image("wizard_running_2R.png")],
-            PlayerState.RUNNING_LEFT: [cls._get_image("wizard_running_1L.png"),
-                                       cls._get_image("wizard_running_2L.png")],
-            PlayerState.FLYING: [cls._get_image("wizard_flying_1.png"), cls._get_image("wizard_flying_2.png")]
+            PlayerState.IDLE: [cls.get_image("wizard_idle_1.png"), cls.get_image("wizard_idle_2.png")],
+            PlayerState.RUNNING_RIGHT: [cls.get_image("wizard_running_1R.png"),
+                                        cls.get_image("wizard_running_2R.png")],
+            PlayerState.RUNNING_LEFT: [cls.get_image("wizard_running_1L.png"),
+                                       cls.get_image("wizard_running_2L.png")],
+            PlayerState.FLYING: [cls.get_image("wizard_flying_1.png"), cls.get_image("wizard_flying_2.png")]
         }
 
     @classmethod
     def get_environment_button_sprites(cls) -> {Enum, List[Surface]}:
         return {
-            ButtonState.ON: [cls._get_image(path.join("props", "button_on.png"))],
-            ButtonState.OFF: [cls._get_image(path.join("props", "button_off.png"))]
+            ButtonState.ON: [cls.get_image(path.join("props", "button_on.png"))],
+            ButtonState.OFF: [cls.get_image(path.join("props", "button_off.png"))]
         }
 
     @classmethod
     def get_environment_wind_stream_sprites(cls, size: Vector2) -> {Enum, List[Surface]}:
         sprites = {
-            WindDirection.UP: [cls._get_image(path.join("props", "wind_stream_1.png")),
-                               cls._get_image(path.join("props", "wind_stream_2.png"))],
+            WindDirection.UP: [cls.get_image(path.join("props", "wind_stream_1.png")),
+                               cls.get_image(path.join("props", "wind_stream_2.png"))],
             WindDirection.DOWN: [transform.flip(e, False, True) for e in
-                                 [cls._get_image(path.join("props", "wind_stream_1.png")),
-                                  cls._get_image(path.join("props", "wind_stream_2.png"))]
+                                 [cls.get_image(path.join("props", "wind_stream_1.png")),
+                                  cls.get_image(path.join("props", "wind_stream_2.png"))]
                                  ],
             WindDirection.LEFT: [transform.rotate(e, -90) for e in
-                                 [cls._get_image(path.join("props", "wind_stream_1.png")),
-                                  cls._get_image(path.join("props", "wind_stream_2.png"))]
+                                 [cls.get_image(path.join("props", "wind_stream_1.png")),
+                                  cls.get_image(path.join("props", "wind_stream_2.png"))]
                                  ],
             WindDirection.RIGHT: [transform.rotate(e, 90) for e in
-                                  [cls._get_image(path.join("props", "wind_stream_1.png")),
-                                   cls._get_image(path.join("props", "wind_stream_2.png"))]
+                                  [cls.get_image(path.join("props", "wind_stream_1.png")),
+                                   cls.get_image(path.join("props", "wind_stream_2.png"))]
                                   ],
 
         }
@@ -54,28 +54,38 @@ class ResourceManagement:
     @classmethod
     def get_enemy_ice_sprites(cls) -> {Enum, List[Surface]}:
         return {
-            EnemyState.RUNNING_RIGHT: [cls._get_image(path.join("hostiles", "ice_running_1.png")),
-                                       cls._get_image(path.join("hostiles", "ice_running_2.png"))],
-            EnemyState.RUNNING_LEFT: [cls._get_image(path.join("hostiles", "ice_running_1.png")),
-                                      cls._get_image(path.join("hostiles", "ice_running_2.png"))],
-            EnemyState.ATTACKING_LEFT: [cls._get_image(path.join("hostiles", "ice_jumping.png"))],
-            EnemyState.ATTACKING_RIGHT: [cls._get_image(path.join("hostiles", "ice_jumping.png"))]
+            EnemyState.RUNNING_RIGHT: [cls.get_image(path.join("hostiles", "ice_running_1.png")),
+                                       cls.get_image(path.join("hostiles", "ice_running_2.png"))],
+            EnemyState.RUNNING_LEFT: [cls.get_image(path.join("hostiles", "ice_running_1.png")),
+                                      cls.get_image(path.join("hostiles", "ice_running_2.png"))],
+            EnemyState.ATTACKING_LEFT: [cls.get_image(path.join("hostiles", "ice_jumping.png"))],
+            EnemyState.ATTACKING_RIGHT: [cls.get_image(path.join("hostiles", "ice_jumping.png"))]
         }
 
     @classmethod
     def get_projectile_gust_sprites(cls) -> {Enum, List[Surface]}:
         return {
-            ProjectileState.DEFAULT: [cls._get_image(path.join("projectiles", "gust_1.png")),
-                                      cls._get_image(path.join("projectiles", "gust_2.png")),
-                                      cls._get_image(path.join("projectiles", "gust_3.png"))]
+            ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "gust_1.png")),
+                                      cls.get_image(path.join("projectiles", "gust_2.png")),
+                                      cls.get_image(path.join("projectiles", "gust_3.png"))]
         }
 
     @classmethod
     def get_projectile_slam_sprites(cls, size: Vector2) -> {Enum, List[Surface]}:
         sprites = {
-            ProjectileState.DEFAULT: [cls._get_image(path.join("projectiles", "slam_1.png")),
-                                      cls._get_image(path.join("projectiles", "slam_2.png")),
-                                      cls._get_image(path.join("projectiles", "slam_3.png"))]
+            ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "slam_1.png")),
+                                      cls.get_image(path.join("projectiles", "slam_2.png")),
+                                      cls.get_image(path.join("projectiles", "slam_3.png"))]
+        }
+        for key in sprites.keys():
+            sprites[key] = [transform.scale(sprite, (int(size.x), int(size.y))) for sprite in sprites.get(key)]
+        return sprites
+
+    @classmethod
+    def get_projectile_tornado_sprites(cls, size: Vector2) -> {Enum, List[Surface]}:
+        sprites = {
+            ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "tornado_1.png")),
+                                      cls.get_image(path.join("projectiles", "tornado_2.png")), ]
         }
         for key in sprites.keys():
             sprites[key] = [transform.scale(sprite, (int(size.x), int(size.y))) for sprite in sprites.get(key)]
