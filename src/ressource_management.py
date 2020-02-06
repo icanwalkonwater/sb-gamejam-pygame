@@ -65,9 +65,8 @@ class ResourceManagement:
     @classmethod
     def get_projectile_gust_sprites(cls) -> {Enum, List[Surface]}:
         return {
-            ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "gust_1.png")),
-                                      cls.get_image(path.join("projectiles", "gust_2.png")),
-                                      cls.get_image(path.join("projectiles", "gust_3.png"))]
+            ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "gust_" + str(i) + ".png")) for i in
+                                      range(1, 9)]
         }
 
     @classmethod

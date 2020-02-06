@@ -63,9 +63,9 @@ class TornadoProjectile(Projectile, AnimatedSprite):
 
 class GustProjectile(Projectile, AnimatedSprite):
     def __init__(self):
-        surface: Surface = Surface((10, 10))
-        surface.fill((0, 255, 255))
-        Projectile.__init__(self, surface)
+        sprites = ResourceManagement.get_environment_button_sprites()
+        first_sprite = next(iter(sprites.values()))[0]
+        Projectile.__init__(self, first_sprite)
         AnimatedSprite.__init__(self, ResourceManagement.get_projectile_gust_sprites(), 12, ProjectileState.DEFAULT)
         self.__death_time = time.time() + PlayerSettings.Ability.Gust.TIME_TO_LIVE
 
