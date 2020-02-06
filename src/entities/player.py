@@ -18,10 +18,11 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
         RigidPhysicsAwareGameObject.__init__(self, surface, weight, collides_with)
         LivingEntity.__init__(self, PlayerSettings.HEALTH_MAX, invincibility_duration=1)
         AnimatedSprite.__init__(self, ResourceManagement.get_player_sprites(), 3, PlayerState.IDLE)
-        self._ability_tornado_jump = TornadoJumpAbility(1)
-        self._ability_gust = GustAbility()
+        self._ability_tornado_jump = TornadoJumpAbility(2)
+        self._ability_gust = GustAbility(1)
         self._ability_slam = SlamAbility(1, 1)
         self.mana: float = PlayerSettings.MANA_MAX
+        self._last_direction = 1
 
     def update(self, delta_time: float):
         # Update controls
@@ -40,12 +41,12 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
     def __update_state(self):
         if not self.is_on_ground:
             self._state = PlayerState.FLYING
-        elif self.velocity.x > 0:
-            self._state = PlayerState.RUNNING_RIGHT
-        elif self.velocity.x < -0:
-            self._state = PlayerState.RUNNING_LEFT
-        else:
+        elif self.velocity == Vector2(0, 0):  # TODO Remplacer par VECTEUR2_NULL
             self._state = PlayerState.IDLE
+        elif self._last_direction > 0:
+            self._state = PlayerState.RUNNING_RIGHT
+        elif self._last_direction < -0:
+            self._state = PlayerState.RUNNING_LEFT
 
     def __update_controls(self, delta_time: float):
 
@@ -61,6 +62,12 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
         # Apply left/right controls
         if motion.x != 0:
             self.apply_force(Vector2(motion.x, 0))
+
+        # Keep track of the last direction we were looking at
+        if motion.x < 0:
+            self._last_direction = -1
+        elif motion.x > 0:
+            self._last_direction = 1
 
         # Jump
         if motion.y < 0 and self.is_on_ground:

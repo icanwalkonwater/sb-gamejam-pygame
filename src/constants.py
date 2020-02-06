@@ -55,16 +55,19 @@ class PlayerSettings:
             COOLDOWN = .2
             STRENGTH = -6_000
             MANA_COST = 50
+            TIME_TO_LIVE = 1
+            KNOCKBACK_STRENGTH = 400
 
         class Gust:
             STRENGTH = 20_000
             KNOCKBACK_STRENGTH = -2_000
             PROJECTILE_HIT_STRENGTH_Y = -2_000
             MANA_COST = 30
+            TIME_TO_LIVE = .7
 
         class Slam:
             STRENGTH = -8_000
-            AREA_SIZE = (200, 5)
+            AREA_SIZE = (200, 100)
             AREA_TIME_TO_LIVE = 1
             MANA_COST = 70
 

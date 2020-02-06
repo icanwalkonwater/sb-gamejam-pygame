@@ -15,7 +15,7 @@ from scene import Scene
 from scene_management import SceneManagement
 from ui.player_bar import UIHealthBar, UIManaBar
 
-FPS_LIMIT = 30
+FPS_LIMIT = 60
 frames = 0
 
 
