@@ -41,7 +41,7 @@
             <!--transform x="700" y="950"/-->
             <transform x="4250" y="800"/>
         </player>
-        <wind-area width="200" height="400" direction="up">
+        <wind-area width="200" height="400" direction="up" force="40">
             <transform x="2500" y="450"/>
         </wind-area>
     </dynamics>

@@ -4,13 +4,13 @@ from xml.etree import ElementTree as ET
 from pygame.math import Vector2
 from pygame.surface import Surface
 
-from game_objects.entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
 from constants import VECTOR2_NULL
+from enums import Layers
+from game_objects.entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
 from game_objects.entities.hostiles.hth_enemy import HthEnemy
 from game_objects.entities.hostiles.ranged_enemy import RangedEnemy
 from game_objects.entities.player import Player
-from enums import Layers
-from game_objects.environement_props import ButtonGameObject, DeathZone
+from game_objects.environement_props import ButtonGameObject, DeathZone, WindGameObject
 from game_objects.game_object import GameObject
 from game_objects.physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
@@ -89,6 +89,8 @@ class SceneLoader:
                 go = UIGustIndicator()
             elif element.tag == 'ui-ability-slam':
                 go = UISlamIndicator()
+            elif element.tag == 'wind-area':
+                go = self.__parse_wind_area(element)
             else:
                 go = None
 
@@ -177,6 +179,20 @@ class SceneLoader:
         self.__assign_transform(element, death_zone)
 
         return death_zone
+
+    def __parse_wind_area(self, element: ET.Element) -> WindGameObject:
+        size = self.__parse_dimensions(element)
+        direction = {
+            "up": Vector2(0, -1),
+            "down": Vector2(0, 1),
+            "left": Vector2(-1, 0),
+            "right": Vector2(1, 0)
+        }[element.attrib['direction'].lower()]
+        force = int(element.attrib['force'])
+        wind_object = WindGameObject(size, direction, force)
+        self.__assign_transform(element, wind_object)
+
+        return wind_object
 
     def __assign_transform(self, element: ET.Element, go: GameObject):
         (x, y, center) = self.__parse_transform(element.find('transform'))

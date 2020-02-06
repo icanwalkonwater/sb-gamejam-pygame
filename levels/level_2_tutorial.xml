@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<level>
+    <background src="level_2_tutorial_attack.jpg"/>
+    <statics>
+        <box width="250" height="1600" invisible="" additional-layers="environment">
+            <transform x="0" y="450"/>
+        </box>
+        <box width="150" height="50" invisible="" additional-layers="environment">
+            <transform x="300" y="250"/>
+        </box>
+        <box width="150" height="50" invisible="" additional-layers="environment">
+            <transform x="600" y="250"/>
+        </box>
+        <box width="100" height="250" invisible="" additional-layers="environment">
+            <transform x="500" y="450"/>
+        </box>
+        <box width="500" height="100" invisible="" additional-layers="environment">
+            <transform x="600" y="600"/>
+        </box>
+        <box width="100" height="50" invisible="" additional-layers="environment">
+            <transform x="1250" y="300"/>
+        </box>
+        <box width="100" height="50" invisible="" additional-layers="environment">
+            <transform x="1400" y="450"/>
+        </box>
+        <box width="650" height="50" invisible="" additional-layers="environment">
+            <transform x="1550" y="550"/>
+        </box>
+        <box width="150" height="50" invisible="" additional-layers="environment">
+            <transform x="2050" y="550"/>
+        </box>
+        <box width="500" height="600" invisible="" additional-layers="environment">
+            <transform x="2200" y="550"/>
+        </box>
+        <box width="100" height="600" invisible="" additional-layers="environment">
+            <transform x="1550" y="800"/>
+        </box>
+        <box width="750" height="50" invisible="" additional-layers="environment">
+            <transform x="1650" y="1350"/>
+        </box>
+        <box width="750" height="50" invisible="" additional-layers="environment">
+            <transform x="1650" y="1350"/>
+        </box>
+        <box width="200" height="50" invisible="" additional-layers="environment">
+            <transform x="2050" y="1250"/>
+        </box>
+        <box width="300" height="50" invisible="" additional-layers="environment">
+            <transform x="2400" y="1350"/>
+        </box>
+        <death-zone width="5350" height="400">
+            <transform y="1800"/>
+        </death-zone>
+        <scene-loader-zone width="">
+
+        </scene-loader-zone>
+    </statics>
+    <dynamics>
+        <player>
+            <!--transform x="700" y="950"/-->
+            <transform x="50" y="400"/>
+        </player>
+        <wind-area width="100" height="400" force="7" direction="up">
+            <transform x="1100" y="300"/>
+        </wind-area>
+    </dynamics>
+    <ui>
+        <ui-player-health/>
+        <ui-player-mana/>
+        <box src="ui-player-stat-overlay.png">
+            <transform x="10" y="10"/>
+        </box>
+        <ui-ability-jump/>
+    </ui>
+</level>
