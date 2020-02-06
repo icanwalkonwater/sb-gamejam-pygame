@@ -3,8 +3,7 @@ from abc import ABC, abstractmethod
 
 from pygame.math import Vector2
 
-from constants import LIVING_ENTITY_VELOCITY_DAMAGE_MULTIPLIER_SQR, LIVING_ENTITY_VELOCITY_DAMAGE_THRESHOLD_SQR, \
-    EntitySettings
+from constants import EntitySettings
 
 
 class LivingEntity(ABC):

@@ -1,3 +1,4 @@
+import cProfile
 import time
 
 import pygame
@@ -14,7 +15,7 @@ from scene import Scene
 from scene_management import SceneManagement
 from ui.player_bar import UIHealthBar, UIManaBar
 
-FPS_LIMIT = 0
+FPS_LIMIT = 30
 frames = 0
 
 
@@ -26,7 +27,7 @@ def get_ui(player: Player) -> [GameObject]:
 
 
 def create_test_scene(screen: Surface) -> Scene:
-    background: Surface = Surface(screen.get_size())
+    background: Surface = Surface((3000, 3000))
     background.fill((250, 250, 250))
 
     red_box_s: Surface = Surface((300, 50))
@@ -49,7 +50,7 @@ def create_test_scene(screen: Surface) -> Scene:
     floor: GameObject = GameObject(floor_s)
     floor.move(Vector2(0, 600))
 
-    button: ButtonGameObject = ButtonGameObject(ResourceManagement.get_image("button_off.png"), [], [], [])
+    button: ButtonGameObject = ButtonGameObject(ResourceManagement._get_image("button_off.png"), [], [], [])
     button.move(Vector2(500, 580))
 
     wall_left_s: Surface = Surface((50, 100))
@@ -62,7 +63,7 @@ def create_test_scene(screen: Surface) -> Scene:
     wall_right: GameObject = GameObject(wall_left_s)
     wall_right.move(Vector2(1000, 500))
 
-    player = Player(ResourceManagement.get_image('mage_idle.png'), .5)
+    player = Player(ResourceManagement._get_image('mage_idle.png'), .5)
     player.move(Vector2(100, 200))
 
     enemy = HthEnemy(player)
@@ -71,12 +72,11 @@ def create_test_scene(screen: Surface) -> Scene:
     ui_comps = get_ui(player)
 
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
-                         [player, enemy, *ui_comps, button])
+                         [player, enemy, button], ui_comps)
 
     scene.environment.add(red_box, orange_box, floor, wall_left, wall_right)
     scene.player.add(player)
     scene.enemies.add(enemy)
-    scene.ui.add(*ui_comps)
 
     player.add_to_collision_mask(scene.environment, scene.enemies)
     enemy.add_to_collision_mask(scene.environment, scene.player)
@@ -119,11 +119,8 @@ def main():
         SceneManagement.active_scene.update(delta_time)
 
         # Draw pass
-        for invalidated in SceneManagement.active_scene.draw_auto(screen):
-            pygame.display.update(invalidated)
-
-        # Update the screen
-        pygame.display.flip()
+        draw_pass()
+        # cProfile.run('draw_pass()')
 
         # Reset the clock
         if time.time() - last_fps_update > 1:
@@ -132,6 +129,12 @@ def main():
         global frames
         frames += 1
         clock.tick(FPS_LIMIT)
+
+
+# Draw pass
+def draw_pass():
+    for invalidated in SceneManagement.active_scene.draw_auto(pygame.display.get_surface()):
+        pygame.display.update(invalidated)
 
 
 if __name__ == '__main__':

@@ -2,6 +2,8 @@ from enum import Enum
 
 
 class Layers(Enum):
+    """Layers are used for the collision masks"""
+
     """Layer containing the rigid environment where we can walk on"""
     ENVIRONMENT = 1
     """Layer containing the player"""
@@ -10,8 +12,6 @@ class Layers(Enum):
     ENEMY = 3
     """Layer containing the projectiles of any origin"""
     PROJECTILE = 4
-    """Layer containing the UI elements"""
-    UI = 5
 
 
 class ImpactSide(Enum):
