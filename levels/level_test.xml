@@ -40,6 +40,9 @@
         <enemy-ranged>
             <transform x="600" y="500"/>
         </enemy-ranged>
+         <enemy-heavy-rock>
+            <transform x="200" y="500"/>
+        </enemy-heavy-rock>
     </dynamics>
     <ui>
         <ui-player-health/>
