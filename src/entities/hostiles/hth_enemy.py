@@ -5,6 +5,8 @@ from constants import VECTOR2_NULL, EnemySettings
 from entities.hostiles.enemy import Enemy
 from entities.player import Player
 from enums import ImpactSide, EnemyState
+from entities.living_entity import LivingEntity
+from enums import ImpactSide
 from game_object import GameObject
 from ressource_management import ResourceManagement
 from scene import Scene
@@ -61,8 +63,8 @@ class HthEnemy(Enemy, AnimatedSprite):
             Enemy._on_collide(self, other, direction_of_impact, impact_side, delta_time)
         else:
             # Collided with player, he need to suffer
-            other: Player
-            other.take_damage(10)
+            other: LivingEntity
+            other.take_damage(EnemySettings.HandToHand.DAMAGE)
             if other.is_dead:
                 self._target = None
 

@@ -4,6 +4,8 @@ from abilities import TornadoJumpAbility, GustAbility, SlamAbility
 from animation import AnimatedSprite
 from constants import PlayerSettings, VECTOR2_NULL
 from entities.hostiles.enemy import Enemy
+from entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
+from entities.hostiles.hth_enemy import HthEnemy
 from entities.living_entity import LivingEntity
 from enums import ImpactSide, PlayerState
 from game_object import GameObject
@@ -93,11 +95,17 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         # Common collision with something normal
-        if not isinstance(other, Enemy):
+        if isinstance(other, HthEnemy):
+            if direction_of_impact != VECTOR2_NULL:
+                # Collided with an enemy
+                other: Enemy
+                # Apply knockback
+                direction_of_impact.normalize_ip()
+                self.apply_force(direction_of_impact * PlayerSettings.DAMAGE_REPULSION_FACTOR)
+        elif isinstance(other, Enemy):
+            if isinstance(other, HeavyRockEnemy) and impact_side == ImpactSide.BOTTOM:
+                RigidPhysicsAwareGameObject._on_collide(self, other, direction_of_impact, impact_side, delta_time)
+            else:
+                pass
+        else:
             RigidPhysicsAwareGameObject._on_collide(self, other, direction_of_impact, impact_side, delta_time)
-        elif direction_of_impact != Vector2(0, 0):
-            # Collided with an enemy
-            other: Enemy
-            # Apply knockback
-            direction_of_impact.normalize_ip()
-            self.apply_force(direction_of_impact * PlayerSettings.DAMAGE_REPULSION_FACTOR)
