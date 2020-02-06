@@ -54,12 +54,14 @@ class ResourceManagement:
     @classmethod
     def get_enemy_ice_sprites(cls) -> {Enum, List[Surface]}:
         return {
-            EnemyState.RUNNING_RIGHT: [cls.get_image(path.join("hostiles", "ice_running_1.png")),
-                                       cls.get_image(path.join("hostiles", "ice_running_2.png"))],
+            EnemyState.RUNNING_RIGHT: [transform.flip(i, True, False) for i in
+                                       [cls.get_image(path.join("hostiles", "ice_running_1.png")),
+                                        cls.get_image(path.join("hostiles", "ice_running_2.png"))]],
             EnemyState.RUNNING_LEFT: [cls.get_image(path.join("hostiles", "ice_running_1.png")),
                                       cls.get_image(path.join("hostiles", "ice_running_2.png"))],
-            EnemyState.ATTACKING_LEFT: [cls.get_image(path.join("hostiles", "ice_jumping.png"))],
-            EnemyState.ATTACKING_RIGHT: [cls.get_image(path.join("hostiles", "ice_jumping.png"))]
+            EnemyState.ATTACKING_RIGHT: [
+                transform.flip(cls.get_image(path.join("hostiles", "ice_jumping.png")), True, False)],
+            EnemyState.ATTACKING_LEFT: [cls.get_image(path.join("hostiles", "ice_jumping.png"))]
         }
 
     @classmethod

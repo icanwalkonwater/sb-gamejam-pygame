@@ -71,12 +71,12 @@ class HthEnemy(Enemy, AnimatedSprite):
 
     def _update_state(self):
         if not self.is_on_ground:
-            if self._direction > 0:
+            if self._direction < 0:
                 self._state = EnemyState.ATTACKING_LEFT
             else:
                 self._state = EnemyState.ATTACKING_RIGHT
         else:
-            if self._direction > 0:
+            if self._direction < 0:
                 self._state = EnemyState.RUNNING_LEFT
             else:
                 self._state = EnemyState.RUNNING_RIGHT
