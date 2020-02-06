@@ -4,6 +4,7 @@ from xml.etree import ElementTree as ET
 from pygame.math import Vector2
 from pygame.surface import Surface
 
+from entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
 from entities.hostiles.hth_enemy import HthEnemy
 from entities.player import Player
 from enums import Layers
@@ -64,6 +65,8 @@ class SceneLoader:
                 go = self.__parse_player(scene, element)
             elif element.tag == 'enemy-hth':
                 go = self.__parse_enemy_hth(scene, element)
+            elif element.tag == 'enemy-heavy-rock':
+                go = self.__parse_enemy_heavy_rock(scene, element)
             elif element.tag == 'prop-button':
                 go = self.__parse_prop_button(element)
             elif element.tag == 'ui-player-health':
@@ -119,6 +122,13 @@ class SceneLoader:
 
     def __parse_enemy_hth(self, scene: Scene, element: ET.Element) -> HthEnemy:
         enemy = HthEnemy()
+        self.__assign_transform(element, enemy)
+        self.__assign_collision_masks(scene, enemy, self.__parse_collision_mask(element))
+
+        return enemy
+
+    def __parse_enemy_heavy_rock(self, scene: Scene, element: ET.Element) -> HeavyRockEnemy:
+        enemy = HeavyRockEnemy()
         self.__assign_transform(element, enemy)
         self.__assign_collision_masks(scene, enemy, self.__parse_collision_mask(element))
 
