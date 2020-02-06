@@ -3,9 +3,8 @@ from pygame.math import Vector2
 from animation import AnimatedSprite
 from constants import VECTOR2_NULL, EnemySettings
 from entities.hostiles.enemy import Enemy
-from entities.player import Player
-from enums import ImpactSide, EnemyState
 from entities.living_entity import LivingEntity
+from enums import EnemyState
 from enums import ImpactSide
 from game_object import GameObject
 from ressource_management import ResourceManagement

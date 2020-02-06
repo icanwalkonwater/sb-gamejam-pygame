@@ -97,6 +97,18 @@ class ResourceManagement:
         }
 
     @classmethod
+    def get_enemy_stone_sprites(cls) -> {Enum, List[Surface]}:
+        return {
+            EnemyState.RUNNING_RIGHT: [transform.flip(i, True, False) for i in
+                                       [cls.get_image(path.join("hostiles", "stone_walking_1.png")),
+                                        cls.get_image(path.join("hostiles", "stone_walking_2.png")),
+                                        cls.get_image(path.join("hostiles", "stone_walking_3.png"))]],
+            EnemyState.RUNNING_LEFT: [cls.get_image(path.join("hostiles", "stone_walking_1.png")),
+                                      cls.get_image(path.join("hostiles", "stone_walking_2.png")),
+                                      cls.get_image(path.join("hostiles", "stone_walking_3.png"))],
+        }
+
+    @classmethod
     def get_projectile_gust_sprites(cls) -> {Enum, List[Surface]}:
         return {
             ProjectileState.DEFAULT: [cls.get_image(path.join("projectiles", "gust_" + str(i) + ".png")) for i in
