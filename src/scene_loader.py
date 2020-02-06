@@ -6,6 +6,7 @@ from pygame.surface import Surface
 
 from constants import VECTOR2_NULL
 from entities.hostiles.hth_enemy import HthEnemy
+from entities.hostiles.ranged_enemy import RangedEnemy
 from entities.player import Player
 from enums import Layers
 from environement_props import ButtonGameObject
@@ -69,6 +70,8 @@ class SceneLoader:
                 go = self.__parse_player(scene, element)
             elif element.tag == 'enemy-hth':
                 go = self.__parse_enemy_hth(scene, element)
+            elif element.tag == 'enemy-ranged':
+                go = self.__parse_enemy_ranged(scene, element)
             elif element.tag == 'prop-button':
                 go = self.__parse_prop_button(element)
             elif element.tag == 'ui-player-health':
@@ -130,6 +133,13 @@ class SceneLoader:
 
     def __parse_enemy_hth(self, scene: Scene, element: ET.Element) -> HthEnemy:
         enemy = HthEnemy()
+        self.__assign_transform(element, enemy)
+        self.__assign_collision_masks(scene, enemy, self.__parse_collision_mask(element))
+
+        return enemy
+
+    def __parse_enemy_ranged(self, scene: Scene, element: ET.Element) -> RangedEnemy:
+        enemy = RangedEnemy()
         self.__assign_transform(element, enemy)
         self.__assign_collision_masks(scene, enemy, self.__parse_collision_mask(element))
 

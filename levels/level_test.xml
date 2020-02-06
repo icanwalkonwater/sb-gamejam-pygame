@@ -37,6 +37,9 @@
         <enemy-hth>
             <transform x="900" y="500"/>
         </enemy-hth>
+        <enemy-ranged>
+            <transform x="600" y="500"/>
+        </enemy-ranged>
     </dynamics>
     <ui>
         <ui-player-health/>
