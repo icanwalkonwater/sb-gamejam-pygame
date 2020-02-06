@@ -6,7 +6,6 @@ from pygame import Vector2
 from pygame.surface import Surface
 
 from constants import PlayerSettings, EnemySettings
-from entities.player import Player
 from enums import ImpactSide
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject
@@ -84,37 +83,6 @@ class SlamProjectile(Projectile):
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         if isinstance(other, RigidPhysicsAwareGameObject):
             other.apply_force(self.strength)
-        self.kill()
-
-    def update(self, delta_time: float):
-        if self.__death_time <= time.time():
-            self.kill()
-        else:
-            Projectile.update(self, delta_time)
-
-
-class EnemyProjectile(Projectile):
-    @staticmethod
-    def _death_time() -> float:
-        return time.time() + EnemySettings.Ranged.Projectile.TIME_TO_LIVE
-
-    def start(self, scene):
-        self.add_to_collision_mask(scene.player, scene.environment)
-        scene.projectiles.add(self)
-        scene.dynamics.add(self)
-        self.apply_force(self.direction * 30)
-
-    def __init__(self, direction: Vector2):
-        sprite = Surface((10, 10))
-        sprite.fill((125, 125, 0))
-        Projectile.__init__(self, sprite)
-        self.__death_time = EnemyProjectile._death_time()
-        self._direction = direction
-
-    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
-        if isinstance(other, Player):
-            other.apply_force(self._direction * 30)
-            other.take_damage(20)
         self.kill()
 
     def update(self, delta_time: float):
