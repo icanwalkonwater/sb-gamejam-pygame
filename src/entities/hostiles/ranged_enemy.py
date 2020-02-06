@@ -18,7 +18,7 @@ class RangedEnemy(Enemy):
     def __init__(self):
         surface = Surface((50, 50))
         surface.fill((255, 0, 0))
-        Enemy.__init__(self, surface, EnemySettings.Ranged.WIEGHT, EnemySettings.Ranged.HEALTH_MAX,
+        Enemy.__init__(self, surface, EnemySettings.Ranged.WEIGHT, EnemySettings.Ranged.HEALTH_MAX,
                        EnemySettings.Ranged.ATTACK_COOLDOWN_S)
         self.__cooldown_expire = 0
 

@@ -1,11 +1,10 @@
-import random
 import time
 from abc import ABC, abstractmethod
 
 from pygame import Vector2
 from pygame.surface import Surface
 
-from constants import PlayerSettings, EnemySettings
+from constants import PlayerSettings
 from enums import ImpactSide
 from game_object import GameObject
 from physics import RigidPhysicsAwareGameObject

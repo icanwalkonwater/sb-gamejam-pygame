@@ -127,8 +127,8 @@ class EnemySettings:
         """Cooldown between attacks"""
         ATTACK_COOLDOWN_S = 1
 
-        """WIEGHT of the enemy"""
-        WIEGHT = .5
+        """WEIGHT of the enemy"""
+        WEIGHT = .5
 
         """A circle centered on the enemy. If the player enter this rect, the enemy
         will start attacking him.

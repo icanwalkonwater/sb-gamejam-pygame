@@ -5,7 +5,7 @@ from pygame import Surface, Vector2
 
 from constants import GlobalSettings
 from entities.hostiles.hth_enemy import HthEnemy
-from entities.hostiles.ran_enemy import RangedEnemy
+from entities.hostiles.ranged_enemy import RangedEnemy
 from entities.player import Player
 from environement_props import ButtonGameObject
 from game_object import GameObject
