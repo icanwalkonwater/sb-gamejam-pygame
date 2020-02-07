@@ -42,10 +42,10 @@ class PlayerSettings:
     DAMAGE_REPULSION_FACTOR = -1_000
 
     """Maximum amount of mana"""
-    MANA_MAX = 900
+    MANA_MAX = 500
 
     """Factor used to passively replenish mana when moving around"""
-    MANA_PASSIVE_REGENERATION_FACTOR = .00001
+    MANA_PASSIVE_REGENERATION_FACTOR = .000005
 
     """Maximum health"""
     HEALTH_MAX = 100
@@ -72,7 +72,7 @@ class PlayerSettings:
             STRENGTH = -800
             AREA_SIZE = (200, 100)
             AREA_TIME_TO_LIVE = 1
-            MANA_COST = 70
+            MANA_COST = 100
 
 
 class EntitySettings:
