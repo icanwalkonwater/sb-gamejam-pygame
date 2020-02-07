@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<level>
+    <background src="main_menu.jpg"/>
+    <statics>
+        <box width="950" height="100" invisible="" additional-layers="environment">
+            <transform x="500" y="1000"/>
+        </box>
+        <box width="100" height="1000" invisible="" additional-layers="environment">
+            <transform x="400"/>
+        </box>
+        <box width="100" height="1000" invisible="" additional-layers="environment">
+            <transform x="1450"/>
+        </box>
+    </statics>
+    <dynamics>
+        <player>
+            <transform x="600" y="950"/>
+        </player>
+        <prop-button id="start">
+            <transform x="750" y="980"/>
+        </prop-button>
+        <prop-button id="credits">
+            <transform x="950" y="980"/>
+        </prop-button>
+        <prop-button id="credits">
+            <transform x="1150" y="980"/>
+        </prop-button>
+    </dynamics>
+    <ui/>
+</level>

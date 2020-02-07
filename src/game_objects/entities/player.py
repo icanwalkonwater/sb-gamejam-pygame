@@ -24,7 +24,7 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
         RigidPhysicsAwareGameObject.__init__(self, first_sprite, weight)
         LivingEntity.__init__(self, PlayerSettings.HEALTH_MAX, invincibility_duration=1)
         AnimatedSprite.__init__(self, sprites, 3, PlayerState.IDLE)
-        self.ability_tornado_jump = TornadoJumpAbility(0)
+        self.ability_tornado_jump = TornadoJumpAbility(1)
         self.ability_gust = GustAbility(0)
         self.ability_slam = SlamAbility(0)
         self.mana: float = PlayerSettings.MANA_MAX
@@ -48,6 +48,10 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
         # Update the state
         self.__update_state()
         AnimatedSprite.update(self, delta_time)
+
+    def kill(self):
+        self.collision_masks.clear()
+        RigidPhysicsAwareGameObject.kill(self)
 
     def __update_state(self):
         if not self.is_on_ground:

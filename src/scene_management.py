@@ -31,6 +31,7 @@ class SceneManagement:
         player = PlayerManagement.player
         player.transform = cls.active_scene.player.sprite.transform
         player._rect_dirty = True
+        player.kill()
         cls.active_scene.player.add(player)
         cls.active_scene.dynamics.add(player)
 

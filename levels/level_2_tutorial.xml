@@ -43,6 +43,9 @@
         <orb-slam>
             <transform x="850" y="1480"/>
         </orb-slam>
+        <orb-slam>
+            <transform x="950" y="1480"/>
+        </orb-slam>
         <enemy-ranged>
             <transform x="950" y="1500"/>
         </enemy-ranged>
