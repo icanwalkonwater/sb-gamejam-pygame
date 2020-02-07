@@ -75,8 +75,6 @@ def create_test_scene(screen: Surface) -> Scene:
 
     ui_comps = get_ui(player)
 
-
-
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
                          [player, enemy, enemy2, button, wind_stream], ui_comps)
 
@@ -97,7 +95,7 @@ def main():
     InputController.init(vertical=(pygame.K_SPACE, -1), acceleration=Vector2(5, 1))
 
     PlayerManagement.init(Player())
-
+    PlayerManagement.load()
 
     # Setup scene management
     SceneManagement.init({

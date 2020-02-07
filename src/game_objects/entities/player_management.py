@@ -13,13 +13,15 @@ class PlayerManagement:
     @classmethod
     def init(cls, player):
         cls.player = player
+        cls._player_high_scores = cls.load()
 
     @classmethod
     def get_score(cls) -> int:
         range_enemy_kill_points = cls._ranged_enemy_kill * ScoreSettings.RANGE_ENEMY_KILL
         heavy_enemy_kill_points = cls._heavy_enemy_kill * ScoreSettings.HEAVY_ENEMY_KILL
         hth_enemy_kill_points = cls._hth_enemy_kill * ScoreSettings.HTH_ENEMY_KILL
-        abilities_level_points = (cls.player.ability_tornado_jump.level + cls.player.ability_slam.level + cls.player.ability_gust.level) \
+        abilities_level_points = (
+                                         cls.player.ability_tornado_jump.level + cls.player.ability_slam.level + cls.player.ability_gust.level) \
                                  * ScoreSettings.ABILITY_POINTS_LEVEL
         return range_enemy_kill_points + heavy_enemy_kill_points + hth_enemy_kill_points + abilities_level_points
 
@@ -41,6 +43,4 @@ class PlayerManagement:
     def load(cls) -> [int]:
         with open('High-scores.json', 'r') as file:
             scores_dict = json.load(file)
-            return scores_dict.values()
-
-
+            return list(scores_dict.values())
