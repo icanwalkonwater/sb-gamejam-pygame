@@ -22,7 +22,7 @@
         <prop-button id="credits">
             <transform x="950" y="980"/>
         </prop-button>
-        <prop-button id="credits">
+        <prop-button id="exit">
             <transform x="1150" y="980"/>
         </prop-button>
     </dynamics>

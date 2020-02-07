@@ -98,10 +98,15 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
             self.mana = min(self.mana, PlayerSettings.MANA_MAX)
 
     def _die(self):
-        death_screen = DeathScreen()
+        if not hasattr(self, '_win'):
+            death_screen = DeathScreen()
+        else:
+            death_screen = DeathScreen('YOU WIN !', 'CONGRATULATIONS !')
         scene = SceneManagement.active_scene
         scene.statics.add(death_screen)
+
         death_screen.start(scene)
+
         PlayerManagement.add_score(PlayerManagement.get_score())
         PlayerManagement.save()
         self.kill()

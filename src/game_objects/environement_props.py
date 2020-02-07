@@ -154,6 +154,25 @@ class DeathZone(RigidPhysicsAwareGameObject):
             other._die()
 
 
+class WinZone(RigidPhysicsAwareGameObject):
+
+    def __init__(self, size: (int, int)):
+        surface: Surface = Surface(size, flags=pygame.SRCALPHA)
+        surface.fill((0, 0, 0, 0))
+        RigidPhysicsAwareGameObject.__init__(self, surface, 0)
+
+    def start(self, scene: Scene):
+        RigidPhysicsAwareGameObject.start(self, scene)
+        self.add_to_collision_mask(scene.player)
+
+    def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
+        if isinstance(other, LivingEntity):
+            other: LivingEntity
+            other.health = 0
+            other._win = True
+            other._die()
+
+
 class LevelLoaderZone(RigidPhysicsAwareGameObject):
 
     def __init__(self, size: (int, int), level_name: str):

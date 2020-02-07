@@ -43,8 +43,7 @@ class PlayerManagement:
     def load(cls) -> [int]:
         try:
             with open('High-scores.json', 'r') as file:
-                pass
-            scores_dict = json.load(file)
+                scores_dict = json.load(file)
             return list(scores_dict.values())
         except FileNotFoundError:
             return []

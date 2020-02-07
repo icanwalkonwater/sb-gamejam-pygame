@@ -1,3 +1,4 @@
+import sys
 import time
 
 import pygame
@@ -99,14 +100,12 @@ def main():
 
     # Setup scene management
     SceneManagement.init({
-        'main': create_test_scene(screen),
-        'main_menu': SceneLoader('levels/main_menu.xml', {
-            'start': lambda btn: btn.on_enter.append(lambda: SceneManagement.load_scene('level_1'))
+        'main_menu': lambda: SceneLoader('levels/main_menu.xml', {
+            'start': lambda btn: btn.on_enter.append(lambda: SceneManagement.load_scene('level_1')),
+            'exit': lambda btn: btn.on_enter.append(lambda: sys.exit(0))
         }).parse_all(),
-        'level_test': SceneLoader('levels/level_test.xml').parse_all(),
-        'vision_test': SceneLoader('levels/vision_test.xml').parse_all(),
-        'level_1': SceneLoader('levels/level_1_tutorial.xml').parse_all(),
-        'level_2': SceneLoader('levels/level_2_tutorial.xml').parse_all()
+        'level_1': lambda: SceneLoader('levels/level_1_tutorial.xml').parse_all(),
+        'level_2': lambda: SceneLoader('levels/level_2_tutorial.xml').parse_all()
     })
     SceneManagement.load_scene('main_menu')
 
