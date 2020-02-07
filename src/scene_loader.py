@@ -145,7 +145,8 @@ class SceneLoader:
             raise RuntimeError('no color on rigid box')
 
     def __parse_player(self, scene: Scene, element: ET.Element) -> Player:
-        player = Player()
+        player = GameObject(Surface((0, 0)))
+        scene.player.add(player)
         self.__assign_transform(element, player)
         self.__assign_collision_masks(scene, player, self.__parse_collision_mask(element))
 

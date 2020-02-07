@@ -143,7 +143,7 @@ class EnemySettings:
         SPEED = Vector2(.05, 0)
 
         """"knowkback"""
-        KNOCKBACK = Vector2(5000,800)
+        KNOCKBACK = Vector2(5000, 800)
 
     class Ranged:
         """Health of enemy"""
@@ -158,12 +158,12 @@ class EnemySettings:
         """A circle centered on the enemy. If the player enter this rect, the enemy
         will start attacking him.
         """
-        DETECTION_RANGE_SQR = 350 ** 2
+        DETECTION_RANGE_SQR = 650 ** 2
 
         """A rect centered on the enemy. If the player enter this rect, the enemy
         will run into the opposite of payer
         """
-        FEAR_RANGE_SQR = 150 ** 2
+        FEAR_RANGE_SQR = 300 ** 2
 
         """Enemy walking velocity.
         When afraid by a player, they will walk according to this velocity.
@@ -179,3 +179,14 @@ class EnemySettings:
 
             """Speed of projectile when lunched by enemy"""
             SPEED = 800
+
+
+class ScoreSettings:
+    """points for a ranged enemy kill"""
+    RANGE_ENEMY_KILL = 300
+    """points for a hth enemy kill"""
+    HTH_ENEMY_KILL = 200
+    """poits for a heavy enemy kill"""
+    HEAVY_ENEMY_KILL = 100
+    """Points for eache ablity level"""
+    ABILITY_POINTS_LEVEL = 50

@@ -7,6 +7,7 @@ from constants import GlobalSettings
 from game_objects.entities.hostiles.hth_enemy import HthEnemy
 from game_objects.entities.hostiles.ranged_enemy import RangedEnemy
 from game_objects.entities.player import Player
+from game_objects.entities.player_management import PlayerManagement
 from game_objects.environement_props import ButtonGameObject, WindGameObject
 from game_objects.game_object import GameObject
 from keyboard_input import InputController
@@ -94,6 +95,9 @@ def main():
 
     # Setup input controller
     InputController.init(vertical=(pygame.K_SPACE, -1), acceleration=Vector2(5, 1))
+
+    PlayerManagement.init(Player())
+
 
     # Setup scene management
     SceneManagement.init({
