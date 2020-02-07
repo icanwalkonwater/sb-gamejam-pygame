@@ -6,12 +6,12 @@ from pygame.surface import Surface
 
 from constants import VECTOR2_NULL
 from enums import Layers
-from game_objects.entities.orb import OrbTornado, OrbGust, OrbSlam
 from game_objects.entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
 from game_objects.entities.hostiles.hth_enemy import HthEnemy
 from game_objects.entities.hostiles.ranged_enemy import RangedEnemy
+from game_objects.entities.orb import OrbTornado, OrbGust, OrbSlam
 from game_objects.entities.player import Player
-from game_objects.environement_props import ButtonGameObject, DeathZone, WindGameObject
+from game_objects.environement_props import ButtonGameObject, DeathZone, LevelLoaderZone, WindGameObject
 from game_objects.game_object import GameObject
 from game_objects.physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
@@ -22,7 +22,7 @@ from ui.player_bar import UIHealthBar, UIManaBar
 
 class SceneLoader:
 
-    def __init__(self, filename: str, button_bindings: {str, Callable} = None):
+    def __init__(self, filename: str, button_bindings: Dict[str, Callable] = None):
         tree: ET.ElementTree = ET.parse(filename)
         self.root: ET.Element = tree.getroot()
         self._button_bindings: Dict[str, Callable] = button_bindings if button_bindings is not None else {}
@@ -80,6 +80,10 @@ class SceneLoader:
                 go = self.__parse_prop_button(element)
             elif element.tag == 'death-zone':
                 go = self.__parse_death_zone(element)
+            elif element.tag == 'level-loader-zone':
+                go = self.__parse_level_loader_zone(element)
+            elif element.tag == 'wind-area':
+                go = self.__parse_wind_area(element)
             elif element.tag == 'orb-tornado':
                 go = self.__parse_orb_tornado(scene, element)
             elif element.tag == 'orb-gust':
@@ -96,8 +100,6 @@ class SceneLoader:
                 go = UIGustIndicator()
             elif element.tag == 'ui-ability-slam':
                 go = UISlamIndicator()
-            elif element.tag == 'wind-area':
-                go = self.__parse_wind_area(element)
             else:
                 go = None
 
@@ -208,15 +210,26 @@ class SceneLoader:
 
         return death_zone
 
+    def __parse_level_loader_zone(self, element: ET.Element) -> LevelLoaderZone:
+        loader = LevelLoaderZone(self.__parse_dimensions(element), element.attrib['scene'])
+        self.__assign_transform(element, loader)
+
+        return loader
+
     def __parse_wind_area(self, element: ET.Element) -> WindGameObject:
-        size = self.__parse_dimensions(element)
-        direction = {
+        direction_matrix = {
             "up": Vector2(0, -1),
             "down": Vector2(0, 1),
             "left": Vector2(-1, 0),
             "right": Vector2(1, 0)
-        }[element.attrib['direction'].lower()]
+        }
+
+        size = self.__parse_dimensions(element)
+        direction = direction_matrix[
+            element.attrib['direction']
+        ]
         force = int(element.attrib['force'])
+
         wind_object = WindGameObject(size, direction, force)
         self.__assign_transform(element, wind_object)
 

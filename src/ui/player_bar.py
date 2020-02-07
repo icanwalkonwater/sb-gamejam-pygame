@@ -1,9 +1,7 @@
-import math
-
 from pygame.color import Color
 from pygame.rect import Rect
 
-from constants import GlobalSettings, PlayerSettings
+from constants import PlayerSettings
 from scene import Scene
 from ui.progress_bar import UIProgressBar
 

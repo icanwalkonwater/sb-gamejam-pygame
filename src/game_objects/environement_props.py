@@ -3,13 +3,12 @@ from typing import Callable, Generator
 import pygame
 from pygame import Vector2, Surface
 
-from enums import ImpactSide, ButtonState
+from enums import ImpactSide, ButtonState, WindDirection
 from game_objects.animation import AnimatedSprite
 from game_objects.entities.living_entity import LivingEntity
 from game_objects.entities.player import Player
 from game_objects.game_object import GameObject
 from game_objects.physics import RigidPhysicsAwareGameObject, PhysicsReceiver
-from enums import ImpactSide, ButtonState, WindDirection
 from ressource_management import ResourceManagement
 from scene import Scene
 from scene_management import SceneManagement

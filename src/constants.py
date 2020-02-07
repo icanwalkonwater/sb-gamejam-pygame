@@ -9,7 +9,7 @@ class GlobalSettings:
     RESOLUTION = (1024, 768)
 
     """Link to the banner font"""
-    FONT = "/usr/share/fonts/noto/NotoSans-Regular.ttf"
+    FONT = "/usr/share/fonts/noto/NotoSans-Bold.ttf"
 
 
 class PhysicsSettings:

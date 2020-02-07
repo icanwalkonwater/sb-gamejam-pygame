@@ -1,7 +1,7 @@
 import sys
 from typing import Dict
 
-from pygame.surface import Surface
+import pygame
 
 from scene import Scene
 
@@ -16,11 +16,15 @@ class SceneManagement:
         cls.active_scene = None
 
     @classmethod
-    def load_scene(cls, name: str, screen: Surface):
-        cls.active_scene = cls.__scenes.get(name)
+    def load_scene(cls, name: str):
+        new_scene = cls.__scenes.get(name)
+        if new_scene == cls.active_scene:
+            raise RuntimeError('Can\'t load the same level twice')
+
+        cls.active_scene = new_scene
         if cls.active_scene is None:
             print(f'Unknown scene {name} !')
             sys.exit(1)
 
-        cls.active_scene.draw_init(screen)
+        cls.active_scene.draw_init(pygame.display.get_surface())
         cls.active_scene.start()

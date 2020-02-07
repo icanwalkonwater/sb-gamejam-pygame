@@ -22,8 +22,8 @@ class OrbTornado(RigidPhysicsAwareGameObject):
         self.kill()
         other: Player
         other.ability_tornado_jump.level_up()
-        text = InformationBanner("Tornado upgraded",
-                                 "Your Tornado level up to " + str(other.ability_tornado_jump.level), 3)
+        text = InformationBanner('TORNADO JUMP UPGRADED !',
+                                 'TORNADO JUMP LVL ' + str(other.ability_tornado_jump.level), 3)
         text.start(SceneManagement.active_scene)
 
     def update(self, delta_time: float):
@@ -42,12 +42,13 @@ class OrbGust(RigidPhysicsAwareGameObject):
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         other: Player
         other.ability_gust.level_up()
-        text = InformationBanner("Gust upgraded", "Your Gust level up to " + str(other.ability_gust.level), 3)
+        text = InformationBanner('GUST UPGRADED !', 'GUST LVL ' + str(other.ability_gust.level), 3)
         text.start(SceneManagement.active_scene)
         self.kill()
 
 
 class OrbSlam(RigidPhysicsAwareGameObject):
+
     def __init__(self):
         sprite: Surface = Surface((20, 20))
         sprite.fill((50, 50, 255))
@@ -59,6 +60,6 @@ class OrbSlam(RigidPhysicsAwareGameObject):
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):
         other: Player
         other.ability_slam.level_up()
-        text = InformationBanner("Slam upgraded", "Your Slam level up to " + str(other.ability_slam.level), 3)
+        text = InformationBanner('SLAM UPGRADED !', 'SLAM LVL ' + str(other.ability_slam.level), 3)
         text.start(SceneManagement.active_scene)
         self.kill()

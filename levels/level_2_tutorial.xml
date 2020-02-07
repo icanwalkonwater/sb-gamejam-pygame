@@ -1,67 +1,72 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <level>
-    <background src="level_2_tutorial_attack.jpg"/>
+    <background src="level_2_tutorial_enemies.jpg"/>
     <statics>
-        <box width="250" height="1600" invisible="" additional-layers="environment">
-            <transform x="0" y="450"/>
+        <box width="550" height="2000" invisible="" additional-layers="environment">
+            <transform/>
+        </box>
+        <box width="700" height="150" invisible="" additional-layers="environment">
+            <transform x="550" y="1000"/>
+        </box>
+        <box width="250" height="400" invisible="" additional-layers="environment">
+            <transform x="550" y="1150"/>
+        </box>
+        <box width="2550" height="450" invisible="" additional-layers="environment">
+            <transform x="800" y="1550"/>
+        </box>
+        <box width="250" height="50" invisible="" additional-layers="environment">
+            <transform x="2250" y="1200"/>
+        </box>
+        <box width="250" height="50" invisible="" additional-layers="environment">
+            <transform x="2700" y="1050"/>
         </box>
         <box width="150" height="50" invisible="" additional-layers="environment">
-            <transform x="300" y="250"/>
+            <transform x="3200" y="1350"/>
         </box>
-        <box width="150" height="50" invisible="" additional-layers="environment">
-            <transform x="600" y="250"/>
+        <box width="650" height="850" invisible="" additional-layers="environment">
+            <transform x="3350" y="1150"/>
         </box>
-        <box width="100" height="250" invisible="" additional-layers="environment">
-            <transform x="500" y="450"/>
+        <box width="500" height="1050" invisible="" additional-layers="environment">
+            <transform x="3500" y="0"/>
         </box>
-        <box width="500" height="100" invisible="" additional-layers="environment">
-            <transform x="600" y="600"/>
-        </box>
-        <box width="100" height="50" invisible="" additional-layers="environment">
-            <transform x="1250" y="300"/>
-        </box>
-        <box width="100" height="50" invisible="" additional-layers="environment">
-            <transform x="1400" y="450"/>
-        </box>
-        <box width="650" height="50" invisible="" additional-layers="environment">
-            <transform x="1550" y="550"/>
-        </box>
-        <box width="150" height="50" invisible="" additional-layers="environment">
-            <transform x="2050" y="550"/>
-        </box>
-        <box width="500" height="600" invisible="" additional-layers="environment">
-            <transform x="2200" y="550"/>
-        </box>
-        <box width="100" height="600" invisible="" additional-layers="environment">
-            <transform x="1550" y="800"/>
-        </box>
-        <box width="750" height="50" invisible="" additional-layers="environment">
-            <transform x="1650" y="1350"/>
-        </box>
-        <box width="750" height="50" invisible="" additional-layers="environment">
-            <transform x="1650" y="1350"/>
-        </box>
-        <box width="200" height="50" invisible="" additional-layers="environment">
-            <transform x="2050" y="1250"/>
-        </box>
-        <box width="300" height="50" invisible="" additional-layers="environment">
-            <transform x="2400" y="1350"/>
-        </box>
-        <death-zone width="5350" height="400">
-            <transform y="1800"/>
-        </death-zone>
-        <scene-loader-zone width="">
-
-        </scene-loader-zone>
     </statics>
     <dynamics>
         <player>
-            <!--transform x="700" y="950"/-->
-            <transform x="50" y="400"/>
+            <transform x="650" y="950"/>
         </player>
-        <wind-area width="100" height="400" force="7" direction="up">
-            <transform x="1100" y="300"/>
-        </wind-area>
+        <orb-gust>
+            <transform x="900" y="950"/>
+        </orb-gust>
+        <orb-gust>
+            <transform x="2800" y="1000"/>
+        </orb-gust>
+        <orb-slam>
+            <transform x="850" y="1500"/>
+        </orb-slam>
+        <enemy-ranged>
+            <transform x="950" y="1500"/>
+        </enemy-ranged>
+        <enemy-ranged>
+            <transform x="1200" y="1500"/>
+        </enemy-ranged>
+        <enemy-heavy-rock>
+            <transform x="1800" y="1450"/>
+        </enemy-heavy-rock>
+        <enemy-heavy-rock>
+            <transform x="2350" y="1450"/>
+        </enemy-heavy-rock>
+        <enemy-hth>
+            <transform x="2150" y="1500"/>
+        </enemy-hth>
+        <enemy-hth>
+            <transform x="2300" y="1150"/>
+        </enemy-hth>
+        <enemy-hth>
+            <transform x="2400" y="1150"/>
+        </enemy-hth>
+        <enemy-hth>
+            <transform x="2850" y="1500"/>
+        </enemy-hth>
     </dynamics>
     <ui>
         <ui-player-health/>
@@ -70,5 +75,6 @@
             <transform x="10" y="10"/>
         </box>
         <ui-ability-jump/>
+        <ui-ability-gust/>
     </ui>
 </level>

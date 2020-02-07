@@ -1,9 +1,8 @@
 import time
-from ast import Str
 
+from pygame import Vector2
 from pygame import font as pyfont, Surface
 from pygame.constants import SRCALPHA
-from pygame import Vector2
 
 from constants import GlobalSettings
 from game_objects.game_object import GameObject
@@ -14,7 +13,7 @@ class Vecteur2(object):
 
 
 class InformationBanner(GameObject):
-    def __init__(self, title: Str, content: Str, duration: float):
+    def __init__(self, title: str, content: str, duration: float):
         banner_background_surface = Surface((1024, 150), flags=SRCALPHA)
         banner_background_surface.fill((111, 111, 111, 200))
 
@@ -39,8 +38,8 @@ class InformationBanner(GameObject):
         self._death_time = time.time() + self._duration
 
     @staticmethod
-    def render_font(font: pyfont.Font, string: Str) -> Surface:
-        return font.render(string, True, (255, 255, 255))
+    def render_font(font: pyfont.Font, string: str) -> Surface:
+        return font.render(string, True, (0, 0, 0))
 
     @staticmethod
     def content_text_placer(banner: Surface, text: Surface) -> (int, int):

@@ -184,13 +184,13 @@ class Scene:
             go.start(self)
 
     def update(self, delta_time: float):
+        # Dispatch updates to every game object
+        self.statics.update(delta_time)
+        self.dynamics.update(delta_time)
+        self.ui.update(delta_time)
+
         # Center the camera around the player
         # but only if the player has moved enough
         if len(self.player) > 0:
             if self.dynamics.center(self.player.sprite.transform):
                 self.__state_dirty = True
-
-        # Dispatch updates to every game object
-        self.statics.update(delta_time)
-        self.dynamics.update(delta_time)
-        self.ui.update(delta_time)
