@@ -26,7 +26,7 @@ class PhysicsSettings:
     """Force applied to every velocity.
     Will be applied differently based on the weight of the object.
     """
-    GRAVITY = Vector2(0, 9.31)
+    GRAVITY = Vector2(0, 13)
 
     """Used to simulate the decay of the velocity due to the air."""
     STANDARD_RESISTANCE = 0.06
@@ -56,17 +56,17 @@ class PlayerSettings:
 
         class TornadoJump:
             COOLDOWN = .2
-            STRENGTH = -6_000
+            STRENGTH = -6_500
             MANA_COST = 50
             TIME_TO_LIVE = 1
             KNOCKBACK_STRENGTH = 400
 
         class Gust:
-            STRENGTH = 10_000
+            STRENGTH = 6_000
             KNOCKBACK_STRENGTH = -2_000
             PROJECTILE_HIT_STRENGTH_Y = -2_000
             MANA_COST = 30
-            TIME_TO_LIVE = .7
+            TIME_TO_LIVE = 1.2
 
         class Slam:
             STRENGTH = -800
@@ -128,7 +128,7 @@ class EnemySettings:
 
     class HeavyRock:
         """Health of the enemy"""
-        HEALTH_MAX = 1_000
+        HEALTH_MAX = 2_000
 
         """Damage given to the player when he touch heavyRock E"""
         SIDE_DAMAGE = 70
@@ -137,7 +137,7 @@ class EnemySettings:
         ATTACK_COOLDOWN_S = .2
 
         """WEIGHT"""
-        WEIGHT = 1
+        WEIGHT = .6
 
         """Walking speed"""
         SPEED = Vector2(.05, 0)
@@ -150,7 +150,7 @@ class EnemySettings:
         HEALTH_MAX = 100
 
         """Cooldown between attacks"""
-        ATTACK_COOLDOWN_S = 1
+        ATTACK_COOLDOWN_S = 2
 
         """WEIGHT of the enemy"""
         WEIGHT = .5
@@ -168,17 +168,17 @@ class EnemySettings:
         """Enemy walking velocity.
         When afraid by a player, they will walk according to this velocity.
         """
-        FEAR_WALK_VELOCITY = Vector2(.4, 0)
+        FEAR_WALK_VELOCITY = Vector2(.3, 0)
 
         class Projectile:
             """Duration of projectile life"""
             TIME_TO_LIVE = 10
 
             """"Strength of the projectile when it impact"""
-            STRENGTH = 4000
+            STRENGTH = 3000
 
             """Speed of projectile when lunched by enemy"""
-            SPEED = 800
+            SPEED = 400
 
 
 class ScoreSettings:

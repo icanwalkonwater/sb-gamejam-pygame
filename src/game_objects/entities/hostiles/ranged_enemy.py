@@ -79,7 +79,7 @@ class EnemyProjectile(Projectile, AnimatedSprite):
         self.add_to_collision_mask(scene.player, scene.environment)
         scene.projectiles.add(self)
         scene.dynamics.add(self)
-        self.apply_force(self._direction * 30)
+        self.apply_force(self._direction * 10)
 
     def __init__(self, direction: Vector2):
         sprites = ResourceManagement.get_projectile_fire_ball_sprites()
