@@ -10,16 +10,16 @@ from ui.information_banner import InformationBanner
 class DeathScreen(GameObject):
     def __init__(self, content=None):
         death_screen_background_surface = Surface((1024, 768), flags=SRCALPHA)
-        death_screen_background_surface.fill((50, 50, 50, 100))
+        death_screen_background_surface.fill((100, 100, 100, 200))
 
         font = pyfont.Font(GlobalSettings.FONT, 33)
-        text_surface: Surface = InformationBanner.render_font(font, "Vous êtes Mort".upper())
+        text_surface: Surface = DeathScreen.render_font(font, "Vous êtes Mort".upper())
         death_screen_background_surface.blit(text_surface,
                                              InformationBanner.title_text_placer(death_screen_background_surface,
                                                                                  text_surface))
 
         font = pyfont.Font(GlobalSettings.FONT, 19)
-        text_surface: Surface = InformationBanner.render_font(font, "Le village de Vonorof été anéanti".upper())
+        text_surface: Surface = DeathScreen.render_font(font, "Le village de Vonorof été anéanti".upper())
         death_screen_background_surface.blit(text_surface,
                                              InformationBanner.content_text_placer(death_screen_background_surface,
                                                                                    text_surface))
@@ -29,6 +29,10 @@ class DeathScreen(GameObject):
     def start(self, scene):
         scene.ui.empty()
         scene.ui.add(self)
+
+    @staticmethod
+    def render_font(font: pyfont.Font, string: str) -> Surface:
+        return font.render(string, True, (255, 255, 255))
 
     @staticmethod
     def content_text_placer(banner: Surface, text: Surface) -> (int, int):
