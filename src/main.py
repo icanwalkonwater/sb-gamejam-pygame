@@ -11,6 +11,7 @@ from game_objects.entities.player_management import PlayerManagement
 from game_objects.environement_props import ButtonGameObject, WindGameObject
 from game_objects.game_object import GameObject
 from keyboard_input import InputController
+from music_manager import MusicManager
 from scene import Scene
 from scene_loader import SceneLoader
 from scene_management import SceneManagement
@@ -75,8 +76,6 @@ def create_test_scene(screen: Surface) -> Scene:
 
     ui_comps = get_ui(player)
 
-
-
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
                          [player, enemy, enemy2, button, wind_stream], ui_comps)
 
@@ -98,7 +97,6 @@ def main():
 
     PlayerManagement.init(Player())
 
-
     # Setup scene management
     SceneManagement.init({
         'main': create_test_scene(screen),
@@ -107,7 +105,7 @@ def main():
         'level_1': SceneLoader('levels/level_1_tutorial.xml').parse_all(),
         'level_2': SceneLoader('levels/level_2_tutorial.xml').parse_all()
     })
-    SceneManagement.load_scene('level_2')
+    SceneManagement.load_scene('level_1')
 
     # Setup clock
     clock: pygame.time.Clock = pygame.time.Clock()
@@ -115,6 +113,9 @@ def main():
 
     # Used to
     last_fps_update = time.time()
+
+    # start the music
+    MusicManager.init()
 
     # Game loop
     while True:
