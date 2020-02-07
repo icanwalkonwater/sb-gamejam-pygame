@@ -17,7 +17,7 @@ class MusicManager:
 
     @classmethod
     def play_music(cls):
-        mixer.music.load(os.path.join("assets", "audio", "musique_combat.wav"))
+        mixer.music.load(os.path.join("assets", "audio", "Musique combat.mp3"))
         mixer.music.play(-1)
 
     @classmethod
