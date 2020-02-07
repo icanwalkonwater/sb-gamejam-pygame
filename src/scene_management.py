@@ -1,5 +1,5 @@
 import sys
-from typing import Dict
+from typing import Dict, Callable
 
 import pygame
 
@@ -9,7 +9,7 @@ from scene import Scene
 
 
 class SceneManagement:
-    __scenes: Dict[str, Scene]
+    __scenes: Dict[str, Callable[..., Scene]]
     active_scene: Scene
 
     @classmethod
