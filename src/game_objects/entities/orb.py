@@ -4,6 +4,7 @@ from enums import ImpactSide
 from game_objects.entities.player import Player
 from game_objects.game_object import GameObject
 from game_objects.physics import RigidPhysicsAwareGameObject
+from ressource_management import ResourceManagement
 from scene import Scene
 from scene_management import SceneManagement
 from ui.information_banner import InformationBanner
@@ -11,8 +12,7 @@ from ui.information_banner import InformationBanner
 
 class OrbTornado(RigidPhysicsAwareGameObject):
     def __init__(self):
-        sprite: Surface = Surface((20, 20))
-        sprite.fill((255, 50, 50))
+        sprite: Surface = ResourceManagement.get_image('orb_jump.png')
         RigidPhysicsAwareGameObject.__init__(self, sprite, 0)
 
     def start(self, scene: Scene):
@@ -32,8 +32,7 @@ class OrbTornado(RigidPhysicsAwareGameObject):
 
 class OrbGust(RigidPhysicsAwareGameObject):
     def __init__(self):
-        sprite: Surface = Surface((20, 20))
-        sprite.fill((50, 255, 50))
+        sprite: Surface = ResourceManagement.get_image('orb_gust.png')
         RigidPhysicsAwareGameObject.__init__(self, sprite, 0)
 
     def start(self, scene: Scene):
@@ -50,8 +49,7 @@ class OrbGust(RigidPhysicsAwareGameObject):
 class OrbSlam(RigidPhysicsAwareGameObject):
 
     def __init__(self):
-        sprite: Surface = Surface((20, 20))
-        sprite.fill((50, 50, 255))
+        sprite: Surface = ResourceManagement.get_image('orb_slam.png')
         RigidPhysicsAwareGameObject.__init__(self, sprite, 0)
 
     def start(self, scene: Scene):

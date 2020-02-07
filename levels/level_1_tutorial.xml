@@ -42,10 +42,10 @@
             <!--transform x="4250" y="800"/-->
         </player>
         <orb-tornado>
-            <transform x="900" y="950"/>
+            <transform x="900" y="930"/>
         </orb-tornado>
         <orb-tornado>
-            <transform x="4550" y="950"/>
+            <transform x="4550" y="930"/>
         </orb-tornado>
         <wind-area width="200" height="1250" direction="up" force="10">
             <transform x="2500" y="450"/>
