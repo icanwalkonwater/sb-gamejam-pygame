@@ -1,5 +1,4 @@
 import time
-from threading import Timer
 
 import pygame
 from pygame import Surface, Vector2
@@ -102,12 +101,16 @@ def main():
     SceneManagement.init({
         'main': create_test_scene(screen),
         'main_menu': SceneLoader('levels/main_menu.xml', {
-            'start': lambda btn: btn.on_enter.append(lambda: SceneManagement.load_scene('level_1'))
+            'start': lambda btn: btn.on_enter.append(lambda: SceneManagement.load_scene('level_1')),
+            'credits': lambda btn: btn.on_enter.append(lambda: SceneManagement.load_scene('credit'))
         }).parse_all(),
         'level_test': SceneLoader('levels/level_test.xml').parse_all(),
         'vision_test': SceneLoader('levels/vision_test.xml').parse_all(),
         'level_1': SceneLoader('levels/level_1_tutorial.xml').parse_all(),
-        'level_2': SceneLoader('levels/level_2_tutorial.xml').parse_all()
+        'level_2': SceneLoader('levels/level_2_tutorial.xml').parse_all(),
+        'credit': SceneLoader('levels/main_credit.xml', {
+            'exit_credit': lambda btn: btn.on_enter.append(lambda: SceneManagement.load_scene('main_menu')),
+        }).parse_all()
     })
     SceneManagement.load_scene('main_menu')
 
