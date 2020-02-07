@@ -7,6 +7,7 @@ from constants import PlayerSettings
 from game_objects.entities.projectile import GustProjectile, SlamProjectile, TornadoProjectile
 from game_objects.game_object import GameObject
 from game_objects.physics import RigidPhysicsAwareGameObject
+from music_manager import MusicManager
 from scene import Scene
 from scene_management import SceneManagement
 
@@ -89,6 +90,7 @@ class GustAbility(Ability):
                 player.apply_force(self._gust_backward_strength_calc(player))
 
                 self._next_usage = time.time() + self.cooldown
+                MusicManager.play_sound_effect('gust')
 
 
 class SlamAbility(Ability):
@@ -128,3 +130,4 @@ class SlamAbility(Ability):
                 projectile_slam.move(self._slam_position_calc(player, projectile_slam.image))
 
                 self._next_usage = time.time() + self.cooldown
+                MusicManager.play_sound_effect('slam')

@@ -8,7 +8,7 @@
         <box width="700" height="150" invisible="" additional-layers="environment">
             <transform x="550" y="1000"/>
         </box>
-        <box width="250" height="400" invisible="" additional-layers="environment">
+        <box width="250" height="1000" invisible="" additional-layers="environment">
             <transform x="550" y="1150"/>
         </box>
         <box width="2550" height="450" invisible="" additional-layers="environment">
@@ -27,7 +27,7 @@
             <transform x="3350" y="1150"/>
         </box>
         <box width="500" height="1050" invisible="" additional-layers="environment">
-            <transform x="3500" y="0"/>
+            <transform x="3500"/>
         </box>
     </statics>
     <dynamics>
@@ -35,13 +35,16 @@
             <transform x="650" y="950"/>
         </player>
         <orb-gust>
-            <transform x="900" y="950"/>
+            <transform x="900" y="930"/>
         </orb-gust>
         <orb-gust>
-            <transform x="2800" y="1000"/>
+            <transform x="2800" y="980"/>
         </orb-gust>
         <orb-slam>
-            <transform x="850" y="1500"/>
+            <transform x="850" y="1480"/>
+        </orb-slam>
+        <orb-slam>
+            <transform x="950" y="1480"/>
         </orb-slam>
         <enemy-ranged>
             <transform x="950" y="1500"/>
@@ -76,5 +79,6 @@
         </box>
         <ui-ability-jump/>
         <ui-ability-gust/>
+        <ui-ability-slam/>
     </ui>
 </level>
