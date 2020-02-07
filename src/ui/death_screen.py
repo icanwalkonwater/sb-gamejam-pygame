@@ -18,6 +18,12 @@ class DeathScreen(GameObject):
                                              InformationBanner.title_text_placer(death_screen_background_surface,
                                                                                  text_surface))
 
+        font = pyfont.Font(GlobalSettings.FONT, 19)
+        text_surface: Surface = InformationBanner.render_font(font, "Le village de Vonorof été anéanti".upper())
+        death_screen_background_surface.blit(text_surface,
+                                             InformationBanner.content_text_placer(death_screen_background_surface,
+                                                                                   text_surface))
+
         GameObject.__init__(self, death_screen_background_surface)
 
     def start(self, scene):
