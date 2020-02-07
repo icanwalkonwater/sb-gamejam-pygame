@@ -1,3 +1,4 @@
+import sys
 from typing import Tuple
 
 import pygame
@@ -27,6 +28,9 @@ class InputController:
     def update(cls):
         cls.__keys_pressed = pygame.key.get_pressed()
         cls.__keys_down = list(map(lambda evt: evt.key, pygame.event.get(pygame.KEYDOWN)))
+
+        if pygame.event.get(pygame.QUIT):
+            sys.exit(0)
 
         # Fix: clear the queue because we don't handle every event and the queue might get full real quick
         pygame.event.clear()
