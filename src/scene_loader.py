@@ -11,7 +11,7 @@ from game_objects.entities.hostiles.hth_enemy import HthEnemy
 from game_objects.entities.hostiles.ranged_enemy import RangedEnemy
 from game_objects.entities.orb import OrbTornado, OrbGust, OrbSlam
 from game_objects.entities.player import Player
-from game_objects.environement_props import ButtonGameObject, DeathZone, LevelLoaderZone, WindGameObject
+from game_objects.environement_props import ButtonGameObject, DeathZone, LevelLoaderZone, WindGameObject, WinZone
 from game_objects.game_object import GameObject
 from game_objects.physics import RigidPhysicsAwareGameObject
 from ressource_management import ResourceManagement
@@ -80,6 +80,8 @@ class SceneLoader:
                 go = self.__parse_prop_button(element)
             elif element.tag == 'death-zone':
                 go = self.__parse_death_zone(element)
+            elif element.tag == 'win-zone':
+                go = self.__parse_win_zone(element)
             elif element.tag == 'level-loader-zone':
                 go = self.__parse_level_loader_zone(element)
             elif element.tag == 'wind-area':
@@ -210,6 +212,13 @@ class SceneLoader:
         self.__assign_transform(element, death_zone)
 
         return death_zone
+
+    def __parse_win_zone(self, element: ET.Element) -> WinZone:
+        size = self.__parse_dimensions(element)
+        win_zone = WinZone(size)
+        self.__assign_transform(element, win_zone)
+
+        return win_zone
 
     def __parse_level_loader_zone(self, element: ET.Element) -> LevelLoaderZone:
         loader = LevelLoaderZone(self.__parse_dimensions(element), element.attrib['scene'])

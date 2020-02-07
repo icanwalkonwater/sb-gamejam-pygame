@@ -1,3 +1,4 @@
+import sys
 import time
 
 import pygame
@@ -103,6 +104,7 @@ def main():
         'main_menu': SceneLoader('levels/main_menu.xml', {
             'start': lambda btn: btn.on_enter.append(lambda: SceneManagement.load_scene('level_1')),
             'credits': lambda btn: btn.on_enter.append(lambda: SceneManagement.load_scene('credit'))
+            'exit': lambda btn: btn.on_enter.append(lambda: sys.exit(0))
         }).parse_all(),
         'level_test': SceneLoader('levels/level_test.xml').parse_all(),
         'vision_test': SceneLoader('levels/vision_test.xml').parse_all(),

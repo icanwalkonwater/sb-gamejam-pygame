@@ -29,6 +29,9 @@
         <box width="500" height="1050" invisible="" additional-layers="environment">
             <transform x="3500"/>
         </box>
+        <win-zone width="500" height="100">
+            <transform x="3500" y="1050"/>
+        </win-zone>
     </statics>
     <dynamics>
         <player>
