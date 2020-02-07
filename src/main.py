@@ -103,7 +103,7 @@ def main():
         'level_1': SceneLoader('levels/level_1_tutorial.xml').parse_all(),
         'level_2': SceneLoader('levels/level_2_tutorial.xml').parse_all()
     })
-    SceneManagement.load_scene('level_2')
+    SceneManagement.load_scene('level_1')
 
     # Setup clock
     clock: pygame.time.Clock = pygame.time.Clock()
