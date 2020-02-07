@@ -3,6 +3,8 @@ from typing import Dict
 
 import pygame
 
+from game_objects.entities.player_management import PlayerManagement
+from music_manager import MusicManager
 from scene import Scene
 
 
@@ -26,5 +28,14 @@ class SceneManagement:
             print(f'Unknown scene {name} !')
             sys.exit(1)
 
+        player = PlayerManagement.player
+        player.transform = cls.active_scene.player.sprite.transform
+        player._rect_dirty = True
+        cls.active_scene.player.add(player)
+        cls.active_scene.dynamics.add(player)
+
         cls.active_scene.draw_init(pygame.display.get_surface())
         cls.active_scene.start()
+
+        MusicManager.stop_music()
+        MusicManager.play_music()

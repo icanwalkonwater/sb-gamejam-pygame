@@ -7,9 +7,11 @@ from constants import GlobalSettings
 from game_objects.entities.hostiles.hth_enemy import HthEnemy
 from game_objects.entities.hostiles.ranged_enemy import RangedEnemy
 from game_objects.entities.player import Player
+from game_objects.entities.player_management import PlayerManagement
 from game_objects.environement_props import ButtonGameObject, WindGameObject
 from game_objects.game_object import GameObject
 from keyboard_input import InputController
+from music_manager import MusicManager
 from scene import Scene
 from scene_loader import SceneLoader
 from scene_management import SceneManagement
@@ -74,8 +76,6 @@ def create_test_scene(screen: Surface) -> Scene:
 
     ui_comps = get_ui(player)
 
-
-
     scene: Scene = Scene(background, [red_box, orange_box, floor, wall_left, wall_right],
                          [player, enemy, enemy2, button, wind_stream], ui_comps)
 
@@ -95,6 +95,8 @@ def main():
     # Setup input controller
     InputController.init(vertical=(pygame.K_SPACE, -1), acceleration=Vector2(5, 1))
 
+    PlayerManagement.init(Player())
+
     # Setup scene management
     SceneManagement.init({
         'main': create_test_scene(screen),
@@ -111,6 +113,9 @@ def main():
 
     # Used to
     last_fps_update = time.time()
+
+    # start the music
+    MusicManager.init()
 
     # Game loop
     while True:

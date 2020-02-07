@@ -60,7 +60,7 @@
             <transform x="50" y="400"/>
         </player>
         <wind-area width="100" height="400" force="7" direction="up">
-            <transform x="1100" y="300"/>
+            <transform x="1100" y="300"/>d
         </wind-area>
     </dynamics>
     <ui>
