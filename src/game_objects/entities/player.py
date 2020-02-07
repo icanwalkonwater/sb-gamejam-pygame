@@ -1,18 +1,21 @@
 from pygame import Vector2
 
+from constants import PlayerSettings, VECTOR2_NULL
+from enums import ImpactSide, PlayerState
 from game_objects.abilities import TornadoJumpAbility, GustAbility, SlamAbility
 from game_objects.animation import AnimatedSprite
-from constants import PlayerSettings, VECTOR2_NULL
 from game_objects.entities.hostiles.enemy import Enemy
 from game_objects.entities.hostiles.heavy_rock_enemy import HeavyRockEnemy
 from game_objects.entities.hostiles.hth_enemy import HthEnemy
 from game_objects.entities.living_entity import LivingEntity
-from enums import ImpactSide, PlayerState
+from game_objects.entities.player_management import PlayerManagement
 from game_objects.game_object import GameObject
-from keyboard_input import InputController
 from game_objects.physics import RigidPhysicsAwareGameObject
+from keyboard_input import InputController
 from ressource_management import ResourceManagement
 from scene import Scene
+from scene_management import SceneManagement
+from ui.death_screen import DeathScreen
 
 
 class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
@@ -95,6 +98,12 @@ class Player(RigidPhysicsAwareGameObject, LivingEntity, AnimatedSprite):
             self.mana = min(self.mana, PlayerSettings.MANA_MAX)
 
     def _die(self):
+        death_screen = DeathScreen()
+        scene = SceneManagement.active_scene
+        scene.statics.add(death_screen)
+        death_screen.start(scene)
+        PlayerManagement.add_score(PlayerManagement.get_score())
+        PlayerManagement.save()
         self.kill()
 
     def _on_collide(self, other: GameObject, direction_of_impact: Vector2, impact_side: ImpactSide, delta_time: float):

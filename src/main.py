@@ -1,5 +1,4 @@
 import time
-from threading import Timer
 
 import pygame
 from pygame import Surface, Vector2
